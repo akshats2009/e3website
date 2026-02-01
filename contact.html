@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | e3 Initiative</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar main-nav">
+        <div class="container">
+            <div class="logo">e3 Initiative</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Contact Us</h1>
+        </div>
+    </section>
+
+    <!-- Contact Content -->
+    <section class="content-section">
+        <div class="container">
+            <div class="split">
+                <div>
+                    <h2>Let’s connect</h2>
+                    <p>Have questions about our research or want to collaborate? Send a message and we will respond within two business days.</p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Team discussing research">
+                </div>
+            </div>
+
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+                <p class="form-status" id="contactStatus" aria-live="polite"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="logo">e3 Initiative</div>
+                <p class="footer-note">Equity-focused research for community impact.</p>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="research.html">Research</a>
+                <a href="articles.html">Articles</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-actions">
+                <button class="to-top" type="button" aria-label="Navigate to the top">Back to top ↑</button>
+                <p>&copy; 2026 e3 Initiative. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>

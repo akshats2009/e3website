@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e3 Initiative | Equity, Economics, Ethnicity</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJDGPY8QCB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-JJDGPY8QCB');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar main-nav">
+        <div class="container">
+            <div class="logo" style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.1;">
+                <span style="font-family:'Inter',sans-serif;font-weight:900;font-size:1.5rem;color:#fff;letter-spacing:-0.04em;">e3 Initiative</span>
+                <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:0.95rem;color:#d1d5db;margin-top:0.15em;">Ethnicity &nbsp; | &nbsp; Economics &nbsp; | &nbsp; Equity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="articles.html">Articles</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section (background image with overlay) -->
+    <section class="hero" style="background-image: url('https://images.unsplash.com/photo-1520975919106-5f3c9f5f0d26?auto=format&fit=crop&w=1400&q=80');">
+        <div class="container">
+            <h1 class="header-animate">Research for equitable communities</h1>
+            <p class="subtitle fade-up stagger-2">We study the intersection of equity, economics, and ethnicity to inform policy and empower local change.</p>
+            <a href="research.html" class="btn fade-up stagger-3">Explore research</a>
+            <a href="#pillars" class="scroll-indicator" aria-label="Scroll to sections"><span class="chev"></span></a>
+        </div>
+    </section>
+
+
+    <!-- Three Pillars -->
+    <section class="pillars">
+        <div class="container">
+            <div class="pillar-grid">
+                <div class="pillar-card">
+                    <h3>Equity</h3>
+                    <p>Examining fairness in social, economic, and political systems.</p>
+                </div>
+                <div class="pillar-card">
+                    <h3>Economics</h3>
+                    <p>Understanding how policy decisions shape opportunity and mobility in underserved communities.</p>
+                </div>
+                <div class="pillar-card">
+                    <h3>Ethnicity</h3>
+                    <p>Documenting how ethnic identity influences access to resources and systemic outcomes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Latest Research -->
+    <section class="content-section">
+        <div class="container">
+            <h2 class="fade-up">Recent publications</h2>
+            <p id="latestArticlesStatus" aria-live="polite" style="color: rgba(45,42,38,0.5);">Loading...</p>
+            <div class="articles-grid" id="latestArticles" data-type="research"></div>
+            <p class="fade-up" style="margin-top: 2.5rem;">
+                <a href="research.html" class="btn">View all research</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="content-section" style="text-align: center; padding: 80px 0;">
+        <div class="container" style="max-width: 400px;">
+            <h2 class="fade-up">Stay updated</h2>
+            <p class="fade-up stagger-1" style="color: rgba(245,240,235,0.5); margin-bottom: 2rem;">Monthly research briefs and community updates.</p>
+            <form class="newsletter-form fade-up stagger-2" id="newsletterForm" style="flex-direction: column; gap: 12px;">
+                <input type="email" id="newsletterEmail" name="email" placeholder="Email address" required style="text-align: center;">
+                <button type="submit">Subscribe</button>
+            </form>
+            <p class="form-status" id="newsletterStatus" aria-live="polite"></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="logo fade-up">e3 Initiative</div>
+            <div class="footer-nav fade-up stagger-1">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="research.html">Research</a>
+                <a href="articles.html">Articles</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="fade-up stagger-2" style="color: rgba(245,240,235,0.3); font-size: 0.75rem;">© 2026 e3 Initiative</p>
+        </div>
+    </footer>
+    
+    <script src="data/articles.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

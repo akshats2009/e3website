@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles | e3 Initiative</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar articles-nav">
+        <div class="container">
+            <div class="logo" style="font-weight:900;font-size:1.7rem;color:#7a2a4d;letter-spacing:-0.04em;">e3 Articles</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="articles.html" class="active">Articles</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Articles</h1>
+        </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="content-section">
+        <div class="container">
+            <div class="split">
+                <div>
+                    <h2>Latest commentary and essays</h2>
+                    <p>Short-form analysis, opinion, and essays highlighting community perspectives and policy implications.</p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=1200&q=80" alt="Writers discussing ideas">
+                </div>
+            </div>
+            <p id="articlesStatus" aria-live="polite">Loading articles…</p>
+            <div class="articles-grid" id="articlesGrid" data-type="article"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="articles-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="logo" style="font-weight:900;font-size:1.2rem;color:#7a2a4d;">e3 Articles</div>
+                <p class="footer-note">Community voices, essays, and commentary.</p>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="research.html">Research</a>
+                <a href="articles.html" class="active">Articles</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-actions">
+                <button class="to-top" type="button" aria-label="Navigate to the top">Back to top ↑</button>
+                <p style="color:#7a2a4d;font-weight:600;">© 2026 e3 Articles</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="data/articles.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
