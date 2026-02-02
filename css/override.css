@@ -7,14 +7,25 @@ h1, h2, .section-header h2, .hero h1, .page-header h1 {
 }
 
 h1 {
-    font-size: clamp(3rem, 6vw, 5rem) !important;
+    font-size: clamp(2.25rem, 6vw, 4rem) !important;
 }
 
 h2 {
-    font-size: clamp(2rem, 4vw, 3.5rem) !important;
+    font-size: clamp(1.5rem, 3.2vw, 2.25rem) !important;
 }
 
-/* Background Animated Orbs */
+:root{
+    --container-max: 1100px;
+    --accent: #ffffff;
+    --muted-strong: rgba(255,255,255,0.75);
+    --muted: rgba(255,255,255,0.6);
+    --muted-weak: rgba(255,255,255,0.45);
+}
+
+/* Global container */
+.container{ max-width: var(--container-max); margin: 0 auto; padding: 0 1.25rem; }
+
+/* Background Animated Orbs (kept subtle) */
 .bg-orbs {
     position: fixed;
     top: 0;
@@ -23,85 +34,55 @@ h2 {
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    filter: blur(100px);
+    filter: blur(90px);
     pointer-events: none;
     opacity: 0.6;
 }
 
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    mix-blend-mode: screen;
-}
+.orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+.orb-1{ width: 600px; height:600px; background: radial-gradient(circle, rgba(99,102,241,0.36) 0%, transparent 70%); top:-120px; left:-120px; animation: drift 22s infinite alternate ease-in-out; }
+.orb-2{ width:500px; height:500px; background: radial-gradient(circle, rgba(168,85,247,0.28) 0%, transparent 70%); bottom:-60px; right:-60px; animation: drift 26s infinite alternate-reverse ease-in-out; }
+.orb-3{ width:420px; height:420px; background: radial-gradient(circle, rgba(45,212,191,0.18) 0%, transparent 70%); top:40%; left:60%; animation: drift 18s infinite alternate ease-in-out; }
+@keyframes drift{ from{ transform: translate(0,0) scale(1); } to{ transform: translate(110px, 60px) scale(1.08); } }
 
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
-    top: -100px;
-    left: -100px;
-    animation: drift 20s infinite alternate ease-in-out;
-}
-
-.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
-    bottom: -50px;
-    right: -50px;
-    animation: drift 25s infinite alternate-reverse ease-in-out;
-}
-
-.orb-3 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(45, 212, 191, 0.2) 0%, transparent 70%);
-    top: 40%;
-    left: 60%;
-    animation: drift 18s infinite alternate ease-in-out;
-}
-
-@keyframes drift {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(100px, 50px) scale(1.1); }
-}
-
-/* Grainy Noise Texture */
-.noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.03;
-    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-    filter: contrast(150%) brightness(100%);
-}
+/* Grainy Noise Texture (very subtle) */
+.noise-overlay{ position: fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.02; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); filter: contrast(110%) brightness(98%); }
 
 /* Card Improvements - Bento feel */
-.pillar-card, .feature-card, .article-card {
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: rgba(255, 255, 255, 0.03) !important;
-    backdrop-filter: blur(12px) !important;
-    transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease !important;
-}
-
-.pillar-card:hover, .feature-card:hover, .article-card:hover {
-    transform: translateY(-8px) scale(1.02) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
-}
+.pillar-card, .feature-card, .article-card{ border: 1px solid rgba(255,255,255,0.08) !important; background: rgba(255,255,255,0.02) !important; backdrop-filter: blur(10px) !important; transition: transform 0.35s cubic-bezier(0.2,1,0.3,1), box-shadow 0.35s ease !important; }
+.pillar-card:hover, .feature-card:hover, .article-card:hover{ transform: translateY(-8px) scale(1.02) !important; background: rgba(255,255,255,0.05) !important; box-shadow: 0 24px 44px rgba(2,6,23,0.55) !important; }
 
 /* Smooth Scroll Reveals */
-.fade-up {
-    transform: translateY(30px);
-    opacity: 0;
-    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-}
+.fade-up{ transform: translateY(22px); opacity: 0; transition: all 0.7s cubic-bezier(0.2,1,0.3,1); }
+.fade-up.in-view{ transform: translateY(0); opacity: 1; }
 
-.fade-up.in-view {
-    transform: translateY(0);
-    opacity: 1;
-}
+/* Improved link styles */
+a, a:link, a:visited{ color: var(--muted-strong); text-decoration: none; transition: color 0.18s ease, opacity 0.18s ease; }
+a:hover, a:focus{ color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Hero spacing adjustments */
+.hero{ padding: clamp(48px, 10vw, 120px) 0 56px !important; }
+@media (max-width: 720px){ .hero{ padding: 48px 0 36px !important; } h1{ font-size: clamp(1.6rem, 6.5vw, 2.2rem) !important; } }
+
+/* Reduce giant page paddings */
+.page-header{ padding: 48px 0 28px !important; }
+
+/* Citations glass card (site-wide) */
+.citations-glass{ background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px); border-radius: 20px; padding: 2.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.6); }
+.citations-list{ list-style:none; margin:0; padding:0; }
+.citations-list li{ margin-bottom:1.6rem; color: var(--muted-strong); line-height:1.7; }
+.citations-list li a{ color: var(--accent); }
+
+/* Back-link */
+.back-link{ display:inline-flex; align-items:center; gap:0.6rem; color:var(--muted-weak); text-decoration:none; }
+.back-link:hover{ color:var(--accent); }
+
+/* Footer link tweaks */
+footer .footer-nav a{ color: rgba(255,255,255,0.45) !important; }
+footer .footer-nav a:hover{ color: rgba(255,255,255,0.9) !important; }
+
+/* Accessibility focus outlines */
+:focus{ outline: 2px solid rgba(255,255,255,0.14); outline-offset: 3px; }
+
+/* Small responsive tweaks */
+@media (max-width: 480px){ .container{ padding: 0 1rem; } .citations-glass{ padding:1rem !important; } }
