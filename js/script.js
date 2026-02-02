@@ -1,3 +1,13 @@
+// Quick hide for leftover loading text (temporary)
+(function(){
+  try {
+    var s = document.createElement('style');
+    s.id = 'quick-hide-loading';
+    s.textContent = "[data-loading], .loading, .site-loading, .loading-indicator, .loading-text, #loading { display: none !important; visibility: hidden !important; }";
+    document.head && document.head.appendChild(s);
+  } catch(e) { /* ignore */ }
+})();
+
 // Appended: copy-to-clipboard for citations and small UX feedback
 (function(){
   function copyText(text){
