@@ -1,131 +1,19 @@
-/* Final overrides to ensure site colors for interactive elements */
-
-/* Force nav link color and remove default blue */
-html body nav.navbar .container .nav-links li a,
-html body .nav-links > li > a {
-    color: #dbeafe !important; /* light slate (adjust as needed) */
-    background: transparent !important;
-    text-decoration: none !important;
+/* Ensure cards have distinct boxes */
+.pillar-card, .feature-card, .article-card, .cofounder-card {
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 2rem !important;
+    border-radius: 18px !important;
 }
 
-html body nav.navbar .container .nav-links li a:hover,
-html body nav.navbar .container .nav-links li a:focus,
-html body nav.navbar .container .nav-links li a:focus-visible {
-    color: #ffffff !important;
-    background: rgba(51,65,85,0.9) !important;
+/* Smaller Noticeable Trademark */
+.footer-copyright {
+    font-size: 0.75rem !important;
+    opacity: 0.8;
+    margin-top: 1rem;
+    color: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
-
-/* Ensure .btn links also use site color */
-.btn,
-button,
-a.btn {
-    color: #0f172a !important;
-    background: #f8fafc !important;
-}
-
-/* Remove default link color for all anchors as a last resort */
-a {
-    color: inherit !important;
-}
-
-/* --- Engaging micro-interactions --- */
-
-/* Nav underline slide */
-.nav-links li a {
-    position: relative !important;
-    padding-bottom: 6px !important;
-}
-.nav-links li a::after {
-    content: "" !important;
-    position: absolute !important;
-    left: 50% !important;
-    bottom: 0 !important;
-    transform: translateX(-50%) scaleX(0) !important;
-    width: 56% !important;
-    height: 2px !important;
-    background: #ffffff !important;
-    transition: transform 260ms cubic-bezier(.2,1,.3,1) !important;
-    transform-origin: center !important;
-    opacity: 0.95 !important;
-}
-.nav-links li a:hover::after,
-.nav-links li a:focus::after,
-.nav-links li a.active::after {
-    transform: translateX(-50%) scaleX(1) !important;
-}
-
-/* Button pulse (very subtle) */
-.btn {
-    animation: btnPulse 6s ease-in-out infinite !important;
-}
-@keyframes btnPulse {
-    0%,100% { box-shadow: 0 2px 8px rgba(30,41,59,0.07); transform: translateY(0); }
-    50% { box-shadow: 0 10px 30px rgba(99,102,241,0.06); transform: translateY(-2px); }
-}
-
-/* Animated subtle orbs over hero (adds depth) */
-.hero::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    pointer-events: none !important;
-    background-image: radial-gradient(circle at 10% 20%, rgba(99,102,241,0.10), transparent 8%),
-                      radial-gradient(circle at 85% 75%, rgba(16,185,129,0.06), transparent 8%);
-    mix-blend-mode: overlay !important;
-    z-index: 0 !important;
-    animation: orbShift 14s linear infinite !important;
-    background-size: 200% 200%, 200% 200% !important;
-}
-@keyframes orbShift {
-    0% { background-position: 0% 0%, 100% 100%; }
-    50% { background-position: 10% 10%, 90% 90%; }
-    100% { background-position: 0% 0%, 100% 100%; }
-}
-
-/* Scroll-down indicator */
-.scroll-indicator {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 22px !important;
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 999px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    text-decoration: none !important;
-    z-index: 4 !important;
-    transition: transform 180ms ease !important;
-}
-.scroll-indicator:hover { transform: translateX(-50%) translateY(-4px) !important; }
-.scroll-indicator .chev {
-    width: 10px !important;
-    height: 10px !important;
-    border-left: 2px solid #fff !important;
-    border-bottom: 2px solid #fff !important;
-    transform: rotate(-45deg) !important;
-    animation: chevBounce 1.6s infinite !important;
-}
-@keyframes chevBounce {
-    0% { transform: translateY(0) rotate(-45deg); }
-    50% { transform: translateY(6px) rotate(-45deg); }
-    100% { transform: translateY(0) rotate(-45deg); }
-}
-
-/* Ensure hero content stays above overlays */
-.hero .container { position: relative; z-index: 2 !important; }
-
-/* Cofounder card styling */
-.cofounder-card {
-    border: 1px solid rgba(15,23,42,0.06);
-    padding: 20px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.02);
-    box-shadow: 0 6px 18px rgba(2,6,23,0.05);
-    text-align: center;
-}
-.cofounder-card h3 { margin-bottom: 6px; }
-.cofounder-card p { color: rgba(2,6,23,0.7); margin: 0; font-weight: 500; }
-
