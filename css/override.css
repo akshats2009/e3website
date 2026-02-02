@@ -1,6 +1,4 @@
 /* Editorial Typography Shift */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-
 h1, h2, .section-header h2, .hero h1, .page-header h1 {
     font-family: 'Instrument Serif', Georgia, serif !important;
     font-weight: 400 !important;
@@ -50,7 +48,7 @@ h2 {
     height: 500px;
     background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
     bottom: -50px;
-    right: -100px;
+    right: -50px;
     animation: drift 25s infinite alternate-reverse ease-in-out;
 }
 
@@ -59,16 +57,16 @@ h2 {
     height: 400px;
     background: radial-gradient(circle, rgba(45, 212, 191, 0.2) 0%, transparent 70%);
     top: 40%;
-    left: 30%;
+    left: 60%;
     animation: drift 18s infinite alternate ease-in-out;
 }
 
 @keyframes drift {
-    from { transform: translate(0, 0); }
-    to { transform: translate(100px, 50px); }
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(100px, 50px) scale(1.1); }
 }
 
-/* Grainy Noise Overlay */
+/* Grainy Noise Texture */
 .noise-overlay {
     position: fixed;
     top: 0;
@@ -79,31 +77,31 @@ h2 {
     pointer-events: none;
     opacity: 0.03;
     background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    filter: contrast(150%) brightness(100%);
 }
 
-/* Ensure cards have distinct boxes */
-.pillar-card, .feature-card, .article-card, .cofounder-card {
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    background: rgba(255, 255, 255, 0.05) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
-    backdrop-filter: blur(10px) !important;
-    padding: 2rem !important;
-    border-radius: 18px !important;
-    transition: all 0.3s ease !important;
+/* Card Improvements - Bento feel */
+.pillar-card, .feature-card, .article-card {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(12px) !important;
+    transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
-    transform: translateY(-5px) !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-8px) scale(1.02) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* Smaller Noticeable Trademark */
-.footer-copyright {
-    font-size: 0.75rem !important;
-    opacity: 0.8;
-    margin-top: 1rem;
-    color: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+/* Smooth Scroll Reveals */
+.fade-up {
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.fade-up.in-view {
+    transform: translateY(0);
+    opacity: 1;
 }

@@ -15,12 +15,19 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/liquid-glass.css">
     <link rel="stylesheet" href="css/override.css">
 </head>
 <body>
+    <div class="noise-overlay"></div>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar main-nav">
         <div class="container">
@@ -38,7 +45,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section (background image with overlay) -->
+    <!-- Hero Section -->
     <section class="hero" style="background-image: url('https://images.unsplash.com/photo-1520975919106-5f3c9f5f0d26?auto=format&fit=crop&w=1400&q=80');">
         <div class="container">
             <h1 class="header-animate">Research for equitable communities</h1>
@@ -48,20 +55,19 @@
         </div>
     </section>
 
-
     <!-- Three Pillars -->
-    <section class="pillars">
+    <section class="pillars" id="pillars">
         <div class="container">
             <div class="pillar-grid">
-                <div class="pillar-card">
+                <div class="pillar-card fade-up">
                     <h3>Equity</h3>
                     <p>Examining fairness in social, economic, and political systems.</p>
                 </div>
-                <div class="pillar-card">
+                <div class="pillar-card fade-up stagger-1">
                     <h3>Economics</h3>
                     <p>Understanding how policy decisions shape opportunity and mobility in underserved communities.</p>
                 </div>
-                <div class="pillar-card">
+                <div class="pillar-card fade-up stagger-2">
                     <h3>Ethnicity</h3>
                     <p>Documenting how ethnic identity influences access to resources and systemic outcomes.</p>
                 </div>
@@ -69,30 +75,15 @@
         </div>
     </section>
 
-
-
     <!-- Latest Research -->
     <section class="content-section">
         <div class="container">
             <h2 class="fade-up">Recent publications</h2>
-            <p id="latestArticlesStatus" aria-live="polite" style="color: rgba(45,42,38,0.5);">Loading...</p>
+            <p id="latestArticlesStatus" aria-live="polite" style="color: rgba(245,240,235,0.5);">Loading...</p>
             <div class="articles-grid" id="latestArticles" data-type="research"></div>
             <p class="fade-up" style="margin-top: 2.5rem;">
                 <a href="research.html" class="btn">View all research</a>
             </p>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="content-section" style="text-align: center; padding: 80px 0;">
-        <div class="container" style="max-width: 400px;">
-            <h2 class="fade-up">Stay updated</h2>
-            <p class="fade-up stagger-1" style="color: rgba(245,240,235,0.5); margin-bottom: 2rem;">Monthly research briefs and community updates.</p>
-            <form class="newsletter-form fade-up stagger-2" id="newsletterForm" style="flex-direction: column; gap: 12px;">
-                <input type="email" id="newsletterEmail" name="email" placeholder="Email address" required style="text-align: center;">
-                <button type="submit">Subscribe</button>
-            </form>
-            <p class="form-status" id="newsletterStatus" aria-live="polite"></p>
         </div>
     </section>
 
