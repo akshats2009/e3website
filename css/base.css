@@ -96,6 +96,38 @@ img {
     letter-spacing: 0.3px;
 }
 
+.logo-branding {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+}
+
+.logo-branding .logo-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #334155;
+    letter-spacing: -0.04em;
+}
+
+/* White logo variant for hero sections */
+.hero .logo-branding .logo-title {
+    color: #fff;
+}
+
+.logo-branding .logo-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-top: 0.15em;
+}
+
+.hero .logo-branding .logo-subtitle {
+    color: #d1d5db;
+}
+
 .nav-links {
     display: flex;
     list-style: none;
