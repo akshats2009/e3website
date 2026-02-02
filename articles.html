@@ -3,15 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e3 Articles</title>
+    <title>Articles | e3 Initiative</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
 </head>
 <body>
-    
-    <!-- Other content of the page -->
+    <!-- Navigation -->
+    <nav class="navbar main-nav">
+        <div class="container">
+            <div class="logo">e3 Initiative</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="articles.html" class="active">Articles</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <footer>
-        <!-- Updated line -->
-        <p class="trademark">Copyright © 2026 e3 Articles. All rights reserved.</p>
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Articles</h1>
+        </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="content-section">
+        <div class="container">
+            <div class="split">
+                <div>
+                    <h2>Perspectives and Community Insights</h2>
+                    <p>Read the latest articles from our team and partners. We cover a range of topics from grassroots organizing to systemic policy analysis.</p>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&w=1200&q=80" alt="Pen and paper on a desk">
+                </div>
+            </div>
+            <p id="articlesStatus" aria-live="polite">Loading articles…</p>
+            <div class="articles-grid" id="articlesGrid" data-type="article"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="logo">e3 Initiative</div>
+                <p class="footer-note">Equity-focused research for community impact.</p>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="research.html">Research</a>
+                <a href="articles.html" class="active">Articles</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-actions">
+                <button class="to-top" type="button" aria-label="Navigate to the top">Back to top ↑</button>
+                <p class="footer-copyright">&copy; 2026 e3 Initiative. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
+    
+    <script src="data/articles.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
