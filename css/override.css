@@ -23,9 +23,9 @@ h2 {
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    filter: blur(100px);
+    filter: blur(80px);
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.4;
 }
 
 .orb {
@@ -37,7 +37,7 @@ h2 {
 .orb-1 {
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, transparent 70%);
     top: -100px;
     left: -100px;
     animation: drift 20s infinite alternate ease-in-out;
@@ -46,7 +46,7 @@ h2 {
 .orb-2 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
     bottom: -50px;
     right: -50px;
     animation: drift 25s infinite alternate-reverse ease-in-out;
@@ -55,7 +55,7 @@ h2 {
 .orb-3 {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(45, 212, 191, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.4) 0%, transparent 70%);
     top: 40%;
     left: 60%;
     animation: drift 18s infinite alternate ease-in-out;
@@ -75,23 +75,23 @@ h2 {
     height: 100%;
     z-index: 9999;
     pointer-events: none;
-    opacity: 0.03;
-    background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.02;
+    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
     filter: contrast(150%) brightness(100%);
 }
 
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(99, 102, 241, 0.15) !important;
+    background: rgba(255, 255, 255, 0.85) !important;
     backdrop-filter: blur(12px) !important;
-    transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease !important;
+    transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: rgba(255, 255, 255, 0.06) !important;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.25) !important;
 }
 
 /* Smooth Scroll Reveals */
