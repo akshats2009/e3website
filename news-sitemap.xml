@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <!-- Recent News Articles -->
+  <url>
+    <loc>https://e3initiative.org/articles/chinatown-solidarity.html</loc>
+    <news:news>
+      <news:publication>
+        <news:name>e3 Initiative</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-02-02</news:publication_date>
+      <news:title>Beyond Restaurants, Boba Cafes, and Souvenir Shops: The Historical and Modern Economic Solidarity of Chinatown</news:title>
+      <news:keywords>Chinatown, economic solidarity, ethnic economy, cultural preservation, community resilience, ethnicity, economics, equity</news:keywords>
+    </news:news>
+  </url>
+</urlset>

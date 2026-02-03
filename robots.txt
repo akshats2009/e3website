@@ -1,0 +1,9 @@
+# robots.txt for e3 Initiative (e3initiative.org)
+# Allow all robots to access all pages
+
+User-agent: *
+Allow: /
+
+# Sitemap locations
+Sitemap: https://e3initiative.org/sitemap.xml
+Sitemap: https://e3initiative.org/news-sitemap.xml
