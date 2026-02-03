@@ -91,6 +91,7 @@
     
     // Load articles for dedicated pages (articlesGrid)
     const gridContainer = document.getElementById('articlesGrid');
+    const gridStatus = document.getElementById('articlesStatus');
     
     if (gridContainer) {
       const type = gridContainer.getAttribute('data-type') || 'all';
@@ -101,8 +102,11 @@
         filtered.forEach(article => {
           gridContainer.appendChild(renderArticleCard(article));
         });
+        // Clear any loading/status text now that we have content
+        if (gridStatus) gridStatus.textContent = '';
       } else {
         gridContainer.innerHTML = '<p style="color: rgba(245,240,235,0.5);">No articles available yet.</p>';
+        if (gridStatus) gridStatus.textContent = 'No articles available yet.';
       }
     }
     
