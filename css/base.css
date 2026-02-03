@@ -350,6 +350,7 @@ img {
     margin-bottom: 1.25rem;
     aspect-ratio: 16 / 9;
     background: #1a1a24;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-media img {
