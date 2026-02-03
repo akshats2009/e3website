@@ -1,6 +1,6 @@
 /* Editorial Typography Shift */
 :root {
-    --noise-texture: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
+    --noise-texture: none;
 }
 
 h1, h2, .section-header h2, .hero h1, .page-header h1 {
@@ -18,84 +18,28 @@ h2 {
     font-size: clamp(2rem, 4vw, 3.5rem) !important;
 }
 
-/* Background Animated Orbs */
+/* Background Animated Orbs - REMOVED for full dark look */
 .bg-orbs {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    overflow: hidden;
-    filter: blur(80px);
-    pointer-events: none;
-    opacity: 0.4;
+    display: none;
 }
 
-.orb {
-    position: absolute;
-    border-radius: 50%;
-    mix-blend-mode: screen;
-}
-
-.orb-1 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.6) 0%, transparent 70%);
-    top: -100px;
-    left: -100px;
-    animation: drift 20s infinite alternate ease-in-out;
-}
-
-.orb-2 {
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
-    bottom: -50px;
-    right: -50px;
-    animation: drift 25s infinite alternate-reverse ease-in-out;
-}
-
-.orb-3 {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(45, 212, 191, 0.4) 0%, transparent 70%);
-    top: 40%;
-    left: 60%;
-    animation: drift 18s infinite alternate ease-in-out;
-}
-
-@keyframes drift {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(100px, 50px) scale(1.1); }
-}
-
-/* Grainy Noise Texture */
+/* Grainy Noise Texture - REMOVED for full dark look */
 .noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.02;
-    background-image: var(--noise-texture);
-    filter: contrast(150%) brightness(100%);
+    display: none;
 }
 
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
-    border: 1px solid rgba(99, 102, 241, 0.25) !important;
-    background: rgba(30, 30, 45, 0.75) !important;
-    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: #12121a !important;
+    backdrop-filter: none !important;
     transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: rgba(40, 40, 60, 0.85) !important;
-    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.35) !important;
+    background: #1a1a24 !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Smooth Scroll Reveals */
@@ -109,7 +53,5 @@ h2 {
     transform: translateY(0);
     opacity: 1;
 }
-
-/* Grain overlay kept */
 
 /* END */
