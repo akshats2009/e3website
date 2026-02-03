@@ -8,6 +8,145 @@
   } catch(e) { /* ignore */ }
 })();
 
+// Article loading and rendering
+(function() {
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function renderArticleCard(article) {
+    const card = document.createElement('div');
+    card.className = 'article-card fade-up clickable-card';
+    
+    // Safely create image element
+    if (article.image) {
+      const mediaDiv = document.createElement('div');
+      mediaDiv.className = 'card-media';
+      const img = document.createElement('img');
+      img.src = article.image;
+      img.alt = article.imageAlt || article.title;
+      img.loading = 'lazy';
+      mediaDiv.appendChild(img);
+      card.appendChild(mediaDiv);
+    }
+    
+    // Safely create content
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'article-content';
+    
+    const dateP = document.createElement('p');
+    dateP.className = 'article-date';
+    dateP.textContent = article.date;
+    
+    const titleH3 = document.createElement('h3');
+    titleH3.textContent = article.title;
+    
+    const summaryP = document.createElement('p');
+    summaryP.textContent = article.summary;
+    
+    const readMoreLink = document.createElement('a');
+    readMoreLink.href = article.link;
+    readMoreLink.className = 'read-more';
+    readMoreLink.textContent = 'Read more →';
+    
+    contentDiv.appendChild(dateP);
+    contentDiv.appendChild(titleH3);
+    contentDiv.appendChild(summaryP);
+    contentDiv.appendChild(readMoreLink);
+    
+    card.appendChild(contentDiv);
+    
+    // Make card clickable
+    card.addEventListener('click', function(e) {
+      if (!e.target.closest('a')) {
+        window.location.href = article.link;
+      }
+    });
+    
+    return card;
+  }
+
+  function loadArticles() {
+    // Load articles for homepage (latestArticles)
+    const latestContainer = document.getElementById('latestArticles');
+    const latestStatus = document.getElementById('latestArticlesStatus');
+    
+    if (latestContainer) {
+      const type = latestContainer.getAttribute('data-type') || 'all';
+      const articles = window.articlesData || [];
+      // For homepage, show all recent publications (both research and articles)
+      const filtered = type === 'all' ? articles.slice(0, 3) : articles.filter(a => a.type === type).slice(0, 3);
+      
+      if (filtered.length > 0) {
+        filtered.forEach(article => {
+          latestContainer.appendChild(renderArticleCard(article));
+        });
+        if (latestStatus) latestStatus.textContent = '';
+      } else {
+        if (latestStatus) latestStatus.textContent = 'No articles available yet.';
+      }
+    }
+    
+    // Load articles for dedicated pages (articlesGrid)
+    const gridContainer = document.getElementById('articlesGrid');
+    
+    if (gridContainer) {
+      const type = gridContainer.getAttribute('data-type') || 'all';
+      const articles = window.articlesData || [];
+      const filtered = type === 'all' ? articles : articles.filter(a => a.type === type);
+      
+      if (filtered.length > 0) {
+        filtered.forEach(article => {
+          gridContainer.appendChild(renderArticleCard(article));
+        });
+      } else {
+        gridContainer.innerHTML = '<p style="color: rgba(245,240,235,0.5);">No articles available yet.</p>';
+      }
+    }
+    
+    // Trigger fade-up animations
+    setTimeout(observeFadeUps, 100);
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      loadArticles();
+      observeFadeUps();
+    });
+  } else {
+    loadArticles();
+    observeFadeUps();
+  }
+})();
+
+// Fade-up animation observer
+function observeFadeUps() {
+  const elements = document.querySelectorAll('.fade-up');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  elements.forEach(el => observer.observe(el));
+}
+
+// Back to top button functionality
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.to-top')) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+
 // Appended: copy-to-clipboard for citations and small UX feedback
 (function(){
   function copyText(text){
