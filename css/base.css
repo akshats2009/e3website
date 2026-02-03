@@ -140,11 +140,6 @@ img {
     padding: 0.35rem 0.6rem;
     border-radius: 999px;
     color: #d1d5db !important;
-}
-
-.nav-links > li > a {
-    color: #d1d5db !important;
-}
     font-weight: 500;
     font-family: inherit;
 }
@@ -153,7 +148,6 @@ img {
     color: #fff !important;
     background: rgba(99, 102, 241, 0.5) !important;
     outline: none;
-}
 }
 
 .nav-links a:focus-visible {
@@ -214,7 +208,6 @@ img {
     box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
     outline: none;
     transform: translateY(-3px) scale(1.03);
-}
 }
 
 /* Sections */

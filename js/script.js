@@ -8,6 +8,116 @@
   } catch(e) { /* ignore */ }
 })();
 
+// Article loading and rendering
+(function() {
+  function renderArticleCard(article) {
+    const card = document.createElement('div');
+    card.className = 'article-card fade-up clickable-card';
+    
+    const image = article.image ? `<div class="card-media"><img src="${article.image}" alt="${article.imageAlt || article.title}" loading="lazy"></div>` : '';
+    
+    card.innerHTML = `
+      ${image}
+      <div class="article-content">
+        <p class="article-date">${article.date}</p>
+        <h3>${article.title}</h3>
+        <p>${article.summary}</p>
+        <a href="${article.link}" class="read-more" style="color: #8b5cf6;">Read more →</a>
+      </div>
+    `;
+    
+    // Make card clickable
+    card.addEventListener('click', function(e) {
+      if (!e.target.closest('a')) {
+        window.location.href = article.link;
+      }
+    });
+    
+    return card;
+  }
+
+  function loadArticles() {
+    // Load articles for homepage (latestArticles)
+    const latestContainer = document.getElementById('latestArticles');
+    const latestStatus = document.getElementById('latestArticlesStatus');
+    
+    if (latestContainer) {
+      const type = latestContainer.getAttribute('data-type') || 'all';
+      const articles = window.articlesData || [];
+      // For homepage, show all recent publications (both research and articles)
+      const filtered = type === 'all' ? articles.slice(0, 3) : articles.filter(a => a.type === type).slice(0, 3);
+      
+      if (filtered.length > 0) {
+        filtered.forEach(article => {
+          latestContainer.appendChild(renderArticleCard(article));
+        });
+        if (latestStatus) latestStatus.textContent = '';
+      } else {
+        if (latestStatus) latestStatus.textContent = 'No articles available yet.';
+      }
+    }
+    
+    // Load articles for dedicated pages (articlesGrid)
+    const gridContainer = document.getElementById('articlesGrid');
+    
+    if (gridContainer) {
+      const type = gridContainer.getAttribute('data-type') || 'all';
+      const articles = window.articlesData || [];
+      const filtered = type === 'all' ? articles : articles.filter(a => a.type === type);
+      
+      if (filtered.length > 0) {
+        filtered.forEach(article => {
+          gridContainer.appendChild(renderArticleCard(article));
+        });
+      } else {
+        gridContainer.innerHTML = '<p style="color: rgba(245,240,235,0.5);">No articles available yet.</p>';
+      }
+    }
+    
+    // Trigger fade-up animations
+    setTimeout(observeFadeUps, 100);
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadArticles);
+  } else {
+    loadArticles();
+  }
+})();
+
+// Fade-up animation observer
+function observeFadeUps() {
+  const elements = document.querySelectorAll('.fade-up');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  elements.forEach(el => observer.observe(el));
+}
+
+// Initialize fade-ups on page load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', observeFadeUps);
+} else {
+  observeFadeUps();
+}
+
+// Back to top button functionality
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.to-top')) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+});
+
 // Appended: copy-to-clipboard for citations and small UX feedback
 (function(){
   function copyText(text){
