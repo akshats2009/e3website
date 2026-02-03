@@ -387,6 +387,7 @@ img {
 .read-more {
     text-decoration: none;
     font-weight: 600;
+    color: #8b5cf6;
 }
 
 .read-more:hover {

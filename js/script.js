@@ -10,21 +10,53 @@
 
 // Article loading and rendering
 (function() {
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   function renderArticleCard(article) {
     const card = document.createElement('div');
     card.className = 'article-card fade-up clickable-card';
     
-    const image = article.image ? `<div class="card-media"><img src="${article.image}" alt="${article.imageAlt || article.title}" loading="lazy"></div>` : '';
+    // Safely create image element
+    if (article.image) {
+      const mediaDiv = document.createElement('div');
+      mediaDiv.className = 'card-media';
+      const img = document.createElement('img');
+      img.src = article.image;
+      img.alt = article.imageAlt || article.title;
+      img.loading = 'lazy';
+      mediaDiv.appendChild(img);
+      card.appendChild(mediaDiv);
+    }
     
-    card.innerHTML = `
-      ${image}
-      <div class="article-content">
-        <p class="article-date">${article.date}</p>
-        <h3>${article.title}</h3>
-        <p>${article.summary}</p>
-        <a href="${article.link}" class="read-more" style="color: #8b5cf6;">Read more →</a>
-      </div>
-    `;
+    // Safely create content
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'article-content';
+    
+    const dateP = document.createElement('p');
+    dateP.className = 'article-date';
+    dateP.textContent = article.date;
+    
+    const titleH3 = document.createElement('h3');
+    titleH3.textContent = article.title;
+    
+    const summaryP = document.createElement('p');
+    summaryP.textContent = article.summary;
+    
+    const readMoreLink = document.createElement('a');
+    readMoreLink.href = article.link;
+    readMoreLink.className = 'read-more';
+    readMoreLink.textContent = 'Read more →';
+    
+    contentDiv.appendChild(dateP);
+    contentDiv.appendChild(titleH3);
+    contentDiv.appendChild(summaryP);
+    contentDiv.appendChild(readMoreLink);
+    
+    card.appendChild(contentDiv);
     
     // Make card clickable
     card.addEventListener('click', function(e) {
@@ -80,9 +112,13 @@
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadArticles);
+    document.addEventListener('DOMContentLoaded', function() {
+      loadArticles();
+      observeFadeUps();
+    });
   } else {
     loadArticles();
+    observeFadeUps();
   }
 })();
 
@@ -102,13 +138,6 @@ function observeFadeUps() {
   });
   
   elements.forEach(el => observer.observe(el));
-}
-
-// Initialize fade-ups on page load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', observeFadeUps);
-} else {
-  observeFadeUps();
 }
 
 // Back to top button functionality
