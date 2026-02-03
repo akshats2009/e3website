@@ -86,16 +86,16 @@ h2 {
 
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
-    border: 1px solid rgba(99, 102, 241, 0.15) !important;
-    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(99, 102, 241, 0.25) !important;
+    background: rgba(30, 30, 45, 0.75) !important;
     backdrop-filter: blur(12px) !important;
     transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.25) !important;
+    background: rgba(40, 40, 60, 0.85) !important;
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.35) !important;
 }
 
 /* Smooth Scroll Reveals */
