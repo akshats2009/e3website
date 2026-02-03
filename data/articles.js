@@ -6,6 +6,6 @@ window.articlesData = [
     "image": "https://github.com/user-attachments/assets/758362d2-8f68-466d-9781-a75727917719",
     "imageAlt": "Chinatown gateway at dusk",
     "link": "articles/chinatown-solidarity.html",
-    "type": "research"
+    "type": "article"
   }
 ];
