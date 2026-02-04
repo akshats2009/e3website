@@ -195,7 +195,7 @@ img {
     font-weight: 600;
     background: #000000 !important;
     color: #fff !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
     border: 1px solid #ffffff;
     font-family: inherit;
     letter-spacing: -0.01em;
@@ -475,7 +475,7 @@ img {
     color: #fff;
     border: 1px solid #ffffff;
     font-weight: 600;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
 }
 
