@@ -145,7 +145,7 @@ img {
 
 .nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active {
     color: #fff !important;
-    background: #000000 !important;
+    background: #1a1a1a !important;
     outline: none;
 }
 
@@ -202,7 +202,7 @@ img {
 }
 
 .btn:hover, .btn:focus-visible {
-    background: #000000 !important;
+    background: #1a1a1a !important;
     color: #fff !important;
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
     outline: none;
@@ -480,7 +480,7 @@ img {
 }
 
 .submit-btn:hover {
-    background: #000000;
+    background: #1a1a1a;
     box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
     transform: translateY(-3px) scale(1.03);
 }
@@ -535,7 +535,7 @@ footer {
 }
 
 .to-top:hover {
-    background: #000000;
+    background: #1a1a1a;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
@@ -553,7 +553,7 @@ footer {
 }
 
 .scroll-indicator:hover {
-    background: #000000;
+    background: #1a1a1a;
     border-color: rgba(255, 255, 255, 0.6);
     transform: translateY(-4px);
 }

@@ -28,7 +28,7 @@ h2 {
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: #000000 !important;
+    background: #1a1a1a !important;
     box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1) !important;
 }
 
