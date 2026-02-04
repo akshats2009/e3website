@@ -31,14 +31,14 @@ h2 {
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: #12121a !important;
+    background: #000000 !important;
     backdrop-filter: none !important;
     transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: #1a1a24 !important;
+    background: #000000 !important;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
 }
 
