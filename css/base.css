@@ -548,7 +548,7 @@ footer {
 }
 
 .scroll-indicator:hover {
-    background: #000000;
+    background: #0a0a0a;
     border-color: rgba(99, 102, 241, 0.6);
     transform: translateY(-4px);
 }
