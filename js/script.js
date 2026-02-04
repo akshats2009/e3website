@@ -4,7 +4,7 @@
 if (isResearchTypeContent) {
     statusMessage = "No research papers available yet";
 } else {
-    statusMessage = "No articles available yet";
+    statusMessage = "No research papers available yet";
 }
 
 // Other relevant code...
