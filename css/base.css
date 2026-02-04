@@ -37,7 +37,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--text);
-    background: #0a0a0f;
+    background: #000000;
     min-height: 100vh;
 }
 
@@ -78,7 +78,7 @@ img {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(15, 15, 25, 0.85);
+    background: #000000;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
@@ -160,7 +160,7 @@ img {
     text-align: center;
     position: relative;
     overflow: hidden;
-    background: #0f0f18;
+    background: #000000;
     border-radius: 0 0 40px 40px;
     margin-bottom: 60px;
 }
@@ -218,7 +218,7 @@ img {
 }
 
 .pillars {
-    background: #0f0f18;
+    background: #000000;
     border-radius: 30px;
     margin: 40px 20px;
     padding: 80px 0;
@@ -249,8 +249,8 @@ img {
     padding: 2rem;
     border-radius: 20px;
     transition: transform var(--duration), box-shadow var(--duration);
-    background: #0f0f18;
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
@@ -261,7 +261,7 @@ img {
 
 .pillar-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.1);
 }
 
 .pillar-card h3 {
@@ -272,7 +272,7 @@ img {
 .page-header {
     padding: 60px 0;
     text-align: center;
-    background: #0f0f18;
+    background: #000000;
     border-radius: 0 0 30px 30px;
     margin-bottom: 40px;
 }
@@ -327,14 +327,14 @@ img {
     padding: 1.5rem;
     border-radius: 18px;
     transition: transform var(--duration) ease, box-shadow var(--duration) ease;
-    background: #0f0f18;
-    border: 1px solid rgba(45, 212, 191, 0.2);
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .feature-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(45, 212, 191, 0.2);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.1);
 }
 
 .split {
@@ -349,7 +349,7 @@ img {
     overflow: hidden;
     margin-bottom: 1.25rem;
     aspect-ratio: 16 / 9;
-    background: #1a1a24;
+    background: #000000;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -364,9 +364,9 @@ img {
     border-radius: 18px;
     overflow: hidden;
     transition: transform var(--duration), box-shadow var(--duration);
-    background: #0f0f18;
+    background: #000000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(168, 85, 247, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .article-card.clickable-card {
@@ -375,7 +375,7 @@ img {
 
 .article-card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(168, 85, 247, 0.2);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.1);
 }
 
 .article-card .article-content {
@@ -448,8 +448,8 @@ img {
     border-radius: 14px;
     font-family: inherit;
     font-size: 1rem;
-    border: 2px solid rgba(99, 102, 241, 0.3);
-    background: #0f0f18;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: #000000;
     color: #f5f0eb;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
@@ -457,8 +457,8 @@ img {
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: rgba(99, 102, 241, 0.5);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
 }
 
 .form-group textarea {
@@ -490,8 +490,8 @@ footer {
     text-align: center;
     padding: 3rem 0;
     margin-top: 2rem;
-    background: rgba(15, 15, 25, 0.8);
-    border-top: 1px solid rgba(99, 102, 241, 0.2);
+    background: #000000;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-content {
@@ -527,17 +527,17 @@ footer {
     border-radius: 999px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    background: rgba(99, 102, 241, 0.2);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #d1d5db;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .to-top:hover {
-    background: rgba(99, 102, 241, 0.3);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
 }
 
 /* Scroll Indicator */
@@ -546,15 +546,15 @@ footer {
     margin-top: 2rem;
     padding: 0.75rem;
     border-radius: 50%;
-    background: rgba(30, 30, 45, 0.8);
-    border: 2px solid rgba(99, 102, 241, 0.4);
+    background: #000000;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
     animation: bounce 2s infinite;
 }
 
 .scroll-indicator:hover {
-    background: rgba(40, 40, 60, 0.9);
-    border-color: rgba(99, 102, 241, 0.6);
+    background: #000000;
+    border-color: rgba(255, 255, 255, 0.4);
     transform: translateY(-4px);
 }
 
@@ -562,8 +562,8 @@ footer {
     display: block;
     width: 10px;
     height: 10px;
-    border-right: 2px solid #6366f1;
-    border-bottom: 2px solid #6366f1;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
     transform: rotate(45deg);
 }
 
