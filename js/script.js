@@ -91,7 +91,7 @@ function populateGrids() {
         if (articles.length === 0) {
             if (statusEl) {
                 statusEl.textContent = isResearchContext
-                    ? 'No research papers available yet'
+                    ? 'No research papers are available yet'
                     : 'No articles available yet';
                 statusEl.style.display = '';
             }
