@@ -25,7 +25,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-JJDGPY8QCB');
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,14 +46,8 @@
       "description": "The e3 Initiative conducts research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.",
       "foundingDate": "2026",
       "founder": [
-        {
-          "@type": "Person",
-          "name": "Akshat Sawner"
-        },
-        {
-          "@type": "Person",
-          "name": "Minghao Gu"
-        }
+        { "@type": "Person", "name": "Akshat Sawner" },
+        { "@type": "Person", "name": "Minghao Gu" }
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -64,6 +57,12 @@
       "sameAs": []
     }
     </script>
+
+    <style>
+        /* Ensure content is always visible — JS scroll animations are a progressive enhancement */
+        .fade-up { opacity: 1 !important; transform: none !important; }
+        .header-animate { opacity: 1 !important; transform: none !important; animation: none !important; }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -87,8 +86,8 @@
     <section class="hero">
         <div class="container">
             <h1 class="header-animate">Research for equitable communities</h1>
-            <p class="subtitle fade-up stagger-2">We study the intersection of equity, economics, and ethnicity to inform policy and empower local change.</p>
-            <a href="research.html" class="btn fade-up stagger-3">Explore research</a>
+            <p class="subtitle">We study the intersection of equity, economics, and ethnicity to inform policy and empower local change.</p>
+            <a href="research.html" class="btn">Explore research</a>
             <a href="#pillars" class="scroll-indicator" aria-label="Scroll to sections"><span class="chev"></span></a>
         </div>
     </section>
@@ -97,15 +96,15 @@
     <section class="pillars" id="pillars">
         <div class="container">
             <div class="pillar-grid">
-                <div class="pillar-card fade-up">
+                <div class="pillar-card">
                     <h3>Equity</h3>
                     <p>Promoting fairness and justice in economic systems and social policy.</p>
                 </div>
-                <div class="pillar-card fade-up delay-1">
+                <div class="pillar-card">
                     <h3>Economics</h3>
                     <p>Analyzing wealth distribution, labor markets, and community investment models.</p>
                 </div>
-                <div class="pillar-card fade-up delay-2">
+                <div class="pillar-card">
                     <h3>Ethnicity</h3>
                     <p>Understanding the unique experiences and cultural wealth of diverse communities.</p>
                 </div>
@@ -131,7 +130,7 @@
     <!-- Mission Statement -->
     <section class="mission">
         <div class="container">
-            <div class="liquid-glass fade-up">
+            <div class="liquid-glass">
                 <h2>Our Mission</h2>
                 <p>To provide rigorous, community-centered research that bridges the gap between lived experience and policy decisions, fostering a more equitable world for all ethnicities and economic backgrounds.</p>
             </div>
