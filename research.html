@@ -54,7 +54,9 @@
     <!-- Research Content -->
     <section class="content-section">
         <div class="container">
-            <p>Browse our latest research papers, reports, and briefs. Each publication includes clear summaries and next steps</p>
+            <p>Browse our latest research papers, reports, and briefs. Each publication includes clear summaries and next steps to support community leaders and decision-makers.</p>
+            <p id="latestArticlesStatus" aria-live="polite">Loading research papers…</p>
+            <div class="articles-grid" id="latestArticles" data-type="research"></div>
         </div>
     </section>
 
@@ -79,6 +81,7 @@
         </div>
     </footer>
 
+    <script src="data/articles.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
