@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research | e3 Initiative - Policy Briefs and Reports</title>
-    <meta name="description" content="Browse our latest research papers, reports, and briefs examining equity, economics, and ethnicity. Evidence-based resources for decision-makers and community leaders.">
+    <title>Research | e3 Initiative - Papers, Reports, and Briefs</title>
+    <meta name="description" content="Browse the latest research papers, reports, and briefs from the e3 Initiative covering equity, economics, and ethnicity with clear summaries and next steps.">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Research | e3 Initiative - Policy Briefs and Reports">
-    <meta property="og:description" content="Browse our latest research papers, reports, and briefs examining equity, economics, and ethnicity. Evidence-based resources for decision-makers and community leaders.">
+    <meta property="og:title" content="Research | e3 Initiative - Papers, Reports, and Briefs">
+    <meta property="og:description" content="Browse the latest research papers, reports, and briefs from the e3 Initiative covering equity, economics, and ethnicity with clear summaries and next steps.">
     <meta property="og:image" content="https://e3initiative.org/logo.png">
     <meta property="og:url" content="https://e3initiative.org/research.html">
     <meta property="og:type" content="website">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Research | e3 Initiative - Policy Briefs and Reports">
-    <meta name="twitter:description" content="Browse our latest research papers, reports, and briefs examining equity, economics, and ethnicity. Evidence-based resources for decision-makers and community leaders.">
+    <meta name="twitter:title" content="Research | e3 Initiative - Papers, Reports, and Briefs">
+    <meta name="twitter:description" content="Browse the latest research papers, reports, and briefs from the e3 Initiative covering equity, economics, and ethnicity with clear summaries and next steps.">
     <meta name="twitter:image" content="https://e3initiative.org/logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,50 +47,16 @@
     <!-- Page Header -->
     <section class="page-header">
         <div class="container">
-            <h1>Research & Reports</h1>
-            <p class="subtitle" style="margin-top: 1rem; color: var(--text-secondary);">Browse our latest research papers, reports, and briefs. Each publication includes clear summaries and next steps to support community leaders and decision-makers.</p>
+            <h1>Research</h1>
         </div>
     </section>
 
-    <!-- Research Library -->
+    <!-- Research Content -->
     <section class="content-section">
         <div class="container">
-            <div class="filters-container">
-                <div class="filter-group">
-                    <label for="topicFilter">Topic</label>
-                    <select id="topicFilter">
-                        <option value="all">All Topics</option>
-                        <option value="equity">Equity</option>
-                        <option value="economics">Economics</option>
-                        <option value="ethnicity">Ethnicity</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="typeFilter">Format</label>
-                    <select id="typeFilter">
-                        <option value="all">All Formats</option>
-                        <option value="report">Research Reports</option>
-                        <option value="brief">Policy Briefs</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <label for="yearFilter">Year</label>
-                    <select id="yearFilter">
-                        <option value="all">All Years</option>
-                        <option value="2026">2026</option>
-                        <option value="2025">2025</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Dynamic grid populated by JS -->
-            <p id="researchStatus" aria-live="polite">Loading research library…</p>
-            <div class="articles-grid" id="researchGrid" data-type="research"></div>
-            
-            <div id="noResults" class="empty-state" style="display: none;">
-                <p>No research papers are available yet matching your selected filters. Please adjust your criteria and try again.</p>
-                <button class="btn btn-secondary mt-4" id="resetFilters">Clear filters</button>
-            </div>
+            <p>Browse our latest research papers, reports, and briefs. Each publication includes clear summaries and next steps to support community leaders and decision-makers.</p>
+            <p id="latestArticlesStatus" aria-live="polite">Loading research papers…</p>
+            <div class="articles-grid" id="latestArticles" data-type="research"></div>
         </div>
     </section>
 
@@ -115,7 +81,6 @@
         </div>
     </footer>
 
-    <!-- Load data first, then logic -->
     <script src="data/articles.js"></script>
     <script src="js/script.js"></script>
 </body>
