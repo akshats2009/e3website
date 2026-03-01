@@ -302,10 +302,46 @@ img {
 .content-section h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    font-weight: 700 !important;
     letter-spacing: -0.04em;
     color: #ffffff !important;
+}
+
+/* Team Section */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.team-card {
+    padding: 2rem;
+    border-radius: 18px;
+    background: #000000;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.team-card h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.team-role {
+    font-size: 0.9rem;
+    color: #a8a8b3;
+    margin-bottom: 1rem;
+}
+
+.team-bio {
+    color: #d1d5db;
+    line-height: 1.7;
+}
+
+.mt-section {
+    margin-top: 2rem;
 }
 
 /* Grids */
