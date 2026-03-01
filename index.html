@@ -3,28 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | e3 Initiative - Ethnicity, Economics & Equity Research</title>
-    <meta name="description" content="The e3 Initiative is a student-led research initiative advancing understanding at the intersection of equity, economics, and ethnicity to empower communities.">
-
+    <title>e3 Initiative | 2026 Research on Equity, Economics, and Ethnicity</title>
+    <meta name="description" content="The e3 Initiative conducts 2026 research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.">
+    
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Home | e3 Initiative - Ethnicity, Economics & Equity Research">
-    <meta property="og:description" content="The e3 Initiative is a student-led research initiative advancing understanding at the intersection of equity, economics, and ethnicity to empower communities.">
+    <meta property="og:title" content="e3 Initiative | 2026 Research on Equity, Economics, and Ethnicity">
+    <meta property="og:description" content="The e3 Initiative conducts 2026 research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.">
     <meta property="og:image" content="https://e3initiative.org/logo.png">
-    <meta property="og:url" content="https://e3initiative.org/index.html">
+    <meta property="og:url" content="https://e3initiative.org/">
     <meta property="og:type" content="website">
-
+    
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Home | e3 Initiative - Ethnicity, Economics & Equity Research">
-    <meta name="twitter:description" content="The e3 Initiative is a student-led research initiative advancing understanding at the intersection of equity, economics, and ethnicity to empower communities.">
+    <meta name="twitter:title" content="e3 Initiative | 2026 Research on Equity, Economics, and Ethnicity">
+    <meta name="twitter:description" content="The e3 Initiative conducts 2026 research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.">
     <meta name="twitter:image" content="https://e3initiative.org/logo.png">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJDGPY8QCB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-JJDGPY8QCB');
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/liquid-glass.css">
     <link rel="stylesheet" href="css/override.css">
+    
+    <!-- Schema.org Organization Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "e3 Initiative",
+      "alternateName": "e3 - Equity, Economics, and Ethnicity Initiative",
+      "url": "https://e3initiative.org/",
+      "logo": "https://e3initiative.org/logo.png",
+      "description": "The e3 Initiative conducts research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.",
+      "foundingDate": "2026",
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Akshat Sawner"
+        },
+        {
+          "@type": "Person",
+          "name": "Minghao Gu"
+        }
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "General Inquiries",
+        "url": "https://e3initiative.org/contact.html"
+      },
+      "sameAs": []
+    }
+    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -44,64 +83,67 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="page-header">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <h1>e3 Initiative</h1>
+            <h1 class="header-animate">Research for equitable communities</h1>
+            <p class="subtitle fade-up stagger-2">We study the intersection of equity, economics, and ethnicity to inform policy and empower local change.</p>
+            <a href="research.html" class="btn fade-up stagger-3">Explore research</a>
+            <a href="#pillars" class="scroll-indicator" aria-label="Scroll to sections"><span class="chev"></span></a>
         </div>
     </section>
 
-    <section id="research" class="content-section">
+    <!-- Three Pillars -->
+    <section class="pillars" id="pillars">
         <div class="container">
-            <h2>Research for equitable communities</h2>
-            <p>We study the intersection of equity, ethnicity, and economics to elevate voices and empower local change.</p>
-        </div>
-    </section>
-
-    <section id="mission" class="content-section">
-        <div class="container">
-            <h2>Our Mission</h2>
-            <p>
-                To provide rigorous, community-centered research that bridges the gap between lived experiences and policy decisions, fostering a more equitable world for all ethnicities and economic backgrounds.
-            </p>
-        </div>
-    </section>
-
-    <section id="focus-areas" class="content-section">
-        <div class="container">
-            <div id="equity">
-                <h3>Equity</h3>
-                <p>Focusing on fair treatment and opportunity.</p>
-            </div>
-            <div id="economics">
-                <h3>Economics</h3>
-                <p>Analyzing economic systems and impacts.</p>
-            </div>
-            <div id="ethnicity">
-                <h3>Ethnicity</h3>
-                <p>Understanding diverse cultural and ethnic experiences.</p>
+            <div class="pillar-grid">
+                <div class="pillar-card fade-up">
+                    <h3>Equity</h3>
+                    <p>Promoting fairness and justice in economic systems and social policy.</p>
+                </div>
+                <div class="pillar-card fade-up delay-1">
+                    <h3>Economics</h3>
+                    <p>Analyzing wealth distribution, labor markets, and community investment models.</p>
+                </div>
+                <div class="pillar-card fade-up delay-2">
+                    <h3>Ethnicity</h3>
+                    <p>Understanding the unique experiences and cultural wealth of diverse communities.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="recent-publications" class="content-section">
+    <!-- Recent Publications -->
+    <section class="content-section">
         <div class="container">
-            <h2>Recent Publications</h2>
-            <p>
-                Latest insights from our editorial team and community partners.
-            </p>
+            <div class="section-header">
+                <h2>Recent publications</h2>
+                <p>Latest insights from our research team and community partners.</p>
+            </div>
+            <p id="latestArticlesStatus" aria-live="polite">Loading publications…</p>
+            <div class="articles-grid" id="latestArticles" data-type="all"></div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="articles.html" class="btn">View all articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="mission">
+        <div class="container">
+            <div class="liquid-glass fade-up">
+                <h2>Our Mission</h2>
+                <p>To provide rigorous, community-centered research that bridges the gap between lived experience and policy decisions, fostering a more equitable world for all ethnicities and economic backgrounds.</p>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="main-footer">
+    <footer>
         <div class="container footer-content">
-            <div>
-                <div class="logo">e3 Initiative</div>
-                <p class="footer-note">Equity-focused research for community impact.</p>
-            </div>
+            <div class="logo">e3 Initiative</div>
             <div class="footer-nav">
-                <a href="index.html" class="active">Home</a>
+                <a href="index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="research.html">Research</a>
                 <a href="articles.html">Articles</a>
@@ -114,6 +156,7 @@
         </div>
     </footer>
 
+    <script src="data/articles.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
