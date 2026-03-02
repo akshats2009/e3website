@@ -172,6 +172,14 @@ img {
     margin-bottom: 60px;
 }
 
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
 .hero .container {
     position: relative;
     z-index: 1;
