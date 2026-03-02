@@ -4,6 +4,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap locations
+# Sitemap location
 Sitemap: https://e3initiative.org/sitemap.xml
-Sitemap: https://e3initiative.org/news-sitemap.xml

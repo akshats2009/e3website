@@ -330,6 +330,10 @@ img {
     color: #fff;
 }
 
+.page-header-image .article-meta {
+    color: rgba(255, 255, 255, 0.85);
+}
+
 .article-meta {
     margin-top: 0.75rem;
     font-size: 1rem;
