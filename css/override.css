@@ -4,8 +4,8 @@
 }
 
 h1, h2, .section-header h2, .hero h1, .page-header h1 {
-    font-family: 'Instrument Serif', Georgia, serif !important;
-    font-weight: 400 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 700 !important;
     letter-spacing: -0.01em !important;
     line-height: 1.1 !important;
 }
@@ -77,59 +77,5 @@ html.light-mode .article-card:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Subtle glow effect for text on hero */
-.hero h1 {
-    animation: fadeInDown 0.8s ease-out !important;
-}
-
-.hero .subtitle {
-    animation: fadeInUp 0.8s ease-out 0.2s both !important;
-}
-
-.hero .btn {
-    animation: fadeInUp 0.8s ease-out 0.4s both !important;
-}
-
-/* Keyframe animations */
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Link hover glow effect */
-.nav-links a {
-    position: relative;
-    transition: color 0.3s ease !important;
-}
-
-.nav-links a:hover::after {
-    animation: underlineGrow 0.4s ease-out forwards;
-}
-
-@keyframes underlineGrow {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
-}
 
 /* END */

@@ -748,10 +748,14 @@ html.light-mode .submit-btn {
 }
 
 .citations-glass {
-    background: #0a0a0a;
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 20px;
     padding: 2rem;
+}
+
+html.light-mode .citations-glass {
+    border-color: rgba(0, 0, 0, 0.12);
 }
 
 .citations-list {
@@ -764,13 +768,21 @@ html.light-mode .submit-btn {
 .citation-card {
     padding: 1.25rem 1.5rem;
     border-radius: 14px;
-    background: #000;
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: border-color 0.3s ease;
 }
 
+html.light-mode .citation-card {
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
 .citation-card:hover {
     border-color: rgba(255, 255, 255, 0.25);
+}
+
+html.light-mode .citation-card:hover {
+    border-color: rgba(0, 0, 0, 0.25);
 }
 
 .citation-main {
@@ -807,7 +819,7 @@ html.light-mode .submit-btn {
 
 .citation-link {
     font-size: 0.8rem;
-    color: #94a3b8;
+    color: var(--muted);
     text-decoration: none;
     padding: 0.3rem 0.75rem;
     border-radius: 999px;
@@ -815,15 +827,24 @@ html.light-mode .submit-btn {
     transition: all 0.2s ease;
 }
 
+html.light-mode .citation-link {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
 .citation-link:hover {
-    color: #fff;
+    color: var(--text);
     border-color: rgba(255, 255, 255, 0.4);
     background: rgba(255, 255, 255, 0.05);
 }
 
+html.light-mode .citation-link:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.05);
+}
+
 .copy-citation {
     font-size: 0.8rem;
-    color: #94a3b8;
+    color: var(--muted);
     background: transparent;
     padding: 0.3rem 0.75rem;
     border-radius: 999px;
@@ -833,16 +854,25 @@ html.light-mode .submit-btn {
     font-family: inherit;
 }
 
+html.light-mode .copy-citation {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
 .copy-citation:hover {
-    color: #fff;
+    color: var(--text);
     border-color: rgba(255, 255, 255, 0.4);
     background: rgba(255, 255, 255, 0.05);
+}
+
+html.light-mode .copy-citation:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .citation-details {
     margin-top: 0.5rem;
     font-size: 0.8rem;
-    color: #64748b;
+    color: var(--muted);
 }
 
 /* Footer */
