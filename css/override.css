@@ -21,15 +21,28 @@ h2 {
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: #000000 !important;
+    background: var(--bg) !important;
     backdrop-filter: none !important;
     transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
+html.light-mode .pillar-card,
+html.light-mode .feature-card,
+html.light-mode .article-card {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
     transform: translateY(-8px) scale(1.02) !important;
-    background: #1a1a1a !important;
+    background: rgba(0, 0, 0, 0.1) !important;
     box-shadow: 0 20px 60px rgba(255, 255, 255, 0.1) !important;
+}
+
+html.light-mode .pillar-card:hover,
+html.light-mode .feature-card:hover,
+html.light-mode .article-card:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Smooth Scroll Reveals */

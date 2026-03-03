@@ -115,13 +115,13 @@ img {
     font-family: 'Inter', sans-serif;
     font-weight: 900;
     font-size: 1.5rem;
-    color: #ffffff;
+    color: var(--text);
     letter-spacing: -0.04em;
 }
 
 /* White logo variant for hero sections */
 .hero .logo-branding .logo-title {
-    color: #fff;
+    color: var(--text);
 }
 
 .logo-branding .logo-subtitle {
@@ -229,12 +229,16 @@ html.light-mode .theme-toggle:focus-visible {
     border-radius: 999px;
     transition: background var(--duration), color var(--duration), transform var(--duration), box-shadow var(--duration);
     font-weight: 600;
-    background: #000000 !important;
-    color: #fff !important;
+    background: var(--bg) !important;
+    color: var(--text) !important;
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-    border: 1px solid #ffffff;
+    border: 1px solid var(--text);
     font-family: inherit;
     letter-spacing: -0.01em;
+}
+
+html.light-mode .btn {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover, .btn:focus-visible {
@@ -322,6 +326,7 @@ html.light-mode .pillar-card {
 
 .page-header h1 {
     font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--text);
 }
 
 /* Page header with image banner (e.g. research.html) */
@@ -356,7 +361,7 @@ html.light-mode .pillar-card {
 }
 
 .page-header-image h1 {
-    color: #fff;
+    color: #ffffff;
 }
 
 .page-header-image .article-meta {
@@ -385,7 +390,7 @@ html.light-mode .pillar-card {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     letter-spacing: -0.04em;
-    color: #ffffff !important;
+    color: var(--text) !important;
 }
 
 /* Team Section */
@@ -413,7 +418,7 @@ html.light-mode .team-card {
 .team-card h3 {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 0.25rem;
 }
 
@@ -516,6 +521,10 @@ html.light-mode .article-card {
     box-shadow: 0 12px 40px rgba(255, 255, 255, 0.1);
 }
 
+html.light-mode .article-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+}
+
 .article-card .article-content {
     padding: 1.5rem;
 }
@@ -528,7 +537,7 @@ html.light-mode .article-card {
 .read-more {
     text-decoration: none;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--text);
 }
 
 .read-more:hover {
@@ -614,12 +623,16 @@ html.light-mode .form-group textarea {
     border-radius: 999px;
     font-size: 1rem;
     cursor: pointer;
-    background: #000000;
-    color: #fff;
-    border: 1px solid #ffffff;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--text);
     font-weight: 600;
     box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+}
+
+html.light-mode .submit-btn {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .submit-btn:hover {
@@ -705,7 +718,7 @@ html.light-mode .form-group textarea {
 
 .citation-title {
     font-weight: 600;
-    color: #fff;
+    color: var(--text);
     font-size: 0.95rem;
     display: block;
     margin-bottom: 0.25rem;
@@ -812,11 +825,15 @@ html.light-mode footer {
     border-radius: 999px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    background: #000000;
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #d1d5db;
+    color: var(--muted);
     font-weight: 500;
     transition: all 0.3s ease;
+}
+
+html.light-mode .to-top {
+    border-color: rgba(0, 0, 0, 0.3);
 }
 
 .to-top:hover {
