@@ -25,8 +25,8 @@
 }
 
 html.light-mode {
-    --text: #1a1a1a;
-    --muted: #666666;
+    --text: #000000;
+    --muted: #333333;
     --bg: #ffffff;
 }
 
@@ -128,12 +128,12 @@ img {
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     font-size: 0.95rem;
-    color: #a8a8b3;
+    color: var(--muted);
     margin-top: 0.15em;
 }
 
 .hero .logo-branding .logo-subtitle {
-    color: #d1d5db;
+    color: var(--muted);
 }
 
 .nav-links {
@@ -348,7 +348,7 @@ html.light-mode .pillar-card {
 .page-header-image .overlay {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.48);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .page-header-image .container {
@@ -362,6 +362,10 @@ html.light-mode .pillar-card {
 
 .page-header-image h1 {
     color: #ffffff;
+}
+
+html.light-mode .page-header-image .overlay {
+    background: rgba(0, 0, 0, 0.65);
 }
 
 .page-header-image .article-meta {
@@ -424,7 +428,7 @@ html.light-mode .team-card {
 
 .team-role {
     font-size: 0.9rem;
-    color: #a8a8b3;
+    color: var(--muted);
     margin-bottom: 1rem;
 }
 
@@ -844,10 +848,11 @@ html.light-mode .to-top {
 
 /* Scroll Indicator */
 .scroll-indicator-container {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
     display: flex;
     justify-content: flex-end;
-    margin-top: 2rem;
-    padding-right: 2rem;
 }
 
 .scroll-indicator {
