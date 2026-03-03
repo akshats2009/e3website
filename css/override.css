@@ -57,4 +57,79 @@ html.light-mode .article-card:hover {
     opacity: 1;
 }
 
+/* Stagger animations for card sequences */
+.pillar-card:nth-child(1) { transition-delay: 0s; }
+.pillar-card:nth-child(2) { transition-delay: 0.1s; }
+.pillar-card:nth-child(3) { transition-delay: 0.2s; }
+
+.article-card:nth-child(1) { transition-delay: 0s; }
+.article-card:nth-child(2) { transition-delay: 0.1s; }
+.article-card:nth-child(3) { transition-delay: 0.2s; }
+
+/* Enhanced button animations */
+.btn {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.2, 1, 0.3, 1) !important;
+}
+
+.btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Subtle glow effect for text on hero */
+.hero h1 {
+    animation: fadeInDown 0.8s ease-out !important;
+}
+
+.hero .subtitle {
+    animation: fadeInUp 0.8s ease-out 0.2s both !important;
+}
+
+.hero .btn {
+    animation: fadeInUp 0.8s ease-out 0.4s both !important;
+}
+
+/* Keyframe animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Link hover glow effect */
+.nav-links a {
+    position: relative;
+    transition: color 0.3s ease !important;
+}
+
+.nav-links a:hover::after {
+    animation: underlineGrow 0.4s ease-out forwards;
+}
+
+@keyframes underlineGrow {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
 /* END */

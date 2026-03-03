@@ -188,7 +188,7 @@ img {
     left: 4px;
     top: 2px;
     font-size: 14px;
-    transition: all var(--duration);
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .theme-toggle-label::after {
@@ -200,7 +200,7 @@ img {
     background: #333;
     top: 2px;
     left: 4px;
-    transition: all var(--duration);
+    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .theme-toggle-checkbox:checked + .theme-toggle-label {
@@ -292,7 +292,7 @@ html.light-mode .hero::before {
     padding: 12px 30px;
     text-decoration: none;
     border-radius: 999px;
-    transition: background var(--duration), color var(--duration), transform var(--duration), box-shadow var(--duration);
+    transition: background 0.4s cubic-bezier(0.2, 1, 0.3, 1), color 0.4s ease, transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease;
     font-weight: 600;
     background: var(--bg) !important;
     color: var(--text) !important;
