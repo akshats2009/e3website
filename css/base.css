@@ -195,6 +195,10 @@ html.light-mode .theme-toggle:focus-visible {
     z-index: 0;
 }
 
+html.light-mode .hero::before {
+    background: transparent;
+}
+
 .hero .container {
     position: relative;
     z-index: 1;
