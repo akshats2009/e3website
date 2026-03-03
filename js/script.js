@@ -206,10 +206,36 @@ function applyTheme(theme) {
 }
 
 /* ----------------------------------------------------------
-   7. Bootstrap on DOMContentLoaded
+   7. Settings menu (open/close)
+   ---------------------------------------------------------- */
+function initSettingsMenu() {
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsMenu = document.getElementById('settings-menu');
+    if (!settingsBtn || !settingsMenu) { return; }
+
+    // Toggle menu on button click
+    settingsBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        settingsMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function () {
+        settingsMenu.classList.remove('active');
+    });
+
+    // Prevent menu from closing when clicking inside it
+    settingsMenu.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+}
+
+/* ----------------------------------------------------------
+   8. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
     initThemeSwitcher();
+    initSettingsMenu();
     initScrollAnimations();
     populateGrids();
     initBackToTop();

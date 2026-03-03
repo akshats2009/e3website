@@ -57,10 +57,18 @@
                 <li><a href="research.html" class="active">Research</a></li>
                 <li><a href="articles.html">Articles</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li class="theme-toggle-wrapper">
-                    <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox" aria-label="Toggle dark/light mode">
-                    <label for="theme-toggle" class="theme-toggle-label"></label>
-                    <span class="theme-toggle-label-text">Light</span>
+                <li class="settings-menu-wrapper">
+                    <button id="settings-btn" class="settings-btn" aria-label="Settings">⚙️</button>
+                    <div id="settings-menu" class="settings-menu">
+                        <div class="settings-header">Settings</div>
+                        <div class="settings-item">
+                            <label for="theme-toggle" class="settings-label">Dark Mode</label>
+                            <div class="theme-toggle-wrapper">
+                                <input type="checkbox" id="theme-toggle" class="theme-toggle-checkbox" aria-label="Toggle dark/light mode">
+                                <label for="theme-toggle" class="theme-toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>
