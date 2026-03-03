@@ -238,14 +238,14 @@ html.light-mode .theme-toggle:focus-visible {
 
 /* Hero Section */
 .hero {
-    padding: 120px 0 100px;
+    min-height: 100vh;
     text-align: center;
     position: relative;
     overflow: hidden;
-    background: var(--bg);
-    border-radius: 0 0 40px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 60px;
-    transition: background var(--duration);
 }
 
 .hero::before {
