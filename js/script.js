@@ -174,9 +174,43 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Bootstrap on DOMContentLoaded
+   6. Theme switcher (dark/light mode)
+   ---------------------------------------------------------- */
+function initThemeSwitcher() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) { return; }
+
+    // Load theme preference from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function () {
+        const currentTheme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+}
+
+function applyTheme(theme) {
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('theme-toggle');
+
+    if (theme === 'light') {
+        html.classList.add('light-mode');
+        if (themeToggle) { themeToggle.textContent = '☀️'; }
+    } else {
+        html.classList.remove('light-mode');
+        if (themeToggle) { themeToggle.textContent = '🌙'; }
+    }
+}
+
+/* ----------------------------------------------------------
+   7. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
+    initThemeSwitcher();
     initScrollAnimations();
     populateGrids();
     initBackToTop();

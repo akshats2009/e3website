@@ -21,6 +21,13 @@
     --text: #ffffff;
     --muted: #d1d5db;
     --duration: 0.3s;
+    --bg: #000000;
+}
+
+html.light-mode {
+    --text: #1a1a1a;
+    --muted: #666666;
+    --bg: #ffffff;
 }
 
 * {
@@ -37,8 +44,9 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--text);
-    background: #000000;
+    background: var(--bg);
     min-height: 100vh;
+    transition: background var(--duration), color var(--duration);
 }
 
 img {
@@ -78,9 +86,10 @@ img {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: #000000;
+    background: var(--bg);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    transition: background var(--duration);
 }
 
 .navbar .container {
@@ -133,20 +142,32 @@ img {
     gap: 2rem;
 }
 
-.nav-links a {
+.nav-links a, .theme-toggle {
     text-decoration: none;
     transition: color var(--duration), background var(--duration);
     padding: 0.35rem 0.6rem;
     border-radius: 999px;
-    color: #d1d5db !important;
+    color: var(--muted);
     font-weight: 500;
     font-family: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-.nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active {
-    color: #fff !important;
-    background: #1a1a1a !important;
+.nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active, .theme-toggle:hover, .theme-toggle:focus-visible {
+    color: var(--text) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
     outline: none;
+}
+
+html.light-mode .nav-links a:hover,
+html.light-mode .nav-links a:focus-visible,
+html.light-mode .nav-links a.active,
+html.light-mode .theme-toggle:hover,
+html.light-mode .theme-toggle:focus-visible {
+    background: rgba(0, 0, 0, 0.1) !important;
 }
 
 .nav-links a:focus-visible {
@@ -160,9 +181,10 @@ img {
     text-align: center;
     position: relative;
     overflow: hidden;
-    background: #000000;
+    background: var(--bg);
     border-radius: 0 0 40px 40px;
     margin-bottom: 60px;
+    transition: background var(--duration);
 }
 
 .hero::before {
@@ -232,10 +254,11 @@ img {
 }
 
 .pillars {
-    background: #000000;
+    background: var(--bg);
     border-radius: 30px;
     margin: 40px 20px;
     padding: 80px 0;
+    transition: background var(--duration);
 }
 
 .mission h2,
@@ -262,10 +285,15 @@ img {
 .pillar-card {
     padding: 2rem;
     border-radius: 20px;
-    transition: transform var(--duration), box-shadow var(--duration);
-    background: #000000;
+    transition: transform var(--duration), box-shadow var(--duration), background var(--duration), border-color var(--duration);
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html.light-mode .pillar-card {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .pillar-card .icon {
@@ -286,9 +314,10 @@ img {
 .page-header {
     padding: 60px 0;
     text-align: center;
-    background: #000000;
+    background: var(--bg);
     border-radius: 0 0 30px 30px;
     margin-bottom: 40px;
+    transition: background var(--duration);
 }
 
 .page-header h1 {
@@ -370,9 +399,15 @@ img {
 .team-card {
     padding: 2rem;
     border-radius: 18px;
-    background: #000000;
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: background var(--duration), border-color var(--duration);
+}
+
+html.light-mode .team-card {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .team-card h3 {
@@ -415,10 +450,15 @@ img {
 .feature-card {
     padding: 1.5rem;
     border-radius: 18px;
-    transition: transform var(--duration) ease, box-shadow var(--duration) ease;
-    background: #000000;
+    transition: transform var(--duration) ease, box-shadow var(--duration) ease, background var(--duration), border-color var(--duration);
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html.light-mode .feature-card {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card:hover {
@@ -438,8 +478,12 @@ img {
     overflow: hidden;
     margin-bottom: 1.25rem;
     aspect-ratio: 16 / 9;
-    background: #000000;
+    background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.light-mode .card-media {
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 .card-media img {
@@ -452,10 +496,15 @@ img {
 .article-card {
     border-radius: 18px;
     overflow: hidden;
-    transition: transform var(--duration), box-shadow var(--duration);
-    background: #000000;
+    transition: transform var(--duration), box-shadow var(--duration), background var(--duration), border-color var(--duration);
+    background: var(--bg);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+html.light-mode .article-card {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .article-card.clickable-card {
@@ -538,9 +587,14 @@ img {
     font-family: inherit;
     font-size: 1rem;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    background: #000000;
-    color: #ffffff;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color 0.3s, box-shadow 0.3s, background var(--duration), color var(--duration);
+}
+
+html.light-mode .form-group input,
+html.light-mode .form-group textarea {
+    border-color: rgba(0, 0, 0, 0.3);
 }
 
 .form-group input:focus,
@@ -714,8 +768,13 @@ footer {
     text-align: center;
     padding: 3rem 0;
     margin-top: 2rem;
-    background: #000000;
+    background: var(--bg);
     border-top: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background var(--duration);
+}
+
+html.light-mode footer {
+    border-top-color: rgba(0, 0, 0, 0.2);
 }
 
 .footer-content {
@@ -767,29 +826,44 @@ footer {
 }
 
 /* Scroll Indicator */
+.scroll-indicator-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-right: 2rem;
+}
+
 .scroll-indicator {
     display: inline-block;
-    margin-top: 2rem;
     padding: 0.75rem;
     border-radius: 50%;
-    background: #000000;
+    background: var(--bg);
     border: 2px solid rgba(255, 255, 255, 0.4);
     transition: all 0.3s ease;
     animation: bounce 2s infinite;
 }
 
+html.light-mode .scroll-indicator {
+    border-color: rgba(0, 0, 0, 0.4);
+}
+
 .scroll-indicator:hover {
-    background: #1a1a1a;
+    background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.6);
     transform: translateY(-4px);
+}
+
+html.light-mode .scroll-indicator:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.6);
 }
 
 .scroll-indicator .chev {
     display: block;
     width: 10px;
     height: 10px;
-    border-right: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
+    border-right: 2px solid var(--text);
+    border-bottom: 2px solid var(--text);
     transform: rotate(45deg);
 }
 
