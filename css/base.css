@@ -274,11 +274,17 @@ html.light-mode .hero::before {
 .hero h1 {
     font-size: clamp(2.8rem, 4vw, 3.8rem);
     margin-bottom: 1rem;
+    color: #ffffff;
 }
 
 .hero .subtitle {
     font-size: 1.2rem;
     margin-bottom: 2.5rem;
+    color: #ffffff;
+}
+
+.hero p {
+    color: #ffffff;
 }
 
 /* Hero variant with article-specific background image */
