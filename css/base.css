@@ -160,6 +160,14 @@ img {
 .theme-toggle-wrapper {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.theme-toggle-label-text {
+    color: var(--muted);
+    transition: color var(--duration);
 }
 
 .theme-toggle-checkbox {
@@ -182,7 +190,7 @@ img {
     position: absolute;
     left: 4px;
     top: 2px;
-    font-size: 16px;
+    font-size: 14px;
     transition: all var(--duration);
 }
 
@@ -210,6 +218,10 @@ img {
 .theme-toggle-checkbox:checked + .theme-toggle-label::after {
     left: 24px;
     background: #999;
+}
+
+.theme-toggle-checkbox:checked ~ .theme-toggle-label-text {
+    color: var(--text);
 }
 
 .nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active, .theme-toggle:hover, .theme-toggle:focus-visible {
