@@ -156,94 +156,15 @@ img {
     font-size: 1rem;
 }
 
-/* Settings Menu */
-.settings-menu-wrapper {
-    position: relative;
-}
-
-.settings-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0.35rem 0.6rem;
-    border-radius: 999px;
-    transition: color var(--duration), background var(--duration);
-}
-
-.settings-btn:hover, .settings-btn:focus-visible {
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.1);
-    outline: none;
-}
-
-html.light-mode .settings-btn:hover,
-html.light-mode .settings-btn:focus-visible {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-.settings-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: var(--bg);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    padding: 0;
-    margin-top: 0.5rem;
-    min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all var(--duration);
-    z-index: 1000;
-}
-
-html.light-mode .settings-menu {
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.settings-menu.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-.settings-header {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text);
-}
-
-html.light-mode .settings-header {
-    border-bottom-color: rgba(0, 0, 0, 0.1);
-}
-
-.settings-item {
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.settings-label {
-    font-size: 0.9rem;
-    color: var(--text);
-    cursor: pointer;
-    font-weight: 500;
-}
-
 /* Theme Toggle Switch */
 .theme-toggle-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+}
+
+.theme-label {
+    font-size: 1.2rem;
 }
 
 .theme-toggle-checkbox {
