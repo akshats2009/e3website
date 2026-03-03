@@ -184,10 +184,9 @@ function initThemeSwitcher() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     applyTheme(savedTheme);
 
-    // Toggle theme on button click
-    themeToggle.addEventListener('click', function () {
-        const currentTheme = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    // Toggle theme on checkbox change
+    themeToggle.addEventListener('change', function () {
+        const newTheme = themeToggle.checked ? 'light' : 'dark';
         applyTheme(newTheme);
         localStorage.setItem('theme', newTheme);
     });
@@ -199,10 +198,10 @@ function applyTheme(theme) {
 
     if (theme === 'light') {
         html.classList.add('light-mode');
-        if (themeToggle) { themeToggle.textContent = '☀️'; }
+        if (themeToggle) { themeToggle.checked = true; }
     } else {
         html.classList.remove('light-mode');
-        if (themeToggle) { themeToggle.textContent = '🌙'; }
+        if (themeToggle) { themeToggle.checked = false; }
     }
 }
 
