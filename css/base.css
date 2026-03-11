@@ -149,7 +149,7 @@ img {
     transition: color var(--duration), background var(--duration);
     padding: 0.35rem 0.6rem;
     border-radius: 999px;
-    color: var(--muted);
+    color: var(--text);
     font-weight: 500;
     font-family: inherit;
     background: none;
