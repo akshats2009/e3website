@@ -22,8 +22,8 @@ h3 {
     font-size: clamp(1.5rem, 3vw, 2rem) !important;
 }
 
-.subtitle, .section-header p, .team-role, .article-date {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif !important;
+.subtitle, .section-header p, .team-role, .article-date, p, a, li, button, input, label {
+    font-family: 'Instrument Sans', sans-serif !important;
 }
 
 /* Card Improvements - Bento feel */
