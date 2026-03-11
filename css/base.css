@@ -1055,11 +1055,10 @@ html.light-mode .to-top {
 
 /* Scroll Indicator */
 .scroll-indicator-container {
-    position: absolute;
+    position: fixed;
     bottom: 2rem;
     right: 2rem;
-    display: flex;
-    justify-content: flex-end;
+    z-index: 99;
 }
 
 .scroll-indicator {
