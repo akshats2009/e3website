@@ -174,42 +174,112 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Theme switcher (dark/light mode)
+   6. Settings panel (theme + font size)
    ---------------------------------------------------------- */
-function initThemeSwitcher() {
-    const themeToggle = document.getElementById('theme-toggle');
-    if (!themeToggle) { return; }
+var FONT_SIZES = { small: '0.9', normal: '1', large: '1.15' };
 
-    // Load theme preference from localStorage
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+function initSettings() {
+    // Apply saved preferences immediately
+    var savedTheme = localStorage.getItem('theme') || 'dark';
+    var savedFont  = localStorage.getItem('fontSize') || 'normal';
     applyTheme(savedTheme);
+    applyFontSize(savedFont);
 
-    // Toggle theme on checkbox change
-    themeToggle.addEventListener('change', function () {
-        const newTheme = themeToggle.checked ? 'light' : 'dark';
+    // Inject settings button into navbar
+    var navbar = document.querySelector('.navbar .container');
+    if (!navbar) { return; }
+
+    var btn = document.createElement('button');
+    btn.className = 'settings-btn';
+    btn.setAttribute('aria-label', 'Settings');
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+    navbar.appendChild(btn);
+
+    // Build panel
+    var panel = document.createElement('div');
+    panel.className = 'settings-panel';
+    panel.innerHTML =
+        '<p class="settings-label">Appearance</p>' +
+        '<div class="settings-row">' +
+            '<span>Dark mode</span>' +
+            '<label class="settings-pill">' +
+                '<input type="checkbox" id="settings-theme-toggle">' +
+                '<span class="settings-pill-track"><span class="settings-pill-thumb"></span></span>' +
+            '</label>' +
+        '</div>' +
+        '<p class="settings-label">Text size</p>' +
+        '<div class="settings-row settings-font-row">' +
+            '<button class="font-btn" data-size="small">A<sup>-</sup></button>' +
+            '<button class="font-btn" data-size="normal">A</button>' +
+            '<button class="font-btn" data-size="large">A<sup>+</sup></button>' +
+        '</div>';
+    document.body.appendChild(panel);
+
+    // Sync theme toggle state
+    var themeCheckbox = panel.querySelector('#settings-theme-toggle');
+    if (savedTheme === 'light') { themeCheckbox.checked = true; }
+
+    // Sync font buttons
+    syncFontButtons(panel, savedFont);
+
+    // Toggle panel open/close
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        panel.classList.toggle('open');
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (!panel.contains(e.target) && e.target !== btn) {
+            panel.classList.remove('open');
+        }
+    });
+
+    // Theme toggle
+    themeCheckbox.addEventListener('change', function () {
+        var newTheme = themeCheckbox.checked ? 'light' : 'dark';
         applyTheme(newTheme);
         localStorage.setItem('theme', newTheme);
+    });
+
+    // Font size buttons
+    panel.querySelectorAll('.font-btn').forEach(function (fontBtn) {
+        fontBtn.addEventListener('click', function () {
+            var size = fontBtn.getAttribute('data-size');
+            applyFontSize(size);
+            localStorage.setItem('fontSize', size);
+            syncFontButtons(panel, size);
+        });
+    });
+}
+
+function syncFontButtons(panel, active) {
+    panel.querySelectorAll('.font-btn').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-size') === active);
     });
 }
 
 function applyTheme(theme) {
-    const html = document.documentElement;
-    const themeToggle = document.getElementById('theme-toggle');
-
+    var html = document.documentElement;
+    var cb = document.getElementById('settings-theme-toggle');
     if (theme === 'light') {
         html.classList.add('light-mode');
-        if (themeToggle) { themeToggle.checked = true; }
+        if (cb) { cb.checked = true; }
     } else {
         html.classList.remove('light-mode');
-        if (themeToggle) { themeToggle.checked = false; }
+        if (cb) { cb.checked = false; }
     }
+}
+
+function applyFontSize(size) {
+    document.documentElement.style.setProperty('--font-scale', FONT_SIZES[size] || '1');
 }
 
 /* ----------------------------------------------------------
    7. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
-    initThemeSwitcher();
+    initSettings();
     initScrollAnimations();
     populateGrids();
     initBackToTop();

@@ -22,6 +22,7 @@
     --muted: #d1d5db;
     --duration: 0.3s;
     --bg: #000000;
+    --font-scale: 1;
 }
 
 html.light-mode {
@@ -38,6 +39,7 @@ html.light-mode {
 
 html {
     scroll-behavior: smooth;
+    font-size: calc(16px * var(--font-scale));
 }
 
 body {
@@ -157,59 +159,162 @@ img {
 }
 
 /* Theme Toggle Switch */
+/* Hide old toggle — replaced by settings panel */
 .theme-toggle-wrapper {
+    display: none;
+}
+
+/* Settings button */
+.settings-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
-    gap: 0;
+    justify-content: center;
+    transition: color 0.2s, background 0.2s;
+    margin-left: 12px;
 }
 
-.theme-label {
-    display: none;
+.settings-btn:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.07);
 }
 
-.theme-toggle-checkbox {
-    display: none;
+html.light-mode .settings-btn:hover {
+    background: rgba(0, 0, 0, 0.07);
 }
 
-.theme-toggle-label {
-    position: relative;
-    display: inline-block;
-    width: 32px;
-    height: 18px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 9px;
+/* Settings panel */
+.settings-panel {
+    position: fixed;
+    top: 64px;
+    right: 20px;
+    width: 220px;
+    background: var(--bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    z-index: 200;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+html.light-mode .settings-panel {
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+.settings-panel.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.settings-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 8px;
+}
+
+.settings-label + .settings-label,
+.settings-row + .settings-label {
+    margin-top: 14px;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--text);
+}
+
+/* Pill toggle inside panel */
+.settings-pill {
     cursor: pointer;
-    transition: background 0.3s ease;
-    opacity: 0.5;
 }
 
-.theme-toggle-label:hover {
-    opacity: 0.85;
-}
-
-.theme-toggle-label::before {
+.settings-pill input {
     display: none;
 }
 
-.theme-toggle-label::after {
-    content: '';
+.settings-pill-track {
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    position: relative;
+    transition: background 0.25s;
+}
+
+html.light-mode .settings-pill-track {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.settings-pill input:checked + .settings-pill-track {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+html.light-mode .settings-pill input:checked + .settings-pill-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.settings-pill-thumb {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--text);
     top: 3px;
     left: 3px;
-    transition: left 0.3s ease;
-    display: block;
+    transition: left 0.25s ease;
 }
 
-.theme-toggle-checkbox:checked + .theme-toggle-label {
-    background: rgba(255, 255, 255, 0.2);
+.settings-pill input:checked + .settings-pill-track .settings-pill-thumb {
+    left: 19px;
 }
 
-.theme-toggle-checkbox:checked + .theme-toggle-label::after {
-    left: 17px;
+/* Font size buttons */
+.settings-font-row {
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.font-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+html.light-mode .font-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.font-btn:hover,
+.font-btn.active {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--text);
+}
+
+html.light-mode .font-btn:hover,
+html.light-mode .font-btn.active {
+    background: rgba(0, 0, 0, 0.12);
 }
 
 .nav-links a:hover, .nav-links a:focus-visible, .nav-links a.active, .theme-toggle:hover, .theme-toggle:focus-visible {
