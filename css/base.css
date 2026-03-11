@@ -43,7 +43,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', sans-serif;
+    font-family: 'Instrument Serif', Georgia, serif;
     line-height: 1.6;
     color: var(--text);
     background: var(--bg);
@@ -127,7 +127,7 @@ img {
 }
 
 .logo-branding .logo-subtitle {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Instrument Serif', Georgia, serif;
     font-weight: 400;
     font-size: 0.95rem;
     color: var(--muted);
