@@ -174,7 +174,68 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Settings panel (theme + font size)
+   6. Parallax effects
+   ---------------------------------------------------------- */
+function initParallax() {
+    var banners = document.querySelectorAll('.page-header-image img');
+    var orbs    = document.querySelectorAll('.orb');
+    var hero    = document.querySelector('.hero');
+
+    if (!banners.length && !orbs.length) { return; }
+
+    // Give banner images extra height so they have room to travel
+    banners.forEach(function (img) {
+        img.style.height = 'calc(100% + 160px)';
+        img.style.marginTop = '-80px';
+        img.style.willChange = 'transform';
+    });
+
+    orbs.forEach(function (orb) {
+        orb.style.willChange = 'transform';
+    });
+
+    var ticking = false;
+
+    function update() {
+        var scrollY = window.pageYOffset;
+
+        // Banner parallax — image moves up at 40% of scroll speed
+        banners.forEach(function (img) {
+            var rect = img.closest('.page-header-image').getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                img.style.transform = 'translateY(' + (scrollY * 0.35) + 'px)';
+            }
+        });
+
+        // Orb parallax — each orb drifts at a slightly different speed
+        orbs.forEach(function (orb, i) {
+            var speed = 0.04 + i * 0.03;
+            orb.style.transform = 'translateY(' + (scrollY * speed) + 'px)';
+        });
+
+        // Hero content subtle upward drift
+        if (hero) {
+            var heroContainer = hero.querySelector('.container');
+            if (heroContainer && scrollY < window.innerHeight) {
+                heroContainer.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+            }
+        }
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    update();
+}
+
+/* ----------------------------------------------------------
+   7. Settings panel (theme + font size)
    ---------------------------------------------------------- */
 var FONT_SIZES = { small: '0.9', normal: '1', large: '1.15' };
 
@@ -280,6 +341,7 @@ function applyFontSize(size) {
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
     initSettings();
+    initParallax();
     initScrollAnimations();
     populateGrids();
     initBackToTop();
