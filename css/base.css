@@ -127,7 +127,7 @@ img {
 }
 
 .logo-branding .logo-subtitle {
-    font-family: 'Instrument Serif', Georgia, serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size: 0.95rem;
     color: var(--muted);
