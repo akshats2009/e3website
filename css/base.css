@@ -43,7 +43,7 @@ html {
 }
 
 body {
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     line-height: 1.6;
     color: var(--text);
     background: var(--bg);
@@ -127,7 +127,7 @@ img {
 }
 
 .logo-branding .logo-subtitle {
-    font-family: 'Instrument Sans', Georgia, serif;
+    font-family: 'DM Sans', Georgia, serif;
     font-weight: 400;
     font-size: 0.95rem;
     color: var(--muted);
