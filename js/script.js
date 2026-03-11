@@ -148,6 +148,14 @@ function initBackToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
+
+    var scrollIndicator = document.querySelector('.scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', function (e) {
+            e.preventDefault();
+            window.scrollBy({ top: window.innerHeight * 0.85, behavior: 'smooth' });
+        });
+    }
 }
 
 /* ----------------------------------------------------------

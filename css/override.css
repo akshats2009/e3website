@@ -29,16 +29,19 @@ h3 {
 
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    background: var(--bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
     backdrop-filter: none !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
     transition: transform 0.4s cubic-bezier(0.2, 1, 0.3, 1), box-shadow 0.4s ease, background 0.3s ease !important;
 }
 
 html.light-mode .pillar-card,
 html.light-mode .feature-card,
 html.light-mode .article-card {
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    background: rgba(0, 0, 0, 0.03) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
 }
 
 .pillar-card:hover, .feature-card:hover, .article-card:hover {
