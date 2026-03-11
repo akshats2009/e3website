@@ -1018,6 +1018,12 @@ html.light-mode footer {
 
 .footer-nav a {
     text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+}
+
+.footer-nav a:hover {
+    color: var(--text);
 }
 
 .footer-actions {
@@ -1027,7 +1033,7 @@ html.light-mode footer {
 }
 
 .to-top {
-    border-radius: 999px;
+    border-radius: 4px;
     padding: 0.5rem 1rem;
     cursor: pointer;
     background: var(--bg);
