@@ -354,6 +354,49 @@ a, button, .btn, .read-more, .clickable-card, input, textarea, .nav-links a {
     cursor: pointer !important;
 }
 
+/* ==========================================
+   AESTHETIC ENHANCEMENTS
+   ========================================== */
+
+/* Page fade-in on load */
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+body {
+    animation: pageFadeIn 0.5s ease forwards;
+}
+
+/* Navbar compact on scroll */
+.navbar {
+    transition: padding 0.3s ease, background 0.3s ease !important;
+}
+.navbar.scrolled {
+    background: rgba(0, 0, 0, 0.98) !important;
+}
+.navbar.scrolled .container {
+    padding: 0.6rem 0 !important;
+}
+
+/* Article card image zoom on hover */
+.card-media {
+    overflow: hidden;
+}
+.card-media img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: transform;
+}
+.article-card:hover .card-media img {
+    transform: scale(1.06) !important;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    body { animation: none; }
+    .navbar { transition: none !important; }
+    .card-media img { transition: none !important; }
+}
+
 /* Decorative cursor dot that follows the native cursor. */
 /* Remove all custom cursor dot/trail styles. Only use SVG arrow cursor. */
 

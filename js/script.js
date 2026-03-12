@@ -331,6 +331,12 @@ document.addEventListener('DOMContentLoaded', function() {
             el.style.transform = `scale(${scale})`;
         });
 
+        // Navbar compact on scroll
+        const navbar = document.querySelector('.navbar');
+        if (navbar) {
+            navbar.classList.toggle('scrolled', scrollY > 60);
+        }
+
         // HERO BACKGROUND PARALLAX
         // Background image scrolls at 35% speed — appears to float behind the content
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -445,6 +451,56 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial parallax update
     updateParallax();
+
+    // ==========================================
+    // AESTHETIC MICRO-INTERACTIONS
+    // ==========================================
+    const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 3D card tilt on mousemove
+    if (!noMotion) {
+        document.querySelectorAll('.pillar-card, .feature-card').forEach((card) => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(800px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s ease';
+                card.style.transform = '';
+                setTimeout(() => { card.style.transition = ''; }, 500);
+            });
+        });
+
+        // Magnetic CTA buttons — follow cursor slightly on hover
+        document.querySelectorAll('.btn').forEach((btn) => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+                btn.style.animationPlayState = 'paused';
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+                btn.style.animationPlayState = '';
+            });
+        });
+    }
+
+    // Page fade-out on internal navigation
+    document.querySelectorAll('a[href]').forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel')) return;
+        link.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            e.preventDefault();
+            document.body.style.transition = 'opacity 0.25s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => { window.location.href = href; }, 260);
+        });
+    });
 });
 
 // Smooth scroll for navigation
