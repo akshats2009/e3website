@@ -167,6 +167,18 @@ function initParallax() {
     // hero element — used for bounds check so we stop computing once off-screen
     var heroEl = heroContainer ? heroContainer.closest('.hero') : null;
 
+    // Expand the header image in JS only — keeps the CSS (and static design) unchanged.
+    // The extra 80px (40px above + 40px below) gives the parallax room to move
+    // without ever showing a gap against the container's overflow:hidden.
+    if (headerImg) {
+        headerImg.style.height     = '430px';
+        headerImg.style.marginTop  = '-40px';
+        headerImg.style.willChange = 'transform';
+    }
+    if (heroContainer) {
+        heroContainer.style.willChange = 'transform';
+    }
+
     function update() {
         var sy = window.scrollY;
 
