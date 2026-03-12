@@ -151,7 +151,77 @@ function initBackToTop() {
 }
 
 /* ----------------------------------------------------------
-   5. Article filtering (articles.html)
+   5. Parallax effects
+   ---------------------------------------------------------- */
+function initParallax() {
+    // Honour the OS-level "reduce motion" preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+    // Disable on touch/mobile devices (parallax feels janky on small screens)
+    if (window.innerWidth < 768) { return; }
+
+    var heroContainer = document.querySelector('.hero .container');
+    var headerImg     = document.querySelector('.page-header-image img');
+    var ticking       = false;
+
+    // hero element — used for bounds check so we stop computing once off-screen
+    var heroEl = heroContainer ? heroContainer.closest('.hero') : null;
+
+    // Expand the header image in JS only — keeps the CSS (and static design) unchanged.
+    // The extra 80px (40px above + 40px below) gives the parallax room to move
+    // without ever showing a gap against the container's overflow:hidden.
+    if (headerImg) {
+        headerImg.style.height     = '430px';
+        headerImg.style.marginTop  = '-40px';
+        headerImg.style.willChange = 'transform';
+    }
+    if (heroContainer) {
+        heroContainer.style.willChange = 'transform';
+    }
+
+    function update() {
+        var sy = window.scrollY;
+
+        // 1. Hero text parallax — content floats at 30 % of scroll speed,
+        //    creating the illusion that the text is deeper in the page.
+        if (heroContainer && heroEl) {
+            var heroBottom = heroEl.getBoundingClientRect().bottom;
+            if (heroBottom > 0) {
+                heroContainer.style.transform = 'translateY(' + (sy * 0.3).toFixed(1) + 'px)';
+            }
+        }
+
+        // 2. Page-header image parallax (research.html, article pages) —
+        //    the image moves at 10 % of the scrolled distance past the section top,
+        //    giving a classic cover-photo depth effect.
+        if (headerImg) {
+            var imgSection = headerImg.closest('.page-header-image');
+            if (imgSection) {
+                var rect = imgSection.getBoundingClientRect();
+                if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                    // progress: how many px the section top has moved above viewport top
+                    var progress = -rect.top;
+                    headerImg.style.transform = 'translateY(' + (progress * 0.1).toFixed(1) + 'px)';
+                }
+            }
+        }
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // Run once on load so initial state is set
+    update();
+}
+
+/* ----------------------------------------------------------
+   6. Article filtering (articles.html)
    ---------------------------------------------------------- */
 function initFilters() {
     document.querySelectorAll('[data-filter]').forEach(function (btn) {
@@ -174,11 +244,12 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Bootstrap on DOMContentLoaded
+   7. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
     initScrollAnimations();
     populateGrids();
     initBackToTop();
     initFilters();
+    initParallax();
 });
