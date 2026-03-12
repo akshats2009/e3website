@@ -1,519 +1,276 @@
-// Contact Form Handling
-document.addEventListener('DOMContentLoaded', function() {
-    // No JS needed for header animation; handled by CSS
-    const contactForm = document.getElementById('contactForm');
-    const contactStatus = document.getElementById('contactStatus');
-    const newsletterForm = document.getElementById('newsletterForm');
-    const newsletterStatus = document.getElementById('newsletterStatus');
-    const articlesGrid = document.getElementById('articlesGrid');
-    const latestArticles = document.getElementById('latestArticles');
-    const articlesStatus = document.getElementById('articlesStatus');
-    const latestArticlesStatus = document.getElementById('latestArticlesStatus');
+/* =========================================================
+   e3 Initiative – main script
+   Handles: article rendering, scroll animations, back-to-top,
+            article filtering, and date formatting.
+   No external dependencies.
+   ========================================================= */
 
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+/* ----------------------------------------------------------
+   1. Utilities
+   ---------------------------------------------------------- */
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
+/** Escape HTML special characters to prevent XSS. */
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
-            if (contactStatus) contactStatus.textContent = 'Sending your message…';
+/** Format a YYYY-MM-DD date string as "Month D, YYYY". */
+function formatDate(dateStr) {
+    // Parse as UTC so timezone offsets don't shift the day
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const d = new Date(Date.UTC(year, month - 1, day));
+    return d.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC'
+    });
+}
 
-            fetch('/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, subject, message })
-            })
-                .then((response) => {
-                    if (!response.ok) throw new Error('Request failed');
-                    return response.json();
-                })
-                .then(() => {
-                    if (contactStatus) contactStatus.textContent = 'Thanks! We will respond within two business days.';
-                    contactForm.reset();
-                })
-                .catch(() => {
-                    if (contactStatus) contactStatus.textContent = 'Unable to send right now. Please try again later.';
-                });
-        });
-    }
+/* ----------------------------------------------------------
+   2. Article rendering
+   ---------------------------------------------------------- */
+function buildCard(article) {
+    const card = document.createElement('article');
+    card.className = 'article-card clickable-card fade-up';
+    card.setAttribute('role', 'link');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('data-type', article.type || 'article');
 
-    if (newsletterForm) {
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    // Navigate on click or Enter key press
+    card.addEventListener('click', () => { window.location.href = article.link; });
+    card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { window.location.href = article.link; }
+    });
 
-            const email = document.getElementById('newsletterEmail').value;
-            if (newsletterStatus) newsletterStatus.textContent = 'Adding you to the list…';
+    card.innerHTML =
+        '<div class="card-media">' +
+            '<img src="' + escHtml(article.image) + '" alt="' + escHtml(article.imageAlt || '') + '" loading="lazy">' +
+        '</div>' +
+        '<div class="article-content">' +
+            '<p class="article-date">' + escHtml(formatDate(article.date)) + '</p>' +
+            '<h3>' + escHtml(article.title) + '</h3>' +
+            '<p>' + escHtml(article.summary) + '</p>' +
+            '<a href="' + escHtml(article.link) + '" class="read-more">Read more →</a>' +
+        '</div>';
 
-            fetch('/api/newsletter', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            })
-                .then((response) => {
-                    if (!response.ok) throw new Error('Request failed');
-                    return response.json();
-                })
-                .then(() => {
-                    if (newsletterStatus) newsletterStatus.textContent = 'You’re subscribed. Welcome!';
-                    newsletterForm.reset();
-                })
-                .catch(() => {
-                    if (newsletterStatus) newsletterStatus.textContent = 'Unable to subscribe right now. Please try again later.';
-                });
-        });
-    }
+    return card;
+}
 
-    const formatDate = (value) => {
-        if (!value) return '';
-        const parsed = new Date(value);
-        if (Number.isNaN(parsed.getTime())) return value;
-        return parsed.toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-    };
+function populateGrids() {
+    const data = window.articlesData;
+    if (!Array.isArray(data)) { return; }
 
-    const shouldOpenNewTab = (url) => {
-        if (!url) return false;
-        return /^https?:\/\//i.test(url) || url.toLowerCase().endsWith('.pdf');
-    };
+    // Sort newest-first
+    const sorted = data.slice().sort((a, b) => (b.date > a.date ? 1 : -1));
 
-    // Determine which page we're on so we can filter items by `type`.
-    const pageType = (() => {
-        const page = window.location.pathname.split('/').pop();
-        if (page === 'research.html') return 'research';
-        if (page === 'articles.html') return 'article';
-        return 'all';
-    })();
+    document.querySelectorAll('.articles-grid').forEach(function (grid) {
+        const typeFilter = (grid.getAttribute('data-type') || 'all').toLowerCase();
+        const statusEl = document.getElementById(
+            grid.id === 'latestArticles' ? 'latestArticlesStatus' :
+            grid.id === 'articlesGrid'   ? 'articlesStatus'        :
+            grid.id === 'researchGrid'   ? 'researchStatus'        : ''
+        );
 
-    const createArticleCard = (article) => {
-        const card = document.createElement('div');
-        card.className = 'article-card';
+        const isResearchContext = typeFilter === 'research';
 
-        const content = document.createElement('div');
-        content.className = 'article-content';
+        // Filter articles by type (unless "all")
+        let articles = typeFilter === 'all'
+            ? sorted
+            : sorted.filter(function (a) { return a.type === typeFilter; });
 
-        if (article.image) {
-            const media = document.createElement('div');
-            media.className = 'card-media';
+        // Homepage: limit to 3 most recent
+        const isHomepage = grid.id === 'latestArticles';
+        if (isHomepage) { articles = articles.slice(0, 3); }
 
-            const img = document.createElement('img');
-            img.src = article.image;
-            img.alt = article.imageAlt || article.title || 'Research article';
-
-            media.appendChild(img);
-            card.appendChild(media);
+        if (articles.length === 0) {
+            if (statusEl) {
+                statusEl.textContent = isResearchContext
+                    ? 'No research papers are available yet'
+                    : 'No articles available yet';
+                statusEl.style.display = '';
+            }
+            return;
         }
 
-        const title = document.createElement('h3');
-        title.textContent = article.title || 'Untitled Research';
+        articles.forEach(function (article) { grid.appendChild(buildCard(article)); });
 
-        const date = document.createElement('p');
-        date.className = 'article-date';
-        date.textContent = formatDate(article.date);
+        // Hide the loading/status message on success
+        if (statusEl) { statusEl.style.display = 'none'; }
 
-        const summary = document.createElement('p');
-        summary.textContent = article.summary || 'Summary coming soon.';
+        // Attach fade-up observer to newly created cards
+        observeElements(grid.querySelectorAll('.article-card'));
+    });
+}
 
-        const link = document.createElement('a');
-        link.className = 'read-more';
-        link.href = article.link || '#';
-        link.textContent = article.linkText || 'Read More →';
-        if (shouldOpenNewTab(link.href)) {
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-        }
+/* ----------------------------------------------------------
+   3. Scroll animations via IntersectionObserver
+   ---------------------------------------------------------- */
+var scrollObserver = null;
 
-        if (article.link && article.link !== '#') {
-            card.classList.add('clickable-card');
-            card.addEventListener('click', (event) => {
-                if (event.target.closest('a')) return;
-                if (shouldOpenNewTab(article.link)) {
-                    window.open(article.link, '_blank', 'noopener,noreferrer');
-                } else {
-                    window.location.href = article.link;
-                }
-            });
-        }
-
-        content.appendChild(title);
-        if (date.textContent) {
-            content.appendChild(date);
-        }
-        content.appendChild(summary);
-        content.appendChild(link);
-        card.appendChild(content);
-
-        return card;
-    };
-
-    const renderArticles = (container, list, limit) => {
-        container.innerHTML = '';
-        const items = limit ? list.slice(0, limit) : list;
-        items.forEach((article, index) => {
-            const card = createArticleCard(article);
-            // Add stagger class for sequential animation
-            card.classList.add(`stagger-${Math.min(index + 1, 6)}`);
-            container.appendChild(card);
-            
-            // Observe the new card for reveal animation
-            if (window.revealObserver) {
-                window.revealObserver.observe(card);
-            } else {
-                // Fallback: add in-view immediately if observer not ready
-                setTimeout(() => card.classList.add('in-view'), 100 + (index * 100));
+function createObserver() {
+    if (!('IntersectionObserver' in window)) { return null; }
+    return new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                obs.unobserve(entry.target);
             }
         });
-    };
+    }, { threshold: 0.1 });
+}
 
-    if (articlesGrid || latestArticles) {
-        const normalizeArticles = (items) => (items || []).map((article) => {
-            const link = article.link || '';
-            // Prefer explicit `type`. Otherwise infer from link path (research/), default to 'article'.
-            const inferred = article.type || (/\bresearch\b/i.test(link) || /(^|\/)research\//i.test(link) ? 'research' : 'article');
-            return {
-                title: article.title,
-                date: article.date,
-                summary: article.summary || article.excerpt,
-                link,
-                linkText: article.linkText,
-                image: article.image,
-                imageAlt: article.imageAlt,
-                type: inferred
-            };
-        });
+function observeElements(elements) {
+    if (!scrollObserver) { return; }
+    elements.forEach(function (el) { scrollObserver.observe(el); });
+}
 
-        const loadArticles = (list) => {
-            const articles = normalizeArticles(list);
+function initScrollAnimations() {
+    scrollObserver = createObserver();
+    const selector = '.pillar-card, .feature-card, .team-card, .liquid-glass, .section-header';
+    document.querySelectorAll(selector).forEach(function (el) {
+        el.classList.add('fade-up');
+    });
+    observeElements(document.querySelectorAll('.fade-up'));
+}
 
-            const renderForContainer = (container, statusEl, limit) => {
-                if (!container) return;
-                const ctype = (container.dataset && container.dataset.type) ? container.dataset.type : pageType;
-                const filtered = ctype === 'all' ? articles : articles.filter((a) => a.type === ctype);
-                const emptyMsg = ctype === 'research' ? 'No research publications yet.' : (ctype === 'article' ? 'No articles yet.' : 'No publications yet.');
-                if (statusEl) statusEl.textContent = filtered.length ? '' : emptyMsg;
-                renderArticles(container, filtered, limit);
-            };
-
-            renderForContainer(articlesGrid, articlesStatus);
-            renderForContainer(latestArticles, latestArticlesStatus, 3);
-        };
-
-        fetch('/api/articles')
-            .then((response) => {
-                if (!response.ok) throw new Error('API not available');
-                return response.json();
-            })
-            .then((data) => loadArticles(data))
-            .catch(() => {
-                if (Array.isArray(window.articlesData)) {
-                    loadArticles(window.articlesData);
-                } else {
-                    fetch('data/articles.json')
-                        .then((response) => response.json())
-                        .then((data) => {
-                            window.articlesData = Array.isArray(data) ? data : [];
-                            loadArticles(window.articlesData);
-                        })
-                        .catch(() => {
-                            if (articlesStatus) articlesStatus.textContent = 'Unable to load research articles.';
-                            if (latestArticlesStatus) latestArticlesStatus.textContent = 'Unable to load research articles.';
-                        });
-                }
-            });
-    }
-
-    // Load a representative hero image from the backend Unsplash proxy
-    (function loadHeroFromUnsplash() {
-        const hero = document.querySelector('.hero');
-        if (!hero) return;
-
-        fetch('/api/unsplash?q=community%20meeting')
-            .then((r) => r.json())
-            .then((data) => {
-                if (data && data.urls && data.urls.full) {
-                    // Use a reasonably sized URL (regular) for background
-                    hero.style.backgroundImage = `url('${data.urls.regular}')`;
-                    hero.setAttribute('data-photo-id', data.id || '');
-                    // Optionally set attribution (not visible) for future use
-                    if (data.photographer) hero.setAttribute('data-photo-credit', data.photographer);
-                }
-            })
-            .catch(() => {
-                // fail silently; keep existing background
-            });
-    })();
-
-    document.querySelectorAll('.to-top').forEach((button) => {
-        button.addEventListener('click', () => {
+/* ----------------------------------------------------------
+   4. Back-to-top button
+   ---------------------------------------------------------- */
+function initBackToTop() {
+    document.querySelectorAll('.to-top').forEach(function (btn) {
+        btn.addEventListener('click', function () {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
+}
 
-    // ========================================
-    // SCROLL ANIMATIONS SYSTEM
-    // ========================================
+/* ----------------------------------------------------------
+   5. Article filtering (articles.html)
+   ---------------------------------------------------------- */
+function initFilters() {
+    document.querySelectorAll('[data-filter]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const filter = btn.getAttribute('data-filter').toLowerCase();
 
-    // 1. INTERSECTION OBSERVER FOR REVEAL ANIMATIONS
-    const revealElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-in, .blur-reveal, .text-reveal, .section-divider, .pillar-card, .feature-card, .impact-card, .article-card');
-    
-    // Make observer global so dynamically added elements can use it
-    window.revealObserver = new IntersectionObserver(
-        (entries, obs) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    // Unobserve after animation
-                    obs.unobserve(entry.target);
-                }
+            // Toggle active state on filter buttons
+            document.querySelectorAll('[data-filter]').forEach(function (b) {
+                b.classList.toggle('active', b === btn);
             });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
 
-    revealElements.forEach((el) => window.revealObserver.observe(el));
-
-    // 2. STAGGERED CARD REVEALS
-    const cardGroups = document.querySelectorAll('.pillar-grid, .articles-grid, .features-grid');
-    cardGroups.forEach((group) => {
-        const cards = group.querySelectorAll('.pillar-card, .feature-card, .article-card');
-        cards.forEach((card, index) => {
-            card.classList.add(`stagger-${Math.min(index + 1, 6)}`);
+            // Show/hide cards in every grid on the page
+            document.querySelectorAll('.article-card').forEach(function (card) {
+                const type = (card.getAttribute('data-type') || '').toLowerCase();
+                const show = filter === 'all' || type === filter;
+                card.style.display = show ? '' : 'none';
+            });
         });
     });
+}
 
-    // 3. READING PROGRESS BAR
-    const progressBar = document.createElement('div');
+/* ----------------------------------------------------------
+   6. Bootstrap on DOMContentLoaded
+   ---------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function () {
+    initScrollAnimations();
+    populateGrids();
+    initBackToTop();
+    initFilters();
+});
+
+/* ----------------------------------------------------------
+   7. Aesthetic enhancements — parallax, micro-interactions
+   No content or layout changes; all purely visual.
+   ---------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', function () {
+    var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll progress bar
+    var progressBar = document.createElement('div');
     progressBar.className = 'progress-bar';
     document.body.prepend(progressBar);
 
-    // 4. PARALLAX EFFECT FOR ORBS
-    let ticking = false;
-    
-    function updateParallax() {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight;
-        
-        // Update progress bar
-        const scrollPercent = (scrollY / (docHeight - windowHeight)) * 100;
-        progressBar.style.width = `${Math.min(scrollPercent, 100)}%`;
-        
-        // Parallax for body pseudo-elements (via CSS custom property)
-        document.body.style.setProperty('--scroll-y', scrollY);
-        
-        // Parallax elements
-        document.querySelectorAll('.parallax-slow').forEach((el) => {
-            el.style.transform = `translateY(${scrollY * 0.3}px)`;
-        });
-        
-        document.querySelectorAll('.parallax-fast').forEach((el) => {
-            el.style.transform = `translateY(${scrollY * 0.6}px)`;
-        });
-        
-        // 5. SCROLL-TRIGGERED TRANSFORMS
-        document.querySelectorAll('.rotate-on-scroll').forEach((el) => {
-            const rect = el.getBoundingClientRect();
-            const elementCenter = rect.top + rect.height / 2;
-            const windowCenter = windowHeight / 2;
-            const rotation = (elementCenter - windowCenter) / windowHeight * 10;
-            el.style.transform = `rotate(${rotation}deg)`;
-        });
-        
-        document.querySelectorAll('.scale-on-scroll').forEach((el) => {
-            const rect = el.getBoundingClientRect();
-            const visible = Math.max(0, Math.min(1, 1 - (rect.top / windowHeight)));
-            const scale = 0.8 + (visible * 0.2);
-            el.style.transform = `scale(${scale})`;
-        });
+    // Scroll handler: progress bar + navbar compact + pillar parallax
+    var ticking = false;
+    function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+            var scrollY = window.scrollY;
+            var docH = document.documentElement.scrollHeight - window.innerHeight;
 
-        // Navbar compact on scroll
-        const navbar = document.querySelector('.navbar');
-        if (navbar) {
-            navbar.classList.toggle('scrolled', scrollY > 60);
-        }
+            // Progress bar
+            progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
 
-        // HERO BACKGROUND PARALLAX
-        // Background image scrolls at 35% speed — appears to float behind the content
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reducedMotion) {
-            const heroEl = document.querySelector('.hero');
-            if (heroEl) {
-                heroEl.style.setProperty('background-position', `center calc(50% + ${scrollY * 0.35}px)`, 'important');
+            // Navbar compact
+            var navbar = document.querySelector('.navbar');
+            if (navbar) navbar.classList.toggle('scrolled', scrollY > 60);
+
+            if (!noMotion) {
+                // Pillar cards — each drifts at a slightly different scroll speed
+                // Uses CSS `translate` (independent of transform) so fade-in animations are unaffected
+                document.querySelectorAll('.pillar-card').forEach(function (card, i) {
+                    var rect = card.getBoundingClientRect();
+                    var dist = (rect.top + rect.height / 2) - window.innerHeight * 0.5;
+                    var speeds = [0.04, 0.07, 0.055];
+                    card.style.translate = '0 ' + (dist * speeds[i % speeds.length] * 0.25) + 'px';
+                });
+
+                // Ambient orb layer drifts at 12% scroll speed via CSS custom property
+                document.body.style.setProperty('--scroll-y', scrollY);
             }
 
-            // PILLAR CARDS DEPTH PARALLAX
-            // Each card moves at a slightly different speed using the CSS `translate` property,
-            // which composes independently with the existing transform-based fade-in animation.
-            document.querySelectorAll('.pillar-card').forEach((card, i) => {
-                const rect = card.getBoundingClientRect();
-                const dist = (rect.top + rect.height / 2) - windowHeight * 0.5;
-                const speeds = [0.04, 0.07, 0.055];
-                card.style.translate = `0 ${dist * speeds[i % speeds.length] * 0.25}px`;
-            });
-        }
-
-        ticking = false;
+            ticking = false;
+        });
     }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    // 6. NUMBER COUNTER ANIMATION
-    const counters = document.querySelectorAll('.counter');
-    const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                const target = parseInt(counter.getAttribute('data-target'), 10);
-                const duration = 2000;
-                const step = target / (duration / 16);
-                let current = 0;
-                
-                const updateCounter = () => {
-                    current += step;
-                    if (current < target) {
-                        counter.textContent = Math.floor(current).toLocaleString();
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        counter.textContent = target.toLocaleString();
-                    }
-                };
-                
-                updateCounter();
-                counterObserver.unobserve(counter);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    counters.forEach((counter) => counterObserver.observe(counter));
-
-    // 7. HORIZONTAL SCROLL SECTION
-    const horizontalWrappers = document.querySelectorAll('.horizontal-scroll-wrapper');
-    horizontalWrappers.forEach((wrapper) => {
-        const track = wrapper.querySelector('.horizontal-scroll-track');
-        if (!track) return;
-        
-        const horizontalObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    wrapper.dataset.active = 'true';
-                } else {
-                    wrapper.dataset.active = 'false';
-                }
-            });
-        }, { threshold: 0 });
-        
-        horizontalObserver.observe(wrapper);
-    });
-
-    // Scroll event listener
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            requestAnimationFrame(updateParallax);
-            ticking = true;
-        }
-        
-        // Horizontal scroll
-        horizontalWrappers.forEach((wrapper) => {
-            if (wrapper.dataset.active !== 'true') return;
-            const track = wrapper.querySelector('.horizontal-scroll-track');
-            if (!track) return;
-            
-            const rect = wrapper.getBoundingClientRect();
-            const progress = Math.max(0, Math.min(1, -rect.top / (rect.height - window.innerHeight)));
-            const maxScroll = track.scrollWidth - wrapper.clientWidth;
-            track.style.transform = `translateX(-${progress * maxScroll}px)`;
-        });
-    }, { passive: true });
-
-    // 8. SECTION BACKGROUND COLOR SHIFT
-    const colorSections = document.querySelectorAll('.color-shift-section');
-    const colorObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                const color = entry.target.dataset.bgColor;
-                if (color) {
-                    document.body.style.setProperty('--section-bg', color);
-                }
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    colorSections.forEach((section) => colorObserver.observe(section));
-
-    // 9. TEXT REVEAL - Wrap each word in span
-    document.querySelectorAll('.text-reveal').forEach((el) => {
-        const text = el.textContent;
-        el.innerHTML = `<span>${text}</span>`;
-    });
-
-    // Initial parallax update
-    updateParallax();
-
-    // ==========================================
-    // AESTHETIC MICRO-INTERACTIONS
-    // ==========================================
-    const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // 3D card tilt on mousemove
     if (!noMotion) {
-        document.querySelectorAll('.pillar-card, .feature-card').forEach((card) => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width - 0.5;
-                const y = (e.clientY - rect.top) / rect.height - 0.5;
-                card.style.transform = `perspective(800px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-4px)`;
+        // 3D card tilt on mousemove
+        document.querySelectorAll('.pillar-card, .feature-card').forEach(function (card) {
+            card.addEventListener('mousemove', function (e) {
+                var rect = card.getBoundingClientRect();
+                var x = (e.clientX - rect.left) / rect.width - 0.5;
+                var y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = 'perspective(800px) rotateX(' + (-y * 6) + 'deg) rotateY(' + (x * 6) + 'deg) translateY(-4px)';
             });
-            card.addEventListener('mouseleave', () => {
+            card.addEventListener('mouseleave', function () {
                 card.style.transition = 'transform 0.5s ease';
                 card.style.transform = '';
-                setTimeout(() => { card.style.transition = ''; }, 500);
+                setTimeout(function () { card.style.transition = ''; }, 500);
             });
         });
 
         // Magnetic CTA buttons — follow cursor slightly on hover
-        document.querySelectorAll('.btn').forEach((btn) => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-                const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
-                btn.style.animationPlayState = 'paused';
-                btn.style.transform = `translate(${x}px, ${y}px)`;
+        document.querySelectorAll('.btn').forEach(function (btn) {
+            btn.addEventListener('mousemove', function (e) {
+                var rect = btn.getBoundingClientRect();
+                var x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+                var y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+                btn.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
             });
-            btn.addEventListener('mouseleave', () => {
+            btn.addEventListener('mouseleave', function () {
                 btn.style.transform = '';
-                btn.style.animationPlayState = '';
             });
         });
     }
 
     // Page fade-out on internal navigation
-    document.querySelectorAll('a[href]').forEach((link) => {
-        const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel')) return;
-        link.addEventListener('click', (e) => {
+    document.querySelectorAll('a[href]').forEach(function (link) {
+        var href = link.getAttribute('href');
+        if (!href || href[0] === '#' || /^(https?:|mailto:|tel:)/.test(href)) return;
+        link.addEventListener('click', function (e) {
             if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
             e.preventDefault();
             document.body.style.transition = 'opacity 0.25s ease';
             document.body.style.opacity = '0';
-            setTimeout(() => { window.location.href = href; }, 260);
+            setTimeout(function () { window.location.href = href; }, 260);
         });
     });
 });
-
-// Smooth scroll for navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// All custom cursor JS removed. Only native pointer with SVG glow remains.
