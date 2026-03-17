@@ -36,17 +36,11 @@ function formatDate(dateStr) {
    2. Article rendering
    ---------------------------------------------------------- */
 function buildCard(article) {
-    const card = document.createElement('article');
+    const card = document.createElement('a');
     card.className = 'article-card clickable-card fade-up';
-    card.setAttribute('role', 'link');
-    card.setAttribute('tabindex', '0');
+    card.href = article.link;
     card.setAttribute('data-type', article.type || 'article');
-
-    // Navigate on click or Enter key press
-    card.addEventListener('click', () => { window.location.href = article.link; });
-    card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { window.location.href = article.link; }
-    });
+    card.setAttribute('aria-label', 'Read: ' + (article.title || 'article'));
 
     card.innerHTML =
         '<div class="card-media">' +
@@ -56,7 +50,7 @@ function buildCard(article) {
             '<p class="article-date">' + escHtml(formatDate(article.date)) + '</p>' +
             '<h3>' + escHtml(article.title) + '</h3>' +
             '<p>' + escHtml(article.summary) + '</p>' +
-            '<a href="' + escHtml(article.link) + '" class="read-more">Read more →</a>' +
+            '<span class="read-more" aria-hidden="true">Read more →</span>' +
         '</div>';
 
     return card;
@@ -143,10 +137,51 @@ function initScrollAnimations() {
    4. Back-to-top button
    ---------------------------------------------------------- */
 function initBackToTop() {
+    const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('.to-top').forEach(function (btn) {
         btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: noMotion ? 'auto' : 'smooth' });
         });
+    });
+}
+
+/* ----------------------------------------------------------
+   5b. Contact form (contact.html)
+   Uses mailto so static hosting still works without a backend.
+   ---------------------------------------------------------- */
+function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) { return; }
+
+    const status = document.getElementById('contactStatus');
+    const contactEmail = form.getAttribute('data-contact-email') || 'contact@e3initiative.org';
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = form.querySelector('#name') ? form.querySelector('#name').value.trim() : '';
+        const email = form.querySelector('#email') ? form.querySelector('#email').value.trim() : '';
+        const subject = form.querySelector('#subject') ? form.querySelector('#subject').value.trim() : '';
+        const message = form.querySelector('#message') ? form.querySelector('#message').value.trim() : '';
+
+        const emailSubject = subject || 'Website inquiry from e3 Initiative';
+        const emailBody = [
+            'Name: ' + name,
+            'Email: ' + email,
+            '',
+            message
+        ].join('\n');
+
+        const mailto = 'mailto:' + encodeURIComponent(contactEmail) +
+            '?subject=' + encodeURIComponent(emailSubject) +
+            '&body=' + encodeURIComponent(emailBody);
+
+        if (status) {
+            status.textContent = 'Opening your email app...';
+        }
+
+        window.location.href = mailto;
+        form.reset();
     });
 }
 
@@ -180,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initScrollAnimations();
     populateGrids();
     initBackToTop();
+    initContactForm();
     initFilters();
 });
 
@@ -191,9 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Scroll progress bar
-    var progressBar = document.createElement('div');
-    progressBar.className = 'progress-bar';
-    document.body.prepend(progressBar);
+    var progressBar = null;
+    if (!noMotion) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        document.body.prepend(progressBar);
+    }
 
     // Scroll handler: progress bar + navbar compact + pillar parallax
     var ticking = false;
@@ -205,7 +244,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var docH = document.documentElement.scrollHeight - window.innerHeight;
 
             // Progress bar
-            progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
+            if (progressBar && docH > 0) {
+                progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
+            }
 
             // Navbar compact
             var navbar = document.querySelector('.navbar');
@@ -261,16 +302,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Page fade-out on internal navigation
-    document.querySelectorAll('a[href]').forEach(function (link) {
-        var href = link.getAttribute('href');
-        if (!href || href[0] === '#' || /^(https?:|mailto:|tel:)/.test(href)) return;
-        link.addEventListener('click', function (e) {
-            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            e.preventDefault();
-            document.body.style.transition = 'opacity 0.25s ease';
-            document.body.style.opacity = '0';
-            setTimeout(function () { window.location.href = href; }, 260);
+    // Page fade-out on internal navigation (disabled for reduced motion)
+    if (!noMotion) {
+        document.querySelectorAll('a[href]').forEach(function (link) {
+            var href = link.getAttribute('href');
+            if (!href || href[0] === '#' || /^(https?:|mailto:|tel:)/.test(href)) return;
+            link.addEventListener('click', function (e) {
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                e.preventDefault();
+                document.body.style.transition = 'opacity 0.25s ease';
+                document.body.style.opacity = '0';
+                setTimeout(function () { window.location.href = href; }, 260);
+            });
         });
-    });
+    }
 });
