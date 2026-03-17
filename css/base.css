@@ -456,6 +456,9 @@ img {
     background: #000000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    display: block;
+    color: inherit;
+    text-decoration: none;
 }
 
 .article-card.clickable-card {
@@ -484,6 +487,15 @@ img {
 
 .read-more:hover {
     text-decoration: underline;
+}
+
+.inline-link {
+    color: #ffffff;
+    text-underline-offset: 2px;
+}
+
+.inline-link:hover {
+    color: #d1d5db;
 }
 
 /* Forms */
@@ -843,12 +855,34 @@ footer {
         --duration: 0;
         scroll-behavior: auto;
     }
+
+    .scroll-indicator {
+        animation: none;
+    }
+
+    .btn:hover,
+    .submit-btn:hover,
+    .to-top:hover,
+    .pillar-card:hover,
+    .feature-card:hover,
+    .article-card:hover {
+        transform: none;
+    }
 }
 
 @media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
     .nav-links {
+        width: 100%;
         gap: 0.5rem;
         font-size: 0.9rem;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .hero h1 {
