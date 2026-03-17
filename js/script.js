@@ -227,9 +227,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Scroll progress bar
-    var progressBar = document.createElement('div');
-    progressBar.className = 'progress-bar';
-    document.body.prepend(progressBar);
+    var progressBar = null;
+    if (!noMotion) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        document.body.prepend(progressBar);
+    }
 
     // Scroll handler: progress bar + navbar compact + pillar parallax
     var ticking = false;
@@ -241,7 +244,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var docH = document.documentElement.scrollHeight - window.innerHeight;
 
             // Progress bar
-            progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
+            if (progressBar && docH > 0) {
+                progressBar.style.width = Math.min((scrollY / docH) * 100, 100) + '%';
+            }
 
             // Navbar compact
             var navbar = document.querySelector('.navbar');

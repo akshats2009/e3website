@@ -44,4 +44,13 @@ h2 {
     opacity: 1;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .fade-up,
+    .fade-up.in-view {
+        transform: none;
+        opacity: 1;
+        transition: none;
+    }
+}
+
 /* END */
