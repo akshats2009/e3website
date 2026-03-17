@@ -36,11 +36,9 @@ function formatDate(dateStr) {
    2. Article rendering
    ---------------------------------------------------------- */
 function buildCard(article) {
-    const card = document.createElement('a');
-    card.className = 'article-card clickable-card fade-up';
-    card.href = article.link;
+    const card = document.createElement('article');
+    card.className = 'article-card fade-up';
     card.setAttribute('data-type', article.type || 'article');
-    card.setAttribute('aria-label', 'Read: ' + (article.title || 'article'));
 
     card.innerHTML =
         '<div class="card-media">' +
@@ -50,7 +48,7 @@ function buildCard(article) {
             '<p class="article-date">' + escHtml(formatDate(article.date)) + '</p>' +
             '<h3>' + escHtml(article.title) + '</h3>' +
             '<p>' + escHtml(article.summary) + '</p>' +
-            '<span class="read-more" aria-hidden="true">Read more →</span>' +
+            '<a href="' + escHtml(article.link) + '" class="read-more">Read more →</a>' +
         '</div>';
 
     return card;
@@ -172,7 +170,7 @@ function initContactForm() {
             message
         ].join('\n');
 
-        const mailto = 'mailto:' + encodeURIComponent(contactEmail) +
+        const mailto = 'mailto:' + contactEmail +
             '?subject=' + encodeURIComponent(emailSubject) +
             '&body=' + encodeURIComponent(emailBody);
 
