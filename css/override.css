@@ -65,4 +65,326 @@ h3 {
     }
 }
 
+/* Hamburger menu button */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 201;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Settings panel */
+.settings-panel {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100vh;
+    background: #111111;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 200;
+    padding: 80px 24px 24px;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.settings-panel.open {
+    right: 0;
+}
+
+.settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 199;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.settings-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.settings-panel h3 {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+.settings-group {
+    margin-bottom: 28px;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.settings-row label {
+    font-size: 0.95rem;
+    color: #ffffff;
+}
+
+/* Theme toggle switch */
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    background: #333;
+    border-radius: 13px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: background 0.3s ease;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.toggle-switch.active {
+    background: #4f7df9;
+}
+
+.toggle-switch.active::after {
+    transform: translateX(22px);
+}
+
+/* Font size buttons */
+.font-size-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.font-size-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.font-size-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.font-size-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffffff;
+}
+
+/* Light mode theme */
+body.light-mode {
+    background: #f5f5f5 !important;
+    color: #1a1a1a !important;
+}
+
+body.light-mode .navbar {
+    background: #ffffff !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .nav-links a {
+    color: #555 !important;
+}
+
+body.light-mode .nav-links a.active {
+    color: #1a1a1a !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .nav-links a:hover {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .logo,
+body.light-mode .logo-title {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .logo-subtitle {
+    color: #666 !important;
+}
+
+body.light-mode .menu-toggle span {
+    background: #1a1a1a;
+}
+
+body.light-mode .hero {
+    color: #ffffff !important;
+}
+
+body.light-mode .hero .logo-title,
+body.light-mode .hero .logo-subtitle {
+    color: #ffffff !important;
+}
+
+body.light-mode .subtitle,
+body.light-mode .section-header p,
+body.light-mode p {
+    color: #555 !important;
+}
+
+body.light-mode .hero p,
+body.light-mode .hero .subtitle {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.light-mode .pillar-card,
+body.light-mode .feature-card,
+body.light-mode .article-card {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .pillar-card:hover,
+body.light-mode .feature-card:hover,
+body.light-mode .article-card:hover {
+    background: #f0f0f0 !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .pillar-card h3,
+body.light-mode .article-card h3,
+body.light-mode h1, body.light-mode h2, body.light-mode h3 {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .hero h1 {
+    color: #ffffff !important;
+}
+
+body.light-mode .page-header h1 {
+    color: #ffffff !important;
+}
+
+body.light-mode .article-date {
+    color: #888 !important;
+}
+
+body.light-mode .btn {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border-color: #1a1a1a !important;
+}
+
+body.light-mode .main-footer {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+body.light-mode .main-footer p,
+body.light-mode .main-footer a,
+body.light-mode .main-footer .logo {
+    color: #ffffff !important;
+}
+
+body.light-mode .liquid-glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .liquid-glass h2,
+body.light-mode .liquid-glass p {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .settings-panel {
+    background: #ffffff;
+    border-left-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .settings-panel label,
+body.light-mode .settings-panel h3 {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .settings-panel h3 {
+    color: #888 !important;
+}
+
+body.light-mode .font-size-btn {
+    color: #1a1a1a;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode .font-size-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .font-size-btn.active {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: #1a1a1a;
+}
+
+body.light-mode .contact-form input,
+body.light-mode .contact-form textarea {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-mode .content-section,
+body.light-mode .pillars {
+    color: #1a1a1a !important;
+}
+
+/* Font size scaling */
+body.font-small { font-size: 14px !important; }
+body.font-normal { font-size: 16px !important; }
+body.font-large { font-size: 18px !important; }
+body.font-xlarge { font-size: 20px !important; }
+
 /* END */

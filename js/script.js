@@ -1,9 +1,17 @@
 /* =========================================================
    e3 Initiative – main script
    Handles: article rendering, scroll animations, back-to-top,
-            article filtering, and date formatting.
+            article filtering, date formatting, and settings panel.
    No external dependencies.
    ========================================================= */
+
+/* Apply saved preferences immediately to prevent flash */
+(function () {
+    var theme = localStorage.getItem('e3-theme');
+    if (theme === 'light') document.body.classList.add('light-mode');
+    var size = localStorage.getItem('e3-font-size');
+    if (size) document.body.classList.add(size);
+})();
 
 /* ----------------------------------------------------------
    1. Utilities
@@ -209,7 +217,74 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Bootstrap on DOMContentLoaded
+   6. Settings panel (hamburger menu)
+   ---------------------------------------------------------- */
+function initSettingsPanel() {
+    var toggle = document.querySelector('.menu-toggle');
+    var panel = document.querySelector('.settings-panel');
+    var overlay = document.querySelector('.settings-overlay');
+    if (!toggle || !panel) return;
+
+    function openPanel() {
+        toggle.classList.add('active');
+        panel.classList.add('open');
+        if (overlay) overlay.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closePanel() {
+        toggle.classList.remove('active');
+        panel.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+        if (panel.classList.contains('open')) closePanel();
+        else openPanel();
+    });
+
+    if (overlay) overlay.addEventListener('click', closePanel);
+
+    // Dark/light mode toggle
+    var themeToggle = document.getElementById('themeToggle');
+    if (themeToggle) {
+        var savedTheme = localStorage.getItem('e3-theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.classList.add('active');
+        }
+
+        themeToggle.addEventListener('click', function () {
+            themeToggle.classList.toggle('active');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('e3-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        });
+    }
+
+    // Font size controls
+    var sizes = ['font-small', 'font-normal', 'font-large', 'font-xlarge'];
+    var savedSize = localStorage.getItem('e3-font-size') || 'font-normal';
+    document.body.classList.add(savedSize);
+
+    document.querySelectorAll('.font-size-btn').forEach(function (btn) {
+        if (btn.getAttribute('data-size') === savedSize) btn.classList.add('active');
+
+        btn.addEventListener('click', function () {
+            var size = btn.getAttribute('data-size');
+            sizes.forEach(function (s) { document.body.classList.remove(s); });
+            document.body.classList.add(size);
+            localStorage.setItem('e3-font-size', size);
+
+            document.querySelectorAll('.font-size-btn').forEach(function (b) {
+                b.classList.toggle('active', b === btn);
+            });
+        });
+    });
+}
+
+/* ----------------------------------------------------------
+   7. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
     initScrollAnimations();
@@ -217,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initBackToTop();
     initContactForm();
     initFilters();
+    initSettingsPanel();
 });
 
 /* ----------------------------------------------------------

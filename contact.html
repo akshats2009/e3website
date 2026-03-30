@@ -58,8 +58,31 @@
                 <li><a href="articles.html">Articles</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
             </ul>
+            <button class="menu-toggle" aria-label="Open settings menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
+
+    <div class="settings-overlay"></div>
+    <div class="settings-panel">
+        <div class="settings-group">
+            <h3>Theme</h3>
+            <div class="settings-row">
+                <label>Light mode</label>
+                <button class="toggle-switch" id="themeToggle" aria-label="Toggle light mode"></button>
+            </div>
+        </div>
+        <div class="settings-group">
+            <h3>Font Size</h3>
+            <div class="font-size-controls">
+                <button class="font-size-btn" data-size="font-small" aria-label="Small font">A-</button>
+                <button class="font-size-btn" data-size="font-normal" aria-label="Normal font">A</button>
+                <button class="font-size-btn" data-size="font-large" aria-label="Large font">A+</button>
+                <button class="font-size-btn" data-size="font-xlarge" aria-label="Extra large font">A++</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Page Header -->
     <section class="page-header">
