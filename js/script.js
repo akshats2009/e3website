@@ -1,7 +1,7 @@
 /* =========================================================
    e3 Initiative – main script
-   Handles: article rendering, scroll animations, back-to-top,
-            article filtering, and date formatting.
+   Handles: article rendering, back-to-top, article filtering,
+            and date formatting.
    No external dependencies.
    ========================================================= */
 
@@ -37,7 +37,7 @@ function formatDate(dateStr) {
    ---------------------------------------------------------- */
 function buildCard(article) {
     const card = document.createElement('article');
-    card.className = 'article-card clickable-card fade-up';
+    card.className = 'article-card clickable-card';
     card.setAttribute('role', 'link');
     card.setAttribute('tabindex', '0');
     card.setAttribute('data-type', article.type || 'article');
@@ -102,50 +102,16 @@ function populateGrids() {
 
         // Hide the loading/status message on success
         if (statusEl) { statusEl.style.display = 'none'; }
-
-        // Attach fade-up observer to newly created cards
-        observeElements(grid.querySelectorAll('.article-card'));
     });
 }
 
 /* ----------------------------------------------------------
-   3. Scroll animations via IntersectionObserver
-   ---------------------------------------------------------- */
-var scrollObserver = null;
-
-function createObserver() {
-    if (!('IntersectionObserver' in window)) { return null; }
-    return new IntersectionObserver(function (entries, obs) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                obs.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-}
-
-function observeElements(elements) {
-    if (!scrollObserver) { return; }
-    elements.forEach(function (el) { scrollObserver.observe(el); });
-}
-
-function initScrollAnimations() {
-    scrollObserver = createObserver();
-    const selector = '.pillar-card, .feature-card, .team-card, .liquid-glass, .section-header';
-    document.querySelectorAll(selector).forEach(function (el) {
-        el.classList.add('fade-up');
-    });
-    observeElements(document.querySelectorAll('.fade-up'));
-}
-
-/* ----------------------------------------------------------
-   4. Back-to-top button
+   3. Back-to-top button
    ---------------------------------------------------------- */
 function initBackToTop() {
     document.querySelectorAll('.to-top').forEach(function (btn) {
         btn.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo(0, 0);
         });
     });
 
@@ -159,7 +125,7 @@ function initBackToTop() {
 }
 
 /* ----------------------------------------------------------
-   5. Article filtering (articles.html)
+   4. Article filtering (articles.html)
    ---------------------------------------------------------- */
 function initFilters() {
     document.querySelectorAll('[data-filter]').forEach(function (btn) {
@@ -182,7 +148,7 @@ function initFilters() {
 }
 
 /* ----------------------------------------------------------
-   6. Parallax effects
+   5. Parallax effects
    ---------------------------------------------------------- */
 function initParallax() {
     var banners = document.querySelectorAll('.page-header-image img');
@@ -243,7 +209,7 @@ function initParallax() {
 }
 
 /* ----------------------------------------------------------
-   7. Settings panel (theme + font size)
+   6. Settings panel (theme + font size)
    ---------------------------------------------------------- */
 var FONT_SIZES = { small: '0.9', normal: '1', large: '1.15' };
 
@@ -350,7 +316,6 @@ function applyFontSize(size) {
 document.addEventListener('DOMContentLoaded', function () {
     initSettings();
     initParallax();
-    initScrollAnimations();
     populateGrids();
     initBackToTop();
     initFilters();
