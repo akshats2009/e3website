@@ -18,6 +18,10 @@ h2 {
     font-size: clamp(2rem, 4vw, 3.5rem) !important;
 }
 
+h3 {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem) !important;
+}
+
 /* Hero background image */
 .hero {
     background-size: cover !important;
