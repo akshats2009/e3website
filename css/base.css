@@ -96,14 +96,19 @@ img {
 
 .navbar .container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    gap: 3rem;
-    padding-left: 20px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .logo-branding {
     margin-left: 0;
+    padding-left: 10px;
+}
+
+.nav-links {
+    margin: 0 auto;
 }
 
 .logo-branding {
@@ -255,7 +260,7 @@ img {
     align-items: center;
     justify-content: center;
     transition: color 0.2s, background 0.2s;
-    margin-left: 12px;
+    margin-right: 10px;
 }
 
 .settings-btn:hover {
