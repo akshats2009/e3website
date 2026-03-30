@@ -18,6 +18,14 @@ h2 {
     font-size: clamp(2rem, 4vw, 3.5rem) !important;
 }
 
+/* Hero background image */
+.hero {
+    background-size: cover !important;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    padding: 160px 0 120px !important;
+}
+
 /* Card Improvements - Bento feel */
 .pillar-card, .feature-card, .article-card {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
