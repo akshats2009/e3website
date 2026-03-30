@@ -111,6 +111,7 @@ img {
     flex-direction: column;
     align-items: flex-start;
     line-height: 1.1;
+    margin-left: -10px;
 }
 
 .logo-branding .logo-title {
@@ -676,7 +677,7 @@ html.light-mode .team-card {
 }
 
 .team-bio {
-    color: #d1d5db;
+    color: var(--muted);
     line-height: 1.7;
 }
 
