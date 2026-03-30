@@ -95,20 +95,13 @@ img {
 }
 
 .navbar .container {
+    position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.logo-branding {
-    margin-left: 0;
-    padding-left: 10px;
-}
-
-.nav-links {
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    min-height: 68px;
+    padding: 0;
 }
 
 .logo-branding {
@@ -116,7 +109,9 @@ img {
     flex-direction: column;
     align-items: flex-start;
     line-height: 1.1;
-    margin-left: -20px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
 }
 
 .logo {
@@ -151,12 +146,16 @@ img {
 }
 
 .nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     list-style: none;
     gap: 2rem;
     align-items: center;
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
 
 .nav-links li {
@@ -260,7 +259,9 @@ img {
     align-items: center;
     justify-content: center;
     transition: color 0.2s, background 0.2s;
-    margin-right: 10px;
+    margin-left: auto;
+    margin-right: 0;
+    flex-shrink: 0;
 }
 
 .settings-btn:hover {
