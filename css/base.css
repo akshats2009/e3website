@@ -96,9 +96,14 @@ img {
 
 .navbar .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding-left: 0;
+    gap: 3rem;
+    padding-left: 20px;
+}
+
+.logo-branding {
+    margin-left: 0;
 }
 
 .logo-branding {
