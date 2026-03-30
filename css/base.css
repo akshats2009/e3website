@@ -98,12 +98,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.logo {
-    font-size: 1.4rem;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    padding-left: 0;
 }
 
 .logo-branding {
@@ -111,7 +106,13 @@ img {
     flex-direction: column;
     align-items: flex-start;
     line-height: 1.1;
-    margin-left: -60px;
+    padding-left: 10px;
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
 }
 
 .logo-branding .logo-title {
