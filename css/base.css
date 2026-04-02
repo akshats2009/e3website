@@ -101,7 +101,7 @@ img {
     width: 100%;
     max-width: none;
     min-height: 68px;
-    padding: 0;
+    padding: 0 48px;
 }
 
 .logo-branding {
