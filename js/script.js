@@ -314,9 +314,61 @@ function applyFontSize(size) {
 }
 
 /* ----------------------------------------------------------
+   Mobile navigation (hamburger menu)
+   ---------------------------------------------------------- */
+function initMobileNav() {
+    var navbar = document.querySelector('.navbar .container');
+    var navLinks = document.querySelector('.nav-links');
+    if (!navbar || !navLinks) { return; }
+
+    var hamburger = document.createElement('button');
+    hamburger.className = 'hamburger';
+    hamburger.setAttribute('aria-label', 'Toggle navigation');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+
+    // Insert before settings button if it exists, else append
+    var settingsBtn = navbar.querySelector('.settings-btn');
+    if (settingsBtn) {
+        navbar.insertBefore(hamburger, settingsBtn);
+    } else {
+        navbar.appendChild(hamburger);
+    }
+
+    function closeMenu() {
+        navLinks.classList.remove('mobile-open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isOpen = navLinks.classList.toggle('mobile-open');
+        hamburger.classList.toggle('open', isOpen);
+        hamburger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Close when a nav link is clicked
+    navLinks.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+        if (!navbar.contains(e.target)) { closeMenu(); }
+    });
+
+    // Close on resize to desktop
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) { closeMenu(); }
+    });
+}
+
+/* ----------------------------------------------------------
    7. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
+    initMobileNav();
     initSettings();
     initParallax();
     populateGrids();
