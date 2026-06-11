@@ -238,7 +238,7 @@
         var grid = document.getElementById('grantsGrid');
         if (!grid) { return; }
 
-        fetch('data/grants.json')
+        fetch('data/grants.json', { cache: 'no-cache' })
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 state.grants = Array.isArray(data) ? data : [];
