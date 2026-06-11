@@ -1359,6 +1359,10 @@ html.light-mode .scroll-indicator:hover {
 
     .nav-links li {
         width: 100%;
+        /* Stack the dropdown toggle and its (always-open) submenu vertically
+           instead of inheriting the desktop row layout from .nav-links li. */
+        flex-direction: column;
+        align-items: stretch;
     }
 
     .nav-links a,
