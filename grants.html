@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grant Finder | e3 Initiative - Grants for Small Businesses & Nonprofits</title>
+    <meta name="description" content="Find grants for small businesses and nonprofits. Describe your organization and our AI matches you to relevant funding, or filter by eligibility, category, amount, and deadline.">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Grant Finder | e3 Initiative">
+    <meta property="og:description" content="An AI-powered grant database for small businesses and nonprofits. Describe your organization and get matched to relevant funding opportunities.">
+    <meta property="og:image" content="https://e3initiative.org/logo.png">
+    <meta property="og:url" content="https://e3initiative.org/grants.html">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Grant Finder | e3 Initiative">
+    <meta name="twitter:description" content="An AI-powered grant database for small businesses and nonprofits.">
+    <meta name="twitter:image" content="https://e3initiative.org/logo.png">
+
+    <link rel="canonical" href="https://e3initiative.org/grants.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
+    <link rel="stylesheet" href="css/grants.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Grant Finder | e3 Initiative",
+      "url": "https://e3initiative.org/grants.html",
+      "description": "An AI-powered grant database for small businesses and nonprofits, covering eligibility, category, funding amount, and deadlines.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "e3 Initiative",
+        "url": "https://e3initiative.org/",
+        "logo": "https://e3initiative.org/logo.png"
+      }
+    }
+    </script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar main-nav">
+        <div class="container">
+            <div class="logo logo-branding">
+                <span class="logo-title">e3 Initiative</span>
+                <span class="logo-subtitle">Ethnicity &nbsp; | &nbsp; Economics &nbsp; | &nbsp; Equity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Publications</button>
+                    <ul class="nav-dropdown-menu" role="list">
+                        <li><a href="articles.html">Articles</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="journals.html">Journals</a></li>
+                    </ul>
+                </li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="grants.html" class="active">Grants</a></li>
+                <li class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Outreach</button>
+                    <ul class="nav-dropdown-menu" role="list">
+                        <li><a href="outreach.html#interview">Interview</a></li>
+                        <li><a href="outreach.html#partnerships">Partnerships</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="settings-btn" aria-label="Settings">⚙️</button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Grant Finder</h1>
+        </div>
+    </section>
+
+    <!-- AI finder + grant database -->
+    <section class="content-section">
+        <div class="container">
+            <div>
+                <h2>Funding for small businesses and nonprofits</h2>
+                <p>Describe your organization in a sentence or two and our AI will surface the grants that fit best. Or browse the full database and filter by who qualifies, category, award size, and deadline.</p>
+            </div>
+
+            <!-- AI search -->
+            <div class="grant-finder">
+                <h2>Describe your organization</h2>
+                <p class="finder-hint">e.g. who you are, what you do, where you're based, and what you need funding for.</p>
+                <div class="finder-row">
+                    <textarea id="finderInput" rows="2" placeholder="I run a women-owned coffee shop in Chicago and want funding to buy new equipment…"></textarea>
+                    <button class="btn" id="finderBtn" type="button">Find grants</button>
+                </div>
+                <div class="finder-examples">
+                    <span>Try:</span>
+                    <button class="example-chip" type="button" data-query="I run a small women-owned bakery and need money for new equipment">Women-owned bakery</button>
+                    <button class="example-chip" type="button" data-query="We are a nonprofit arts organization running community theater programs">Nonprofit arts org</button>
+                    <button class="example-chip" type="button" data-query="I am a veteran starting a technology company and looking for startup funding">Veteran tech startup</button>
+                </div>
+                <p class="finder-status" id="finderStatus" aria-live="polite"></p>
+            </div>
+
+            <!-- AI results header (shown after a search) -->
+            <div class="finder-results-header" id="finderResultsHeader" style="display:none;">
+                <h2>Recommended for you</h2>
+                <button class="clear-search" id="clearSearch" type="button">Clear search · show all grants</button>
+            </div>
+
+            <!-- Filters (hidden while AI results are showing) -->
+            <h2 id="grantFiltersHeading" style="margin-top:2.5rem;">Browse all grants</h2>
+            <div class="grant-filters" id="grantFilters">
+                <div class="filter-group">
+                    <label for="filter-eligibility">Eligibility</label>
+                    <select id="filter-eligibility"></select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-category">Category</label>
+                    <select id="filter-category"></select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-amount">Funding amount</label>
+                    <select id="filter-amount"></select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">Status</label>
+                    <select id="filter-status"></select>
+                </div>
+            </div>
+
+            <p class="grant-count" id="grantCount" aria-live="polite">Loading grants…</p>
+            <p class="grant-empty" id="grantEmpty" style="display:none;">No grants match these filters. Try widening them.</p>
+            <div class="grants-grid" id="grantsGrid"></div>
+
+            <p class="grant-disclaimer">
+                Grant details (award amounts, deadlines, and eligibility) change frequently. Always confirm the current terms on the funder's official page before applying. The AI finder offers suggestions, not eligibility determinations or guarantees of funding.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="logo">e3 Initiative</div>
+                <p class="footer-note">Equity-focused research for community impact.</p>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="articles.html">Articles</a>
+                <a href="research.html">Research</a>
+                <a href="journals.html">Journals</a>
+                <a href="events.html">Events</a>
+                <a href="grants.html" class="active">Grants</a>
+                <a href="outreach.html">Outreach</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-actions">
+                <button class="to-top" type="button" aria-label="Navigate to the top">Back to top ↑</button>
+                <p class="footer-copyright">&copy; 2026 e3 Initiative. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/grants.js"></script>
+</body>
+</html>

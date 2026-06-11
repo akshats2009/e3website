@@ -1,0 +1,314 @@
+/* ----------------------------------------------------------
+   Grant database — AI finder, filters, and card grid
+   Inherits theme variables (--bg, --text, --muted, --gutter…) from base.css
+   ---------------------------------------------------------- */
+
+/* AI search panel */
+.grant-finder {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 18px;
+    background: var(--bg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+html.light-mode .grant-finder {
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.grant-finder h2 {
+    margin-bottom: 0.4rem;
+}
+
+.grant-finder .finder-hint {
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-size: 0.98rem;
+}
+
+.finder-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.grant-finder textarea {
+    flex: 1 1 320px;
+    min-height: 56px;
+    resize: vertical;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+}
+
+html.light-mode .grant-finder textarea {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.grant-finder textarea:focus-visible {
+    outline: none;
+    border-color: var(--text);
+}
+
+.finder-examples {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.finder-examples span {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.example-chip {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--muted);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.example-chip:hover {
+    color: var(--text);
+    border-color: var(--text);
+}
+
+html.light-mode .example-chip {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* AI results banner */
+.finder-status {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    min-height: 1.2em;
+}
+
+.finder-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0 0.5rem;
+}
+
+.finder-results-header h2 {
+    margin: 0;
+}
+
+.clear-search {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--muted);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.clear-search:hover { color: var(--text); border-color: var(--text); }
+html.light-mode .clear-search { border-color: rgba(0, 0, 0, 0.2); }
+
+/* Filter bar */
+.grant-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 2.5rem 0 0.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+html.light-mode .grant-filters { border-bottom-color: rgba(0, 0, 0, 0.1); }
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.filter-group label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+}
+
+.filter-group select {
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    min-width: 170px;
+}
+
+html.light-mode .filter-group select { border-color: rgba(0, 0, 0, 0.2); }
+
+.grant-count {
+    margin: 1.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Grant grid + cards */
+.grants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.grant-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-radius: 18px;
+    background: var(--bg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: transform var(--duration) ease, box-shadow var(--duration) ease, border-color var(--duration);
+}
+
+html.light-mode .grant-card {
+    border-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.grant-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(255, 255, 255, 0.08);
+}
+
+html.light-mode .grant-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.grant-card .grant-funder {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+}
+
+.grant-card h3 {
+    font-size: 1.2rem;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+}
+
+.grant-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.85rem;
+}
+
+.grant-tag {
+    font-size: 0.74rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+html.light-mode .grant-tag { border-color: rgba(0, 0, 0, 0.18); }
+
+.grant-tag.status-open { color: #34d399; border-color: rgba(52, 211, 153, 0.5); }
+.grant-tag.status-rolling { color: #60a5fa; border-color: rgba(96, 165, 250, 0.5); }
+.grant-tag.status-closed { color: #9ca3af; border-color: rgba(156, 163, 175, 0.4); }
+
+.grant-card .grant-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.grant-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.1rem;
+}
+
+.grant-meta .grant-meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.grant-meta .grant-meta-row .label { color: var(--muted); }
+.grant-meta .grant-meta-row .value { color: var(--text); text-align: right; }
+
+/* AI "why it fits" callout on matched cards */
+.grant-reason {
+    background: rgba(96, 165, 250, 0.12);
+    border-left: 3px solid #60a5fa;
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 1.1rem;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.grant-reason strong {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #60a5fa;
+    margin-bottom: 0.2rem;
+}
+
+.grant-card .grant-apply {
+    margin-top: auto;
+    align-self: flex-start;
+    text-decoration: none;
+}
+
+.grant-disclaimer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+html.light-mode .grant-disclaimer { border-top-color: rgba(0, 0, 0, 0.1); }
+
+.grant-empty {
+    margin-top: 2rem;
+    color: var(--muted);
+}
+
+@media (max-width: 768px) {
+    .grants-grid { grid-template-columns: 1fr; }
+    .filter-group select { min-width: 0; width: 100%; }
+    .filter-group { flex: 1 1 140px; }
+}

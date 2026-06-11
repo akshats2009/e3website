@@ -1,0 +1,10 @@
+{
+  "name": "e3website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "e3 Initiative website — static site with an AI-powered grant finder serverless function.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.0"
+  }
+}
