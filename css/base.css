@@ -23,6 +23,14 @@
     --duration: 0.3s;
     --bg: #000000;
     --font-scale: 1;
+    /* Shared horizontal page gutter — keeps the navbar aligned with content */
+    --gutter: 20px;
+    /* Navbar's own horizontal inset (wider than the page gutter). The settings
+       panel tracks this so it stays aligned with the settings button. */
+    --nav-gutter: 48px;
+    /* Single source of truth for the centered content column width.
+       The navbar and settings panel both derive their alignment from this. */
+    --content-max: 1120px;
 }
 
 html.light-mode {
@@ -59,9 +67,9 @@ img {
 }
 
 .container {
-    max-width: 1120px;
+    max-width: var(--content-max);
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 var(--gutter);
 }
 
 .section-header {
@@ -94,14 +102,14 @@ img {
     transition: background var(--duration);
 }
 
+/* Width and centering come from the base .container rule; the navbar uses a
+   wider horizontal inset (--nav-gutter) than the page gutter. */
 .navbar .container {
     position: relative;
     display: flex;
     align-items: center;
-    width: 100%;
-    max-width: none;
     min-height: 68px;
-    padding: 0 48px;
+    padding: 0 var(--nav-gutter);
 }
 
 .logo-branding {
@@ -112,6 +120,10 @@ img {
     margin: 0;
     padding: 0;
     flex-shrink: 0;
+    /* Stay above the centered (absolute) nav-links so the brand and the
+       settings button remain clickable even if they ever visually overlap. */
+    position: relative;
+    z-index: 2;
 }
 
 .logo {
@@ -262,6 +274,9 @@ img {
     margin-left: auto;
     margin-right: 0;
     flex-shrink: 0;
+    /* Keep above the centered (absolute) nav-links so it stays clickable. */
+    position: relative;
+    z-index: 2;
 }
 
 .settings-btn:hover {
@@ -277,7 +292,11 @@ html.light-mode .settings-btn:hover {
 .settings-panel {
     position: fixed;
     top: 64px;
-    right: 20px;
+    /* Track the settings button: the content column is capped at --content-max
+       and centered, so past that width the right inset grows with the viewport.
+       (--content-max / 2 is the half-width the centered column extends; the
+       button sits --nav-gutter in from the column edge.) */
+    right: max(var(--nav-gutter), calc(50vw - var(--content-max) / 2 + var(--nav-gutter)));
     width: 220px;
     background: var(--bg);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1232,7 +1251,33 @@ html.light-mode .scroll-indicator:hover {
     }
 }
 
+/* Below this width the centered nav can't clear the logo, so drop it onto
+   its own full-width row under the brand instead of overlapping it. */
+@media (max-width: 1024px) {
+    .navbar .container {
+        flex-wrap: wrap;
+        row-gap: 0.4rem;
+    }
+
+    .nav-links {
+        position: static;
+        transform: none;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .settings-btn {
+        order: 2;
+    }
+}
+
 @media (max-width: 768px) {
+    :root {
+        --gutter: 16px;
+    }
+
     .nav-links {
         gap: 0.5rem;
         font-size: 0.9rem;
