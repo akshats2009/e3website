@@ -5,15 +5,12 @@
 // Requires the ANTHROPIC_API_KEY environment variable (set in the Vercel
 // project settings). If it is missing, the endpoint returns 503 and the
 // frontend falls back to manual filtering.
+//
+// CommonJS + require() of the JSON catalog so Vercel bundles the data file
+// automatically (no extra config needed). The SDK is loaded lazily inside the
+// handler so the no-key path never depends on it.
 
-import { readFileSync } from 'node:fs';
-import Anthropic from '@anthropic-ai/sdk';
-
-// Load the grant catalog once at cold start (single source of truth shared
-// with the browser, which fetches the same file).
-const GRANTS = JSON.parse(
-  readFileSync(new URL('../data/grants.json', import.meta.url), 'utf8'),
-);
+const GRANTS = require('../data/grants.json');
 
 const MODEL = 'claude-opus-4-8';
 const MAX_QUERY_CHARS = 1500;
@@ -64,7 +61,7 @@ const RESULT_SCHEMA = {
   additionalProperties: false,
 };
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed.' });
@@ -94,6 +91,10 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Lazy-load the SDK so the no-key path above never depends on it.
+    const pkg = require('@anthropic-ai/sdk');
+    const Anthropic = pkg && pkg.default ? pkg.default : pkg;
+
     const client = new Anthropic();
     const message = await client.messages.create({
       model: MODEL,
@@ -112,7 +113,7 @@ export default async function handler(req, res) {
     const results = (parsed.matches || [])
       .map((m) => {
         const grant = byName.get(m.name);
-        return grant ? { ...grant, reason: m.reason, score: m.score } : null;
+        return grant ? Object.assign({}, grant, { reason: m.reason, score: m.score }) : null;
       })
       .filter(Boolean)
       .sort((a, b) => (b.score || 0) - (a.score || 0))
@@ -125,4 +126,4 @@ export default async function handler(req, res) {
       error: 'The AI search had a problem. Try again, or use the filters below.',
     });
   }
-}
+};
