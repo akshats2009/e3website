@@ -1,0 +1,6 @@
+.vercel
+.DS_Store
+node_modules/
+
+# Separate side project (its own Next.js app) — not part of the website
+Environmental Economics Project/

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Economic Indicators | e3 Initiative</title>
+    <meta name="description" content="Interactive economic indicator charts from 2000 to present, including CPI, PPI, Fed funds, unemployment, payrolls, and 10Y yield.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta property="og:title" content="Economic Indicators Dashboard | e3 Initiative">
+    <meta property="og:description" content="Track CPI, core inflation, producer prices, labor market, Fed funds, and Treasury yield trends with interactive charts from 2000 to present.">
+    <meta property="og:image" content="https://e3initiative.org/logo.png">
+    <meta property="og:url" content="https://e3initiative.org/economic-indicators.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="e3 Initiative">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Economic Indicators Dashboard | e3 Initiative">
+    <meta name="twitter:description" content="Interactive charts for inflation, rates, and labor indicators with historical trend data since 2000.">
+    <meta name="twitter:image" content="https://e3initiative.org/logo.png">
+
+    <link rel="canonical" href="https://e3initiative.org/economic-indicators.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/liquid-glass.css">
+    <link rel="stylesheet" href="css/override.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Economic Indicators Dashboard",
+      "url": "https://e3initiative.org/economic-indicators.html",
+      "description": "Interactive economic indicator charts tracking inflation, interest rates, labor market, and bond yield trends from 2000 to present.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "e3 Initiative",
+        "url": "https://e3initiative.org/"
+      },
+      "about": [
+        { "@type": "Thing", "name": "Consumer Price Index" },
+        { "@type": "Thing", "name": "Producer Price Index" },
+        { "@type": "Thing", "name": "Federal Funds Rate" },
+        { "@type": "Thing", "name": "Unemployment Rate" },
+        { "@type": "Thing", "name": "Treasury Yield" }
+      ]
+    }
+    </script>
+    <style>
+        #economic-indicators .section-header {
+            margin-bottom: 2.75rem;
+        }
+
+        #economic-indicators .section-header h2 {
+            margin-bottom: 1.75rem;
+        }
+
+        #economic-indicators .section-header p {
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        #economic-indicators .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        #economic-indicators .feature-card > p:not(.article-date) {
+            margin-bottom: 1.15rem;
+            line-height: 1.75;
+        }
+
+        #economic-indicators .feature-card .article-date {
+            margin-top: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            #economic-indicators .section-header {
+                margin-bottom: 2rem;
+            }
+
+            #economic-indicators .section-header h2 {
+                margin-bottom: 1.1rem;
+            }
+
+            #economic-indicators .section-header p {
+                line-height: 1.72;
+            }
+
+            #economic-indicators .feature-grid {
+                grid-template-columns: 1fr !important;
+                margin-top: 1.25rem;
+                gap: 1rem;
+            }
+
+            #economic-indicators .feature-card {
+                padding: 1.15rem;
+            }
+
+            #economic-indicators .indicator-chart {
+                height: 152px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar main-nav">
+        <div class="container">
+            <div class="logo logo-branding">
+                <span class="logo-title">e3 Initiative</span>
+                <span class="logo-subtitle">Ethnicity &nbsp; | &nbsp; Economics &nbsp; | &nbsp; Equity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Publications</button>
+                    <ul class="nav-dropdown-menu" role="list">
+                        <li><a href="articles.html">Articles</a></li>
+                        <li><a href="research.html">Research</a></li>
+                        <li><a href="journals.html">Journals</a></li>
+                    </ul>
+                </li>
+                <li><a href="economic-indicators.html" class="active">Economic Indicators</a></li>
+                <li class="nav-dropdown">
+                    <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">Outreach</button>
+                    <ul class="nav-dropdown-menu" role="list">
+                        <li><a href="outreach.html#interview">Interview</a></li>
+                        <li><a href="outreach.html#partnerships">Partnerships</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="settings-btn" aria-label="Settings"></button>
+        </div>
+    </nav>
+
+    <!-- Interactive Indicators -->
+    <section class="content-section" id="economic-indicators">
+        <div class="container">
+            <div class="section-header">
+                <h2>Interactive Dashboard</h2>
+                <p>These charts help explain everyday costs, job security, and borrowing rates. Hover any line to see how conditions have changed since 2000.</p>
+            </div>
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <article class="feature-card" data-indicator-key="cpi">
+                    <h3>Inflation: CPI</h3>
+                    <p>CPI tracks the prices people pay for common items like groceries, rent, and transportation. If CPI rises quickly, your paycheck usually buys less.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="CPI chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="core_cpi">
+                    <h3>Inflation: Core CPI</h3>
+                    <p>Core CPI removes food and energy, which jump around a lot. It shows whether inflation pressure is broad and persistent, not just a temporary shock.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="Core CPI chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="ppi">
+                    <h3>Inflation: PPI</h3>
+                    <p>PPI measures what businesses pay for materials and production. When it rises, companies often pass those costs to consumers later.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="PPI chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="core_pce">
+                    <h3>Inflation: Core PCE</h3>
+                    <p>Core PCE is the inflation measure the Fed watches most closely. It can influence interest-rate decisions that affect loans, mortgages, and credit cards.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="Core PCE chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="fed_funds">
+                    <h3>Rates: Fed Funds</h3>
+                    <p>This is the benchmark short-term interest rate set through Fed policy. Higher rates usually mean more expensive borrowing and slower spending.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="Fed funds chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="unemployment">
+                    <h3>Labor: Unemployment</h3>
+                    <p>The unemployment rate shows the share of people who want a job but cannot find one. Rising unemployment usually signals stress in the economy.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="Unemployment chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="payrolls">
+                    <h3>Labor: Nonfarm Payrolls</h3>
+                    <p>Payrolls count how many jobs employers added or lost. Strong payroll growth often means more hiring and healthier household income.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="Nonfarm payrolls chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+                <article class="feature-card" data-indicator-key="ten_year">
+                    <h3>Growth/Rates: 10Y Yield & Curve</h3>
+                    <p>The 10-year Treasury yield reflects long-term growth and inflation expectations. It influences mortgage rates and can signal how confident markets are about the future.</p>
+                    <div style="margin-top: 0.9rem;">
+                        <canvas class="indicator-chart" width="460" height="170" style="width: 100%; height: 170px; display: block;" aria-label="10-year yield chart starting from year 2000" role="img"></canvas>
+                    </div>
+                    <p class="article-date">Timeline: 2000 to present</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div>
+                <div class="logo">e3 Initiative</div>
+                <p class="footer-note">Equity-focused research for community impact.</p>
+            </div>
+            <div class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="articles.html">Articles</a>
+                <a href="research.html">Research</a>
+                <a href="journals.html">Journals</a>
+                <a href="outreach.html">Outreach</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-actions">
+                <button class="to-top" type="button" aria-label="Navigate to the top">Back to top ↑</button>
+                <p class="footer-copyright">&copy; 2026 e3 Initiative. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

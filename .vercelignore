@@ -1,0 +1,7 @@
+# Separate side project (its own Next.js app + node_modules) — not part of the website
+Environmental Economics Project/
+
+# Local/editor cruft
+.DS_Store
+node_modules
+.git
