@@ -158,16 +158,12 @@ img {
 }
 
 .nav-links {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     list-style: none;
     gap: 2rem;
     align-items: center;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
-    z-index: 1;
 }
 
 .nav-links li {
@@ -271,7 +267,7 @@ img {
     align-items: center;
     justify-content: center;
     transition: color 0.2s, background 0.2s;
-    margin-left: auto;
+    margin-left: 0;
     margin-right: 0;
     flex-shrink: 0;
     /* Keep above the centered (absolute) nav-links so it stays clickable. */
