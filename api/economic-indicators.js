@@ -99,25 +99,61 @@ function parseFredCsv(csvText, transform) {
   return { averagedByYear, lastDate };
 }
 
+// FRED's bot protection rejects browser-impersonating User-Agents and throttles
+// bursts of concurrent requests from datacenter IPs. A simple identifying UA
+// plus sequential, retried, time-bounded requests keeps us under the limit.
+const FRED_HEADERS = {
+  "User-Agent": "e3-initiative-bot/1.0 (+https://e3-initiative.org)",
+  Accept: "text/csv,*/*",
+};
+
+async function fetchOnce(url, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      cache: "no-store",
+      headers: FRED_HEADERS,
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    return await response.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function fetchFredSeries(seriesId) {
   const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesId}`;
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`Failed ${seriesId} (${response.status})`);
+  let lastError;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await fetchOnce(url, 12000);
+    } catch (error) {
+      lastError = error;
+    }
   }
-  return response.text();
+  throw new Error(
+    `Failed ${seriesId}: ${lastError && lastError.message ? lastError.message : "unknown"}`
+  );
 }
 
 module.exports = async function handler(req, res) {
   try {
     const entries = Object.entries(SERIES_CONFIG);
-    const settled = await Promise.allSettled(
-      entries.map(async ([key, cfg]) => {
+    // Sequential (not Promise.all) to avoid tripping FRED's per-IP rate limiting.
+    const settled = [];
+    for (const [key, cfg] of entries) {
+      try {
         const csv = await fetchFredSeries(cfg.id);
         const parsed = parseFredCsv(csv, cfg.transform);
-        return [key, parsed];
-      })
-    );
+        settled.push({ status: "fulfilled", value: [key, parsed] });
+      } catch (error) {
+        settled.push({ status: "rejected", reason: error });
+      }
+    }
 
     const validSeries = {};
     let maxObservedYear = START_YEAR;
