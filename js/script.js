@@ -365,7 +365,61 @@ function initMobileNav() {
 }
 
 /* ----------------------------------------------------------
-   7. Bootstrap on DOMContentLoaded
+   7. Contact form (FormSubmit.co AJAX)
+   ---------------------------------------------------------- */
+var CONTACT_ENDPOINT = 'https://formsubmit.co/ajax/akshatsawner11@gmail.com';
+
+function initContactForm() {
+    var form = document.getElementById('contactForm');
+    if (!form) { return; }
+
+    var status = document.getElementById('contactStatus');
+    var submitBtn = form.querySelector('button[type="submit"]');
+
+    function setStatus(message, state) {
+        if (!status) { return; }
+        status.textContent = message;
+        if (state) { status.setAttribute('data-state', state); }
+        else { status.removeAttribute('data-state'); }
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Honeypot tripped — silently pretend success, drop the submission.
+        if (form.elements._honey && form.elements._honey.value) { return; }
+
+        setStatus('Sending…', null);
+        if (submitBtn) { submitBtn.disabled = true; }
+
+        fetch(CONTACT_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form)
+        })
+            .then(function (res) {
+                return res.json().catch(function () { return {}; }).then(function (data) {
+                    if (!res.ok) { throw new Error((data && data.message) || ('HTTP ' + res.status)); }
+                    var ok = data && (data.success === true || data.success === 'true');
+                    if (!ok) { throw new Error((data && data.message) || 'Submission failed'); }
+                    return data;
+                });
+            })
+            .then(function () {
+                form.reset();
+                setStatus('Thanks! Your message has been sent — we’ll reply within two business days.', 'success');
+            })
+            .catch(function () {
+                setStatus('Sorry, something went wrong. Please email us directly at akshatsawner11@gmail.com.', 'error');
+            })
+            .then(function () {
+                if (submitBtn) { submitBtn.disabled = false; }
+            });
+    });
+}
+
+/* ----------------------------------------------------------
+   8. Bootstrap on DOMContentLoaded
    ---------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function () {
     initMobileNav();
@@ -374,4 +428,5 @@ document.addEventListener('DOMContentLoaded', function () {
     populateGrids();
     initBackToTop();
     initFilters();
+    initContactForm();
 });

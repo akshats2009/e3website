@@ -90,3 +90,8 @@ html.light-mode .article-card:hover {
 
 
 /* END */
+
+/* Contact form submission status */
+.form-status { margin-top: 0.85rem; min-height: 1.2em; font-size: 0.95rem; }
+.form-status[data-state="success"] { color: #58cf9f; }
+.form-status[data-state="error"] { color: #ff9383; }

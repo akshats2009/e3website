@@ -102,7 +102,13 @@
                 </div>
             </div>
 
-            <form class="contact-form" id="contactForm">
+            <form class="contact-form" id="contactForm" action="https://formsubmit.co/akshatsawner11@gmail.com" method="POST">
+                <!-- FormSubmit config -->
+                <input type="hidden" name="_subject" value="New e3 Initiative contact message">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <!-- Honeypot: bots fill this, humans don't -->
+                <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
                 <div class="form-group">
                     <label for="name">Name *</label>
                     <input type="text" id="name" name="name" required>
