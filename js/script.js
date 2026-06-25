@@ -409,7 +409,8 @@ function initContactForm() {
                 form.reset();
                 setStatus('Thanks! Your message has been sent — we’ll reply within two business days.', 'success');
             })
-            .catch(function () {
+            .catch(function (err) {
+                if (window.console && console.warn) { console.warn('Contact form submission failed:', err && err.message); }
                 setStatus('Sorry, something went wrong. Please email us directly at akshatsawner11@gmail.com.', 'error');
             })
             .then(function () {
