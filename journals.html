@@ -27,6 +27,67 @@
     <link rel="stylesheet" href="css/liquid-glass.css">
     <link rel="stylesheet" href="css/override.css">
 
+    <style>
+        /* DVD-screensaver bouncing logo */
+        .dvd-stage {
+            position: relative;
+            width: 100%;
+            height: clamp(320px, 46vh, 520px);
+            margin: 2rem 0 3rem;
+            border-radius: 18px;
+            overflow: hidden;
+            background:
+                radial-gradient(120% 120% at 50% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+                rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35);
+        }
+        html.light-mode .dvd-stage {
+            background: radial-gradient(120% 120% at 50% 0%, rgba(0, 0, 0, 0.04), transparent 60%), rgba(0, 0, 0, 0.02);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.06);
+        }
+        .dvd-logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: clamp(110px, 15vw, 168px);
+            will-change: transform, filter;
+        }
+        .dvd-logo img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        /* Fallback shown only if the logo image is missing/fails to load */
+        .dvd-logo__fallback {
+            display: none;
+        }
+        .dvd-logo--fallback .dvd-logo__fallback {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 18px 16px;
+            border-radius: 8px;
+            background: #e9eaee;
+            color: #1c2b46;
+            font-weight: 700;
+            font-size: 1.15rem;
+            line-height: 1.05;
+            text-align: left;
+        }
+        .dvd-logo__fallback small {
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            opacity: 0.85;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .dvd-logo { transition: none; }
+        }
+    </style>
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -93,6 +154,16 @@
     <section class="content-section">
         <div class="container">
             <p>Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.</p>
+
+            <div class="dvd-stage" id="dvdStage" aria-hidden="true">
+                <div class="dvd-logo" id="dvdLogo">
+                    <img src="image/critical-debates-logo.png"
+                         alt="Critical Debates in Humanities, Science and Global Justice"
+                         onerror="this.style.display='none'; this.parentElement.classList.add('dvd-logo--fallback');">
+                    <span class="dvd-logo__fallback">Critical Debates<small>in Humanities, Science and Global Justice</small></span>
+                </div>
+            </div>
+
             <p id="journalsStatus" aria-live="polite">Loading journals…</p>
             <div class="articles-grid" id="journalsGrid" data-type="journal"></div>
         </div>
@@ -125,5 +196,57 @@
 
     <script src="data/articles.js"></script>
     <script src="js/script.js"></script>
+
+    <!-- DVD-screensaver bounce for the Critical Debates logo -->
+    <script>
+        (function () {
+            var stage = document.getElementById('dvdStage');
+            var logo = document.getElementById('dvdLogo');
+            if (!stage || !logo) return;
+
+            var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            var x = 24, y = 24, vx = 2.4, vy = 1.9, hue = 0;
+
+            function place() { logo.style.transform = 'translate(' + x + 'px, ' + y + 'px)'; }
+
+            if (reduce) {
+                // Respect reduced-motion: center the logo, no animation.
+                x = Math.max(0, (stage.clientWidth - logo.offsetWidth) / 2);
+                y = Math.max(0, (stage.clientHeight - logo.offsetHeight) / 2);
+                place();
+                return;
+            }
+
+            function step() {
+                var sw = stage.clientWidth, sh = stage.clientHeight;
+                var lw = logo.offsetWidth, lh = logo.offsetHeight;
+                x += vx; y += vy;
+                var bounced = false;
+
+                if (x <= 0) { x = 0; vx = Math.abs(vx); bounced = true; }
+                else if (x + lw >= sw) { x = sw - lw; vx = -Math.abs(vx); bounced = true; }
+
+                if (y <= 0) { y = 0; vy = Math.abs(vy); bounced = true; }
+                else if (y + lh >= sh) { y = sh - lh; vy = -Math.abs(vy); bounced = true; }
+
+                if (bounced) {
+                    hue = (hue + 47) % 360;
+                    logo.style.filter = 'hue-rotate(' + hue + 'deg)';
+                }
+
+                place();
+                requestAnimationFrame(step);
+            }
+
+            // Keep the logo inside the box if the viewport/stage is resized.
+            window.addEventListener('resize', function () {
+                x = Math.min(x, Math.max(0, stage.clientWidth - logo.offsetWidth));
+                y = Math.min(y, Math.max(0, stage.clientHeight - logo.offsetHeight));
+            });
+
+            requestAnimationFrame(step);
+        })();
+    </script>
 </body>
 </html>
