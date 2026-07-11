@@ -206,7 +206,7 @@
 
             var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            var x = 24, y = 24, vx = 2.4, vy = 1.9, hue = 0;
+            var x = 24, y = 24, vx = 2.4, vy = 1.9;
 
             function place() { logo.style.transform = 'translate(' + x + 'px, ' + y + 'px)'; }
 
@@ -222,18 +222,12 @@
                 var sw = stage.clientWidth, sh = stage.clientHeight;
                 var lw = logo.offsetWidth, lh = logo.offsetHeight;
                 x += vx; y += vy;
-                var bounced = false;
 
-                if (x <= 0) { x = 0; vx = Math.abs(vx); bounced = true; }
-                else if (x + lw >= sw) { x = sw - lw; vx = -Math.abs(vx); bounced = true; }
+                if (x <= 0) { x = 0; vx = Math.abs(vx); }
+                else if (x + lw >= sw) { x = sw - lw; vx = -Math.abs(vx); }
 
-                if (y <= 0) { y = 0; vy = Math.abs(vy); bounced = true; }
-                else if (y + lh >= sh) { y = sh - lh; vy = -Math.abs(vy); bounced = true; }
-
-                if (bounced) {
-                    hue = (hue + 47) % 360;
-                    logo.style.filter = 'hue-rotate(' + hue + 'deg)';
-                }
+                if (y <= 0) { y = 0; vy = Math.abs(vy); }
+                else if (y + lh >= sh) { y = sh - lh; vy = -Math.abs(vy); }
 
                 place();
                 requestAnimationFrame(step);
