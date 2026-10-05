@@ -1,0 +1,40 @@
+name: Labeled browser validation
+on:
+  workflow_dispatch:
+    inputs:
+      sessions:
+        description: 'Synthetic test sessions (1–20; three pages each)'
+        required: true
+        default: '3'
+permissions:
+  contents: read
+concurrency:
+  group: e3-browser-validation
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate configuration
+        run: node --test scripts/browser-test.test.cjs
+      - name: Install isolated test dependency
+        run: npm install --prefix /tmp/e3-browser-test --no-audit --no-fund playwright@1.62.1
+      - name: Install Chromium
+        run: /tmp/e3-browser-test/node_modules/.bin/playwright install --with-deps chromium
+      - name: Run labeled browsing test
+        env:
+          TEST_SESSIONS: ${{ inputs.sessions }}
+          NODE_PATH: /tmp/e3-browser-test/node_modules
+        run: node scripts/browser-test.cjs
+      - name: Save test report and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e3-browser-validation-${{ github.run_id }}
+          path: test-results/
+          retention-days: 7
