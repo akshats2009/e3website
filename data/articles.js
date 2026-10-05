@@ -1,5 +1,14 @@
 window.articlesData = [
   {
+    "title": "Chinese Labor and the Transcontinental Railroad: The Uncredited Contributions and Lost Legacy",
+    "date": "2026-10-04",
+    "summary": "Minghao Gu examines the dangerous labor, resistance, and overlooked legacy of Chinese immigrants who helped build the Transcontinental Railroad.",
+    "image": "image/chinese-workers-summit-tunnel.jpg",
+    "imageAlt": "Chinese railroad workers among rocks near the opening of Summit Tunnel, 1865–1867",
+    "link": "articles/chinese-labor-transcontinental-railroad.html",
+    "type": "article"
+  },
+  {
     "title": "Beyond Restaurants and Boba Cafes: The Historical and Modern Economic Solidarity of Chinatown",
     "date": "2026-03-11",
     "summary": "Full research paper by Minghao Gu examining the historical origins, cultural preservation, and modern resilience of Chinatown as an ethnic economy built on solidarity, identity, and community.",
