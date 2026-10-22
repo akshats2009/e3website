@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grant Finder | e3 Initiative - Grants for Small Businesses & Nonprofits</title>
-    <meta name="description" content="Find grants for small businesses and nonprofits. Describe your organization and our AI matches you to relevant funding, or filter by eligibility, category, amount, and deadline.">
+    <meta name="description" content="Find grants for small businesses and nonprofits. Search by keyword or filter by eligibility, category, amount, and deadline.">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Grant Finder | e3 Initiative">
-    <meta property="og:description" content="An AI-powered grant database for small businesses and nonprofits. Describe your organization and get matched to relevant funding opportunities.">
+    <meta property="og:description" content="A searchable grant database for small businesses and nonprofits. Search by keyword to find relevant funding opportunities.">
     <meta property="og:image" content="https://e3initiative.org/logo.png">
     <meta property="og:url" content="https://e3initiative.org/grants.html">
     <meta property="og:type" content="website">
@@ -16,7 +16,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Grant Finder | e3 Initiative">
-    <meta name="twitter:description" content="An AI-powered grant database for small businesses and nonprofits.">
+    <meta name="twitter:description" content="A searchable grant database for small businesses and nonprofits.">
     <meta name="twitter:image" content="https://e3initiative.org/logo.png">
 
     <link rel="canonical" href="https://e3initiative.org/grants.html">
@@ -34,7 +34,7 @@
       "@type": "CollectionPage",
       "name": "Grant Finder | e3 Initiative",
       "url": "https://e3initiative.org/grants.html",
-      "description": "An AI-powered grant database for small businesses and nonprofits, covering eligibility, category, funding amount, and deadlines.",
+      "description": "A searchable grant database for small businesses and nonprofits, covering eligibility, category, funding amount, and deadlines.",
       "publisher": {
         "@type": "Organization",
         "name": "e3 Initiative",
@@ -91,38 +91,38 @@
         </div>
     </section>
 
-    <!-- AI finder + grant database -->
+    <!-- Grant search + grant database -->
     <section class="content-section">
         <div class="container">
             <div>
                 <h2>Funding for small businesses and nonprofits</h2>
-                <p>Describe your organization in a sentence or two and our AI will surface the grants that fit best. Or browse the full database and filter by who qualifies, category, award size, and deadline.</p>
+                <p>Search by keyword to find grants that fit your organization, or browse the full database and filter by who qualifies, category, award size, and deadline.</p>
             </div>
 
-            <!-- AI search -->
+            <!-- Keyword search -->
             <div class="grant-finder">
-                <h2>Describe your organization</h2>
-                <p class="finder-hint">e.g. who you are, what you do, where you're based, and what you need funding for.</p>
+                <h2>Search grants</h2>
+                <p class="finder-hint">Enter keywords such as what you do, where you're based, or who you are.</p>
                 <div class="finder-row">
-                    <textarea id="finderInput" rows="2" placeholder="I run a women-owned coffee shop in Chicago and want funding to buy new equipment…"></textarea>
-                    <button class="btn" id="finderBtn" type="button">Find grants</button>
+                    <textarea id="finderInput" rows="2" placeholder="women-owned coffee shop Chicago equipment"></textarea>
+                    <button class="btn" id="finderBtn" type="button">Search</button>
                 </div>
                 <div class="finder-examples">
                     <span>Try:</span>
-                    <button class="example-chip" type="button" data-query="I run a small women-owned bakery and need money for new equipment">Women-owned bakery</button>
-                    <button class="example-chip" type="button" data-query="We are a nonprofit arts organization running community theater programs">Nonprofit arts org</button>
-                    <button class="example-chip" type="button" data-query="I am a veteran starting a technology company and looking for startup funding">Veteran tech startup</button>
+                    <button class="example-chip" type="button" data-query="women-owned bakery equipment">Women-owned bakery</button>
+                    <button class="example-chip" type="button" data-query="nonprofit arts theater">Nonprofit arts org</button>
+                    <button class="example-chip" type="button" data-query="veteran technology startup">Veteran tech startup</button>
                 </div>
                 <p class="finder-status" id="finderStatus" aria-live="polite"></p>
             </div>
 
-            <!-- AI results header (shown after a search) -->
+            <!-- Search results header (shown after a search) -->
             <div class="finder-results-header" id="finderResultsHeader" style="display:none;">
-                <h2>Recommended for you</h2>
+                <h2>Search results</h2>
                 <button class="clear-search" id="clearSearch" type="button">Clear search · show all grants</button>
             </div>
 
-            <!-- Filters (hidden while AI results are showing) -->
+            <!-- Filters (hidden while search results are showing) -->
             <h2 id="grantFiltersHeading" style="margin-top:2.5rem;">Browse all grants</h2>
             <div class="grant-filters" id="grantFilters">
                 <div class="filter-group">
@@ -148,7 +148,7 @@
             <div class="grants-grid" id="grantsGrid"></div>
 
             <p class="grant-disclaimer">
-                Grant details (award amounts, deadlines, and eligibility) change frequently. Always confirm the current terms on the funder's official page before applying. The AI finder offers suggestions, not eligibility determinations or guarantees of funding.
+                Grant details (award amounts, deadlines, and eligibility) change frequently. Always confirm the current terms on the funder's official page before applying. Keyword search results are suggestions based on matching words, not eligibility determinations or guarantees of funding.
             </p>
         </div>
     </section>

@@ -1,8 +1,7 @@
 /* ----------------------------------------------------------
-   Grant database — browse, filter, and AI-powered matching
-   Loads data/grants.json, renders a filterable grid, and calls
-   /api/grant-finder for natural-language search. The grid works fully
-   without the AI endpoint; AI search is a progressive enhancement.
+   Grant database — keyword search, browse, and filter
+   Loads data/grants.json, renders a filterable grid, and runs a
+   simple keyword search over the same data in the browser.
    ---------------------------------------------------------- */
 (function () {
     'use strict';
@@ -29,6 +28,13 @@
 
     var STATUS_LABELS = { open: 'Open', rolling: 'Rolling', closed: 'Closed' };
 
+    // Common words ignored by the keyword search
+    var STOPWORDS = [
+        'a', 'an', 'and', 'are', 'at', 'be', 'by', 'do', 'for', 'from', 'have', 'i',
+        'in', 'is', 'it', 'me', 'my', 'need', 'of', 'on', 'or', 'our', 'run', 'that',
+        'the', 'this', 'to', 'want', 'we', 'with'
+    ];
+
     // Funding-amount buckets for the filter (label -> [min, max])
     var AMOUNT_BUCKETS = [
         { value: '', label: 'Any amount' },
@@ -38,7 +44,7 @@
         { value: '100000-', label: '$100K+', min: 100000, max: Infinity }
     ];
 
-    var state = { grants: [], aiMatches: null };
+    var state = { grants: [], searchResults: null };
 
     function esc(s) {
         return String(s == null ? '' : s)
@@ -64,15 +70,15 @@
             '<span class="grant-tag">' + esc(ELIGIBILITY_LABELS[g.eligibility] || g.eligibility) + '</span>' +
             '<span class="grant-tag">' + esc(CATEGORY_LABELS[g.category] || g.category) + '</span>';
 
-        var reason = g.reason
-            ? '<div class="grant-reason"><strong>Why it fits</strong>' + esc(g.reason) + '</div>'
+        var matched = g.matched
+            ? '<div class="grant-reason"><strong>Matched on</strong>' + esc(g.matched) + '</div>'
             : '';
 
         card.innerHTML =
             '<p class="grant-funder">' + esc(g.funder) + '</p>' +
             '<h3>' + esc(g.name) + '</h3>' +
             '<div class="grant-tags">' + tags + '</div>' +
-            reason +
+            matched +
             '<p class="grant-desc">' + esc(g.description) + '</p>' +
             '<div class="grant-meta">' +
                 '<div class="grant-meta-row"><span class="label">Award</span><span class="value">' + esc(g.amount) + '</span></div>' +
@@ -116,9 +122,9 @@
         grid.innerHTML = '';
 
         var list;
-        if (state.aiMatches) {
-            // AI mode: show only the matched grants, in ranked order (no client filtering)
-            list = state.aiMatches;
+        if (state.searchResults) {
+            // Search mode: show only the matched grants, best match first
+            list = state.searchResults;
         } else {
             var f = currentFilters();
             list = state.grants.filter(function (g) { return passesFilters(g, f); });
@@ -131,7 +137,7 @@
         }
         emptyEl.style.display = 'none';
         countEl.textContent = list.length + (list.length === 1 ? ' grant' : ' grants') +
-            (state.aiMatches ? ' matched' : ' shown');
+            (state.searchResults ? ' matched' : ' shown');
 
         list.forEach(function (g) { grid.appendChild(buildCard(g)); });
     }
@@ -172,8 +178,8 @@
 
         ['filter-eligibility', 'filter-category', 'filter-amount', 'filter-status'].forEach(function (id) {
             document.getElementById(id).addEventListener('change', function () {
-                // Changing a filter exits AI-results mode
-                clearAiResults();
+                // Changing a filter exits search-results mode
+                clearSearchResults();
                 renderGrid();
             });
         });
@@ -183,55 +189,90 @@
         document.getElementById('finderStatus').textContent = msg || '';
     }
 
-    function clearAiResults() {
-        state.aiMatches = null;
+    function clearSearchResults() {
+        state.searchResults = null;
         document.getElementById('finderResultsHeader').style.display = 'none';
         document.getElementById('grantFiltersHeading').style.display = '';
         document.getElementById('grantFilters').style.display = '';
     }
 
-    function runAiSearch() {
+    // Split the search text into lowercase keywords, dropping short words and stopwords
+    function tokenize(text) {
+        return String(text || '').toLowerCase().split(/[^a-z0-9$]+/).filter(function (t) {
+            return t.length > 1 && STOPWORDS.indexOf(t) === -1;
+        });
+    }
+
+    // Score one grant against the keywords. Each keyword earns the weight of the
+    // most important field it appears in: name > funder/category > everything else.
+    function scoreGrant(g, tokens) {
+        var fields = [
+            [g.name, 3],
+            [g.funder, 2],
+            [CATEGORY_LABELS[g.category] || g.category, 2],
+            [ELIGIBILITY_LABELS[g.eligibility], 1],
+            [g.description, 1],
+            [g.notes, 1]
+        ].map(function (f) { return [String(f[0] || '').toLowerCase(), f[1]]; });
+
+        var score = 0;
+        var hits = [];
+        tokens.forEach(function (t) {
+            var best = 0;
+            fields.forEach(function (f) {
+                if (f[0].indexOf(t) !== -1 && f[1] > best) { best = f[1]; }
+            });
+            if (best > 0) {
+                score += best;
+                hits.push(t);
+            }
+        });
+        return { score: score, hits: hits };
+    }
+
+    function runSearch() {
         var input = document.getElementById('finderInput');
         var query = input.value.trim();
         if (!query) { input.focus(); return; }
 
-        var btn = document.getElementById('finderBtn');
-        btn.disabled = true;
-        setStatus('Searching grants for the best fit…');
+        var tokens = tokenize(query);
+        if (tokens.length === 0) {
+            setStatus('Try a few keywords, like "women-owned", "arts", or "Chicago".');
+            return;
+        }
 
-        fetch('/api/grant-finder', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query: query })
-        })
-            .then(function (r) {
-                return r.json().then(function (data) { return { ok: r.ok, data: data }; });
-            })
-            .then(function (res) {
-                btn.disabled = false;
-                if (!res.ok) {
-                    // 503 (not configured) or other error -> fall back to filters
-                    setStatus(res.data && res.data.error ? res.data.error : 'Search unavailable — use the filters below.');
-                    return;
-                }
-                var matches = (res.data && res.data.matches) || [];
-                if (matches.length === 0) {
-                    setStatus('No strong matches found. Try rephrasing, or browse all grants with the filters below.');
-                    return;
-                }
-                setStatus('');
-                state.aiMatches = matches;
-                // Hide manual filters while showing AI results to avoid confusion
-                document.getElementById('grantFilters').style.display = 'none';
-                document.getElementById('grantFiltersHeading').style.display = 'none';
-                document.getElementById('finderResultsHeader').style.display = 'flex';
-                renderGrid();
-                document.getElementById('finderResultsHeader').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            })
-            .catch(function () {
-                btn.disabled = false;
-                setStatus('Could not reach the AI search. Browse the grants with the filters below.');
-            });
+        var results = [];
+        state.grants.forEach(function (g) {
+            var s = scoreGrant(g, tokens);
+            if (s.hits.length > 0) {
+                results.push(Object.assign({}, g, {
+                    matched: s.hits.join(', '),
+                    _score: s.score,
+                    _hits: s.hits.length
+                }));
+            }
+        });
+
+        // Most keywords matched first, then strongest field matches
+        results.sort(function (a, b) {
+            return (b._hits - a._hits) || (b._score - a._score);
+        });
+
+        if (results.length === 0) {
+            document.getElementById('grantsGrid').innerHTML = '';
+            document.getElementById('grantCount').textContent = '';
+            setStatus('No grants matched those keywords. Try different words, or browse all grants with the filters below.');
+            return;
+        }
+
+        setStatus('');
+        state.searchResults = results;
+        // Hide manual filters while showing search results to avoid confusion
+        document.getElementById('grantFilters').style.display = 'none';
+        document.getElementById('grantFiltersHeading').style.display = 'none';
+        document.getElementById('finderResultsHeader').style.display = 'flex';
+        renderGrid();
+        document.getElementById('finderResultsHeader').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function init() {
@@ -252,21 +293,21 @@
                     'Could not load the grant list. Please refresh the page.';
             });
 
-        document.getElementById('finderBtn').addEventListener('click', runAiSearch);
+        document.getElementById('finderBtn').addEventListener('click', runSearch);
         document.getElementById('finderInput').addEventListener('keydown', function (e) {
             // Cmd/Ctrl + Enter submits
-            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { runAiSearch(); }
+            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { runSearch(); }
         });
         document.getElementById('clearSearch').addEventListener('click', function () {
             document.getElementById('finderInput').value = '';
             setStatus('');
-            clearAiResults();
+            clearSearchResults();
             renderGrid();
         });
         document.querySelectorAll('.example-chip').forEach(function (chip) {
             chip.addEventListener('click', function () {
                 document.getElementById('finderInput').value = chip.getAttribute('data-query') || chip.textContent;
-                runAiSearch();
+                runSearch();
             });
         });
     }
