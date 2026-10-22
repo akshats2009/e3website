@@ -88,6 +88,16 @@
     <section class="page-header">
         <div class="container">
             <h1>Grant Finder</h1>
+            <div class="grant-search-bar" role="search">
+                <input type="search" id="finderInput" placeholder="Search grants: women-owned, arts, Chicago, equipment…" aria-label="Search grants">
+                <button class="btn" id="finderBtn" type="button">Search</button>
+            </div>
+            <div class="finder-examples">
+                <span>Try:</span>
+                <button class="example-chip" type="button" data-query="women-owned bakery equipment">Women-owned bakery</button>
+                <button class="example-chip" type="button" data-query="nonprofit arts theater">Nonprofit arts org</button>
+                <button class="example-chip" type="button" data-query="veteran technology startup">Veteran tech startup</button>
+            </div>
         </div>
     </section>
 
@@ -99,31 +109,14 @@
                 <p>Search by keyword to find grants that fit your organization, or browse the full database and filter by who qualifies, category, award size, and deadline.</p>
             </div>
 
-            <!-- Keyword search -->
-            <div class="grant-finder">
-                <h2>Search grants</h2>
-                <p class="finder-hint">Enter keywords such as what you do, where you're based, or who you are.</p>
-                <div class="finder-row">
-                    <textarea id="finderInput" rows="2" placeholder="women-owned coffee shop Chicago equipment"></textarea>
-                    <button class="btn" id="finderBtn" type="button">Search</button>
-                </div>
-                <div class="finder-examples">
-                    <span>Try:</span>
-                    <button class="example-chip" type="button" data-query="women-owned bakery equipment">Women-owned bakery</button>
-                    <button class="example-chip" type="button" data-query="nonprofit arts theater">Nonprofit arts org</button>
-                    <button class="example-chip" type="button" data-query="veteran technology startup">Veteran tech startup</button>
-                </div>
-                <p class="finder-status" id="finderStatus" aria-live="polite"></p>
-            </div>
-
             <!-- Search results header (shown after a search) -->
             <div class="finder-results-header" id="finderResultsHeader" style="display:none;">
-                <h2>Search results</h2>
+                <h2 id="resultsTitle">Search results</h2>
                 <button class="clear-search" id="clearSearch" type="button">Clear search · show all grants</button>
             </div>
 
-            <!-- Filters (hidden while search results are showing) -->
-            <h2 id="grantFiltersHeading" style="margin-top:2.5rem;">Browse all grants</h2>
+            <!-- Filters (narrow both browsing and search results) -->
+            <h2 id="grantFiltersHeading" style="margin-top:2.5rem;">Filter grants</h2>
             <div class="grant-filters" id="grantFilters">
                 <div class="filter-group">
                     <label for="filter-eligibility">Eligibility</label>

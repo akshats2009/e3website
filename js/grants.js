@@ -1,7 +1,9 @@
 /* ----------------------------------------------------------
-   Grant database — keyword search, browse, and filter
-   Loads data/grants.json, renders a filterable grid, and runs a
-   simple keyword search over the same data in the browser.
+   Grant database — relevance search, browse, and filter
+   Loads data/grants.json and builds a small in-browser search index.
+   Results are ranked by relevance (BM25 over name, funder, category,
+   description, and notes). Partial words and small typos still match,
+   matched words are highlighted, and the filters narrow the results.
    ---------------------------------------------------------- */
 (function () {
     'use strict';
@@ -28,12 +30,26 @@
 
     var STATUS_LABELS = { open: 'Open', rolling: 'Rolling', closed: 'Closed' };
 
-    // Common words ignored by the keyword search
+    // Common words ignored by the search
     var STOPWORDS = [
         'a', 'an', 'and', 'are', 'at', 'be', 'by', 'do', 'for', 'from', 'have', 'i',
         'in', 'is', 'it', 'me', 'my', 'need', 'of', 'on', 'or', 'our', 'run', 'that',
         'the', 'this', 'to', 'want', 'we', 'with'
     ];
+
+    // Searchable fields and how much a match in each one counts
+    var FIELDS = [
+        { weight: 3, value: function (g) { return g.name; } },
+        { weight: 2, value: function (g) { return g.funder; } },
+        { weight: 2, value: function (g) { return CATEGORY_LABELS[g.category] || g.category; } },
+        { weight: 1, value: function (g) { return ELIGIBILITY_LABELS[g.eligibility]; } },
+        { weight: 1, value: function (g) { return g.description; } },
+        { weight: 1, value: function (g) { return g.notes; } }
+    ];
+
+    // BM25 ranking constants
+    var K1 = 1.2;
+    var B = 0.75;
 
     // Funding-amount buckets for the filter (label -> [min, max])
     var AMOUNT_BUCKETS = [
@@ -44,12 +60,16 @@
         { value: '100000-', label: '$100K+', min: 100000, max: Infinity }
     ];
 
-    var state = { grants: [], searchResults: null };
+    var state = { grants: [], index: null, query: '', words: [], results: null };
 
     function esc(s) {
         return String(s == null ? '' : s)
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function escapeRe(s) {
+        return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
     function formatDeadline(g) {
@@ -61,7 +81,17 @@
         return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
     }
 
-    function buildCard(g) {
+    // Wrap each query word in <mark>, escaping everything else
+    function highlight(text, words) {
+        var s = String(text || '');
+        if (!words.length) return esc(s);
+        var re = new RegExp('(' + words.map(escapeRe).join('|') + ')', 'gi');
+        return s.split(re).map(function (part, i) {
+            return i % 2 ? '<mark>' + esc(part) + '</mark>' : esc(part);
+        }).join('');
+    }
+
+    function buildCard(g, words) {
         var card = document.createElement('article');
         card.className = 'grant-card';
 
@@ -70,16 +100,11 @@
             '<span class="grant-tag">' + esc(ELIGIBILITY_LABELS[g.eligibility] || g.eligibility) + '</span>' +
             '<span class="grant-tag">' + esc(CATEGORY_LABELS[g.category] || g.category) + '</span>';
 
-        var matched = g.matched
-            ? '<div class="grant-reason"><strong>Matched on</strong>' + esc(g.matched) + '</div>'
-            : '';
-
         card.innerHTML =
             '<p class="grant-funder">' + esc(g.funder) + '</p>' +
-            '<h3>' + esc(g.name) + '</h3>' +
+            '<h3>' + highlight(g.name, words) + '</h3>' +
             '<div class="grant-tags">' + tags + '</div>' +
-            matched +
-            '<p class="grant-desc">' + esc(g.description) + '</p>' +
+            '<p class="grant-desc">' + highlight(g.description, words) + '</p>' +
             '<div class="grant-meta">' +
                 '<div class="grant-meta-row"><span class="label">Award</span><span class="value">' + esc(g.amount) + '</span></div>' +
                 '<div class="grant-meta-row"><span class="label">Deadline</span><span class="value">' + esc(formatDeadline(g)) + '</span></div>' +
@@ -119,27 +144,31 @@
         var grid = document.getElementById('grantsGrid');
         var countEl = document.getElementById('grantCount');
         var emptyEl = document.getElementById('grantEmpty');
-        grid.innerHTML = '';
+        var headerEl = document.getElementById('finderResultsHeader');
+        var titleEl = document.getElementById('resultsTitle');
 
-        var list;
-        if (state.searchResults) {
-            // Search mode: show only the matched grants, best match first
-            list = state.searchResults;
-        } else {
-            var f = currentFilters();
-            list = state.grants.filter(function (g) { return passesFilters(g, f); });
-        }
+        var f = currentFilters();
+        var base = state.query ? state.results : state.grants;
+        var list = base.filter(function (g) { return passesFilters(g, f); });
+
+        headerEl.style.display = state.query ? 'flex' : 'none';
+        titleEl.textContent = 'Results for "' + state.query + '"';
+
+        grid.innerHTML = '';
 
         if (list.length === 0) {
             countEl.textContent = '';
+            emptyEl.textContent = state.query
+                ? 'No grants match "' + state.query + '" with these filters. Try different words or widen the filters.'
+                : 'No grants match these filters. Try widening them.';
             emptyEl.style.display = '';
             return;
         }
         emptyEl.style.display = 'none';
         countEl.textContent = list.length + (list.length === 1 ? ' grant' : ' grants') +
-            (state.searchResults ? ' matched' : ' shown');
+            (state.query ? ' found' : ' shown');
 
-        list.forEach(function (g) { grid.appendChild(buildCard(g)); });
+        list.forEach(function (g) { grid.appendChild(buildCard(g, state.words)); });
     }
 
     function populateSelect(id, options) {
@@ -177,102 +206,137 @@
         ]);
 
         ['filter-eligibility', 'filter-category', 'filter-amount', 'filter-status'].forEach(function (id) {
-            document.getElementById(id).addEventListener('change', function () {
-                // Changing a filter exits search-results mode
-                clearSearchResults();
-                renderGrid();
-            });
+            document.getElementById(id).addEventListener('change', renderGrid);
         });
     }
 
-    function setStatus(msg) {
-        document.getElementById('finderStatus').textContent = msg || '';
+    // ---------- Search ----------
+
+    // Light suffix stripping so "bakeries", "funding", and "funded" share a root with
+    // "bakery", "fund", and "fund". Applied the same way to queries and to the index.
+    function stem(w) {
+        if (w.length > 4 && /ies$/.test(w)) return w.slice(0, -3) + 'y';
+        if (w.length > 4 && /(s|x|ch|sh)es$/.test(w)) return w.slice(0, -2);
+        if (w.length > 5 && /ing$/.test(w)) return w.slice(0, -3);
+        if (w.length > 4 && /ed$/.test(w)) return w.slice(0, -2);
+        if (w.length > 3 && /s$/.test(w) && !/ss$/.test(w)) return w.slice(0, -1);
+        return w;
     }
 
-    function clearSearchResults() {
-        state.searchResults = null;
-        document.getElementById('finderResultsHeader').style.display = 'none';
-        document.getElementById('grantFiltersHeading').style.display = '';
-        document.getElementById('grantFilters').style.display = '';
-    }
-
-    // Split the search text into lowercase keywords, dropping short words and stopwords
-    function tokenize(text) {
-        return String(text || '').toLowerCase().split(/[^a-z0-9$]+/).filter(function (t) {
+    // Lowercase words without stopwords, before stemming (used for highlighting)
+    function rawWords(text) {
+        var words = String(text || '').toLowerCase().split(/[^a-z0-9]+/).filter(function (t) {
             return t.length > 1 && STOPWORDS.indexOf(t) === -1;
         });
+        return words.filter(function (w, i) { return words.indexOf(w) === i; });
     }
 
-    // Score one grant against the keywords. Each keyword earns the weight of the
-    // most important field it appears in: name > funder/category > everything else.
-    function scoreGrant(g, tokens) {
-        var fields = [
-            [g.name, 3],
-            [g.funder, 2],
-            [CATEGORY_LABELS[g.category] || g.category, 2],
-            [ELIGIBILITY_LABELS[g.eligibility], 1],
-            [g.description, 1],
-            [g.notes, 1]
-        ].map(function (f) { return [String(f[0] || '').toLowerCase(), f[1]]; });
+    function tokenize(text) {
+        return rawWords(text).map(stem);
+    }
 
-        var score = 0;
-        var hits = [];
-        tokens.forEach(function (t) {
-            var best = 0;
-            fields.forEach(function (f) {
-                if (f[0].indexOf(t) !== -1 && f[1] > best) { best = f[1]; }
+    function levenshtein(a, b) {
+        var prev = [];
+        var j;
+        for (j = 0; j <= b.length; j++) { prev[j] = j; }
+        for (var i = 1; i <= a.length; i++) {
+            var cur = [i];
+            for (j = 1; j <= b.length; j++) {
+                cur[j] = Math.min(
+                    prev[j] + 1,
+                    cur[j - 1] + 1,
+                    prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+                );
+            }
+            prev = cur;
+        }
+        return prev[b.length];
+    }
+
+    function buildIndex(grants) {
+        var postings = {};
+        var docLen = [];
+        var total = 0;
+
+        grants.forEach(function (g, i) {
+            var len = 0;
+            FIELDS.forEach(function (field) {
+                tokenize(field.value(g)).forEach(function (t) {
+                    postings[t] = postings[t] || {};
+                    postings[t][i] = (postings[t][i] || 0) + field.weight;
+                    len += field.weight;
+                });
             });
-            if (best > 0) {
-                score += best;
-                hits.push(t);
+            docLen[i] = len;
+            total += len;
+        });
+
+        var df = {};
+        Object.keys(postings).forEach(function (t) { df[t] = Object.keys(postings[t]).length; });
+
+        return {
+            postings: postings,
+            df: df,
+            terms: Object.keys(postings),
+            docLen: docLen,
+            avgLen: grants.length ? total / grants.length : 1,
+            N: grants.length
+        };
+    }
+
+    // Index terms that count for a query word: exact (full weight), prefix (for
+    // search-as-you-type), and close spellings (for typos).
+    function expandTerm(index, qt) {
+        var out = [];
+        index.terms.forEach(function (t) {
+            if (t === qt) {
+                out.push({ term: t, mult: 1 });
+            } else if (qt.length >= 3 && t.indexOf(qt) === 0) {
+                out.push({ term: t, mult: 0.6 });
+            } else if (qt.length >= 5 && Math.abs(t.length - qt.length) <= 2 &&
+                       levenshtein(t, qt) <= (qt.length >= 9 ? 2 : 1)) {
+                out.push({ term: t, mult: 0.5 });
             }
         });
-        return { score: score, hits: hits };
+        return out;
+    }
+
+    function bm25(index, term, i) {
+        var tf = index.postings[term][i];
+        var df = index.df[term];
+        var idf = Math.log(1 + (index.N - df + 0.5) / (df + 0.5));
+        var norm = 1 - B + B * (index.docLen[i] / index.avgLen);
+        return idf * (tf * (K1 + 1)) / (tf + K1 * norm);
+    }
+
+    function search(index, grants, query) {
+        var qTokens = tokenize(query).filter(function (t, i, all) { return all.indexOf(t) === i; });
+        var scores = {};
+
+        qTokens.forEach(function (qt) {
+            expandTerm(index, qt).forEach(function (m) {
+                Object.keys(index.postings[m.term]).forEach(function (k) {
+                    var i = Number(k);
+                    scores[i] = (scores[i] || 0) + m.mult * bm25(index, m.term, i);
+                });
+            });
+        });
+
+        return Object.keys(scores)
+            .map(function (k) { return { grant: grants[Number(k)], score: scores[k] }; })
+            .sort(function (a, b) {
+                return (b.score - a.score) || a.grant.name.localeCompare(b.grant.name);
+            })
+            .map(function (r) { return r.grant; });
     }
 
     function runSearch() {
-        var input = document.getElementById('finderInput');
-        var query = input.value.trim();
-        if (!query) { input.focus(); return; }
-
-        var tokens = tokenize(query);
-        if (tokens.length === 0) {
-            setStatus('Try a few keywords, like "women-owned", "arts", or "Chicago".');
-            return;
-        }
-
-        var results = [];
-        state.grants.forEach(function (g) {
-            var s = scoreGrant(g, tokens);
-            if (s.hits.length > 0) {
-                results.push(Object.assign({}, g, {
-                    matched: s.hits.join(', '),
-                    _score: s.score,
-                    _hits: s.hits.length
-                }));
-            }
-        });
-
-        // Most keywords matched first, then strongest field matches
-        results.sort(function (a, b) {
-            return (b._hits - a._hits) || (b._score - a._score);
-        });
-
-        if (results.length === 0) {
-            document.getElementById('grantsGrid').innerHTML = '';
-            document.getElementById('grantCount').textContent = '';
-            setStatus('No grants matched those keywords. Try different words, or browse all grants with the filters below.');
-            return;
-        }
-
-        setStatus('');
-        state.searchResults = results;
-        // Hide manual filters while showing search results to avoid confusion
-        document.getElementById('grantFilters').style.display = 'none';
-        document.getElementById('grantFiltersHeading').style.display = 'none';
-        document.getElementById('finderResultsHeader').style.display = 'flex';
+        if (!state.index) { return; }
+        var q = document.getElementById('finderInput').value.trim();
+        state.query = q;
+        state.words = rawWords(q);
+        state.results = q ? search(state.index, state.grants, q) : null;
         renderGrid();
-        document.getElementById('finderResultsHeader').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function init() {
@@ -283,8 +347,10 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 state.grants = Array.isArray(data) ? data : [];
+                state.index = buildIndex(state.grants);
                 buildFilters();
                 renderGrid();
+                runSearch();
             })
             .catch(function () {
                 document.getElementById('grantCount').textContent = '';
@@ -293,20 +359,29 @@
                     'Could not load the grant list. Please refresh the page.';
             });
 
-        document.getElementById('finderBtn').addEventListener('click', runSearch);
-        document.getElementById('finderInput').addEventListener('keydown', function (e) {
-            // Cmd/Ctrl + Enter submits
-            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') { runSearch(); }
+        var input = document.getElementById('finderInput');
+        var timer = null;
+        input.addEventListener('input', function () {
+            // Search as you type, after a short pause
+            clearTimeout(timer);
+            timer = setTimeout(runSearch, 150);
         });
+        input.addEventListener('keydown', function (e) {
+            // Enter searches; Shift+Enter adds a new line
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                clearTimeout(timer);
+                runSearch();
+            }
+        });
+        document.getElementById('finderBtn').addEventListener('click', runSearch);
         document.getElementById('clearSearch').addEventListener('click', function () {
-            document.getElementById('finderInput').value = '';
-            setStatus('');
-            clearSearchResults();
-            renderGrid();
+            input.value = '';
+            runSearch();
         });
         document.querySelectorAll('.example-chip').forEach(function (chip) {
             chip.addEventListener('click', function () {
-                document.getElementById('finderInput').value = chip.getAttribute('data-query') || chip.textContent;
+                input.value = chip.getAttribute('data-query') || chip.textContent;
                 runSearch();
             });
         });

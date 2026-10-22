@@ -1,59 +1,34 @@
 /* ----------------------------------------------------------
-   Grant database — AI finder, filters, and card grid
+   Grant database — search bar, filters, and card grid
    Inherits theme variables (--bg, --text, --muted, --gutter…) from base.css
    ---------------------------------------------------------- */
 
-/* AI search panel */
-.grant-finder {
-    margin-top: 1.5rem;
-    padding: 1.5rem;
-    border-radius: 18px;
-    background: var(--bg);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-html.light-mode .grant-finder {
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.grant-finder h2 {
-    margin-bottom: 0.4rem;
-}
-
-.grant-finder .finder-hint {
-    color: var(--muted);
-    margin-bottom: 1rem;
-    font-size: 0.98rem;
-}
-
-.finder-row {
+/* Search bar in the page header */
+.grant-search-bar {
     display: flex;
     gap: 0.75rem;
-    flex-wrap: wrap;
+    max-width: 720px;
+    margin-top: 1.5rem;
 }
 
-.grant-finder textarea {
-    flex: 1 1 320px;
-    min-height: 56px;
-    resize: vertical;
-    padding: 0.85rem 1rem;
-    border-radius: 12px;
+.grant-search-bar input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.85rem 1.1rem;
+    border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: var(--bg);
     color: var(--text);
     font-family: inherit;
     font-size: 1rem;
-    line-height: 1.5;
     transition: border-color 0.2s;
 }
 
-html.light-mode .grant-finder textarea {
+html.light-mode .grant-search-bar input {
     border-color: rgba(0, 0, 0, 0.2);
 }
 
-.grant-finder textarea:focus-visible {
+.grant-search-bar input:focus-visible {
     outline: none;
     border-color: var(--text);
 }
@@ -93,13 +68,6 @@ html.light-mode .example-chip {
 }
 
 /* AI results banner */
-.finder-status {
-    margin-top: 1rem;
-    color: var(--muted);
-    font-size: 0.95rem;
-    min-height: 1.2em;
-}
-
 .finder-results-header {
     display: flex;
     align-items: center;
