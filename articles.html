@@ -9,7 +9,7 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Articles | e3 Initiative - Latest News and Community Insights 2026">
     <meta property="og:description" content="Read the latest articles and news from the e3 Initiative team covering grassroots organizing, systemic policy analysis, and community-driven perspectives on equity and economics.">
-    <meta property="og:image" content="https://e3-initiative.org/logo.png">
+    <meta property="og:image" content="https://e3-initiative.org/og-image.png">
     <meta property="og:url" content="https://e3-initiative.org/articles.html">
     <meta property="og:type" content="website">
     
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Articles | e3 Initiative - Latest News and Community Insights 2026">
     <meta name="twitter:description" content="Read the latest articles and news from the e3 Initiative team covering grassroots organizing, systemic policy analysis, and community-driven perspectives on equity and economics.">
-    <meta name="twitter:image" content="https://e3-initiative.org/logo.png">
+    <meta name="twitter:image" content="https://e3-initiative.org/og-image.png">
     
     <link rel="canonical" href="https://e3-initiative.org/articles.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,12 @@
         "@type": "Organization",
         "name": "e3 Initiative",
         "url": "https://e3-initiative.org/",
-        "logo": "https://e3-initiative.org/logo.png"
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://e3-initiative.org/logo.png",
+          "width": 512,
+          "height": 512
+        }
       }
     }
     </script>
@@ -111,8 +116,31 @@
                     <img src="https://images.unsplash.com/photo-1512314889357-e157c22f938d?auto=format&fit=crop&w=1200&q=80" alt="Pen and paper on a desk">
                 </div>
             </div>
-            <p id="articlesStatus" aria-live="polite">Loading articles…</p>
-            <div class="articles-grid" id="articlesGrid" data-type="article"></div>
+            <p id="articlesStatus" aria-live="polite"></p>
+            <div class="articles-grid" id="articlesGrid" data-type="article">
+                <article class="article-card" data-type="article">
+                    <div class="card-media">
+                        <img src="image/chinese-workers-summit-tunnel.jpg" alt="Chinese railroad workers among rocks near the opening of Summit Tunnel, 1865–1867" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <p class="article-date">October 4, 2026</p>
+                        <h3><a href="articles/chinese-labor-transcontinental-railroad.html">Chinese Labor and the Transcontinental Railroad: The Uncredited Contributions and Lost Legacy</a></h3>
+                        <p>Minghao Gu examines the dangerous labor, resistance, and overlooked legacy of Chinese immigrants who helped build the Transcontinental Railroad.</p>
+                        <a href="articles/chinese-labor-transcontinental-railroad.html" class="read-more">Read more →</a>
+                    </div>
+                </article>
+                <article class="article-card" data-type="article">
+                    <div class="card-media">
+                        <img src="image/chinatown-banner.jpg" alt="Chinatown temple decorated with lanterns at night" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <p class="article-date">February 2, 2026</p>
+                        <h3><a href="articles/chinatown-solidarity.html">Beyond Restaurants, Boba Cafes, and Souvenir Shops: The Historical and Modern Economic Solidarity of Chinatown</a></h3>
+                        <p>A historical and contemporary look at how Chinatowns foster economic solidarity, cultural preservation, and community resilience across generations.</p>
+                        <a href="articles/chinatown-solidarity.html" class="read-more">Read more →</a>
+                    </div>
+                </article>
+            </div>
         </div>
     </section>
 

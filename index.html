@@ -9,7 +9,7 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="e3 Initiative | 2026 Research on Equity, Economics, and Ethnicity">
     <meta property="og:description" content="The e3 Initiative conducts 2026 research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.">
-    <meta property="og:image" content="https://e3-initiative.org/logo.png">
+    <meta property="og:image" content="https://e3-initiative.org/og-image.png">
     <meta property="og:url" content="https://e3-initiative.org/">
     <meta property="og:type" content="website">
     
@@ -17,7 +17,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="e3 Initiative | 2026 Research on Equity, Economics, and Ethnicity">
     <meta name="twitter:description" content="The e3 Initiative conducts 2026 research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.">
-    <meta name="twitter:image" content="https://e3-initiative.org/logo.png">
+    <meta name="twitter:image" content="https://e3-initiative.org/og-image.png">
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJDGPY8QCB"></script>
@@ -40,11 +40,18 @@
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": "https://e3-initiative.org/#organization",
       "name": "e3 Initiative",
       "alternateName": "e3 - Equity, Economics, and Ethnicity Initiative",
       "url": "https://e3-initiative.org/",
-      "logo": "https://e3-initiative.org/logo.png",
+      "logo": {
+          "@type": "ImageObject",
+          "url": "https://e3-initiative.org/logo.png",
+          "width": 512,
+          "height": 512
+        },
       "description": "The e3 Initiative conducts research at the intersection of equity, economics, and ethnicity to inform policy and empower local communities with evidence-based solutions.",
+      "disambiguatingDescription": "Student-led research initiative on equity, economics, and ethnicity at e3-initiative.org. Not affiliated with the UK charity of a similar name at e3initiative.org.",
       "foundingDate": "2026",
       "founder": [
         { "@type": "Person", "name": "Akshat Sawner" },
@@ -54,8 +61,18 @@
         "@type": "ContactPoint",
         "contactType": "General Inquiries",
         "url": "https://e3-initiative.org/contact.html"
-      },
-      "sameAs": []
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://e3-initiative.org/#website",
+      "name": "e3 Initiative",
+      "url": "https://e3-initiative.org/",
+      "publisher": { "@id": "https://e3-initiative.org/#organization" }
     }
     </script>
 
@@ -146,8 +163,42 @@
                 <h2>Recent publications</h2>
                 <p>Latest insights from our editorial team and community partners.</p>
             </div>
-            <p id="latestArticlesStatus" aria-live="polite">Loading publications…</p>
-            <div class="articles-grid" id="latestArticles" data-type="all"></div>
+            <p id="latestArticlesStatus" aria-live="polite"></p>
+            <div class="articles-grid" id="latestArticles" data-type="all">
+                <article class="article-card" data-type="article">
+                    <div class="card-media">
+                        <img src="image/chinese-workers-summit-tunnel.jpg" alt="Chinese railroad workers among rocks near the opening of Summit Tunnel, 1865–1867" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <p class="article-date">October 4, 2026</p>
+                        <h3><a href="articles/chinese-labor-transcontinental-railroad.html">Chinese Labor and the Transcontinental Railroad: The Uncredited Contributions and Lost Legacy</a></h3>
+                        <p>Minghao Gu examines the dangerous labor, resistance, and overlooked legacy of Chinese immigrants who helped build the Transcontinental Railroad.</p>
+                        <a href="articles/chinese-labor-transcontinental-railroad.html" class="read-more">Read more →</a>
+                    </div>
+                </article>
+                <article class="article-card" data-type="research">
+                    <div class="card-media">
+                        <img src="image/chinatown-street.webp" alt="Chinatown street with colorful lanterns and signs" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <p class="article-date">March 11, 2026</p>
+                        <h3><a href="research/chinatown-solidarity-paper.html">Beyond Restaurants and Boba Cafes: The Historical and Modern Economic Solidarity of Chinatown</a></h3>
+                        <p>Full research paper by Minghao Gu examining the historical origins, cultural preservation, and modern resilience of Chinatown as an ethnic economy built on solidarity, identity, and community.</p>
+                        <a href="research/chinatown-solidarity-paper.html" class="read-more">Read more →</a>
+                    </div>
+                </article>
+                <article class="article-card" data-type="article">
+                    <div class="card-media">
+                        <img src="image/chinatown-banner.jpg" alt="Chinatown temple decorated with lanterns at night" loading="lazy">
+                    </div>
+                    <div class="article-content">
+                        <p class="article-date">February 2, 2026</p>
+                        <h3><a href="articles/chinatown-solidarity.html">Beyond Restaurants, Boba Cafes, and Souvenir Shops: The Historical and Modern Economic Solidarity of Chinatown</a></h3>
+                        <p>A historical and contemporary look at how Chinatowns foster economic solidarity, cultural preservation, and community resilience across generations.</p>
+                        <a href="articles/chinatown-solidarity.html" class="read-more">Read more →</a>
+                    </div>
+                </article>
+            </div>
             <div style="text-align: center; margin-top: 3rem;">
                 <a href="articles.html" class="btn">View all articles</a>
             </div>

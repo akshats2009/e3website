@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/research/chinatown-solidarity.html",
+      "destination": "/research/chinatown-solidarity-paper.html",
+      "permanent": true
+    }
+  ]
+}

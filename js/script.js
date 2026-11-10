@@ -98,6 +98,8 @@ function populateGrids() {
             return;
         }
 
+        // Replace the static (crawlable) cards in the HTML with interactive ones
+        grid.innerHTML = '';
         articles.forEach(function (article) { grid.appendChild(buildCard(article)); });
 
         // Hide the loading/status message on success
