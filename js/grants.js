@@ -72,6 +72,17 @@
         return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
+    // A grant whose ISO deadline has passed is closed, whatever the data file says.
+    function expireIfPast(g) {
+        if (g.status !== 'closed' && /^\d{4}-\d{2}-\d{2}$/.test(g.deadline || '')) {
+            var end = new Date(g.deadline + 'T23:59:59Z');
+            if (end.getTime() < Date.now()) {
+                g = Object.assign({}, g, { status: 'closed' });
+            }
+        }
+        return g;
+    }
+
     function formatDeadline(g) {
         if (g.deadline === 'rolling') return 'Rolling / ongoing';
         if (g.deadline === 'annual') return 'Recurs annually';
@@ -124,8 +135,10 @@
         if (f.amount) {
             var bucket = AMOUNT_BUCKETS.filter(function (b) { return b.value === f.amount; })[0];
             if (bucket) {
+                // Lower bound is exclusive so buckets never overlap; grants with no
+                // stated maximum (null or 0) only appear under "Any amount".
                 var amt = typeof g.amountMax === 'number' ? g.amountMax : 0;
-                if (amt < bucket.min || amt > bucket.max) return false;
+                if (amt <= bucket.min || amt > bucket.max) return false;
             }
         }
         return true;
@@ -346,7 +359,7 @@
         fetch('data/grants.json', { cache: 'no-cache' })
             .then(function (r) { return r.json(); })
             .then(function (data) {
-                state.grants = Array.isArray(data) ? data : [];
+                state.grants = Array.isArray(data) ? data.map(expireIfPast) : [];
                 state.index = buildIndex(state.grants);
                 buildFilters();
                 renderGrid();

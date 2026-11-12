@@ -121,7 +121,7 @@
     "deadline": "annual",
     "status": "closed",
     "description": "Pitch competition awarding veteran, military spouse, and Gold Star family entrepreneurs capital grants ($15,000 first, $6,000 second, $4,000 third) plus in-kind legal services. Recurs annually with regional events.",
-    "link": "https://secondservicefoundation.org/mec/",
+    "link": "https://secondservicefoundation.org/",
     "source": "https://secondservicefoundation.org/mec/",
     "notes": "Eligibility limited to veterans, military spouses, and Gold Star families. Held as recurring regional competitions; specific 2026 event dates vary."
   },
@@ -273,7 +273,7 @@
     "amount": "$100,000–$500,000",
     "amountMax": 500000,
     "deadline": "rolling",
-    "status": "open",
+    "status": "rolling",
     "description": "Funds new construction or rehabilitation of permanent supportive housing for veterans. Open to 501(c)(3) nonprofits in good standing with the IRS for at least five years with prior veteran housing development experience.",
     "link": "https://corporate.homedepot.com/page/veteran-housing-grants",
     "source": "https://corporate.homedepot.com/page/veteran-housing-grants",
@@ -539,7 +539,7 @@
     "amount": "Cash award plus full-tuition accelerator scholarship",
     "amountMax": null,
     "deadline": "rolling",
-    "status": "open",
+    "status": "rolling",
     "description": "Grants for diverse-led service businesses or light manufacturers with 2 to 20 employees and $100,000 to $3 million in revenue that can add premium-wage jobs. Diverse founders include Black, Indigenous, people of color, LGBTQIA+, veterans, women, or those in low-to-moderate-income areas.",
     "link": "https://foundersfirstcdc.org/about-grants",
     "source": "https://foundersfirstcdc.org/about-grants",
@@ -569,7 +569,7 @@
     "deadline": "annual",
     "status": "closed",
     "description": "Grants for LGBTQ+-owned or LGBTQ+ ally-owned restaurants, bars, and cafes that serve food, supporting equipment, marketing, staffing, and infrastructure. The program targets 30 percent of funds to businesses owned by people of color and transgender and gender-expansive individuals.",
-    "link": "https://nglcc.org/programs-initiatives/nglcc-grubhub-community-impact-grant-program/",
+    "link": "https://www.nglcc.org/",
     "source": "https://nglcc.org/programs-initiatives/nglcc-grubhub-community-impact-grant-program/",
     "notes": "Recurring annual program with Grubhub; reopens for new cycles."
   },
@@ -600,20 +600,6 @@
     "link": "https://www.firstpeoplesfund.org/programs/fellowships",
     "source": "https://www.firstpeoplesfund.org/programs/fellowships",
     "notes": "Recurring annual fellowship; 2026 recipients announced in March 2026, applications reopen for the next cycle."
-  },
-  {
-    "name": "AAPISTRONG Small Business Grant",
-    "funder": "National ACE",
-    "eligibility": "small_business",
-    "category": "minority_owned",
-    "amount": "Cash grants commonly $5,000 to $10,000 depending on cycle",
-    "amountMax": 10000,
-    "deadline": "rolling",
-    "status": "rolling",
-    "description": "Cash grants for AAPI-majority-owned (51 percent or more) for-profit U.S. small businesses that have operated for at least three months. Recurring funds, including the Proudly Unstoppable Fund, are offered through National ACE partnerships.",
-    "link": "https://www.aapistrong.com/current-grants",
-    "source": "https://www.aapistrong.com/current-grants",
-    "notes": "Multiple recurring grant cycles; check current openings on the AAPISTRONG site."
   },
   {
     "name": "Black Ambition Prize",
@@ -707,25 +693,11 @@
     "amount": "$20,000",
     "amountMax": 20000,
     "deadline": "rolling",
-    "status": "open",
+    "status": "rolling",
     "description": "Quarterly program spotlighting three U.S. small business owners who demonstrate community impact, awarding each a $20,000 grant plus QuickBooks and Mailchimp resources. Businesses are nominated rather than self-applied.",
     "link": "https://quickbooks.intuit.com/offers/small-business-hero-program/",
     "source": "https://quickbooks.intuit.com/r/news/intuit-launches-small-heroes-program/",
     "notes": "Recurring quarterly phases. Nomination-based; owners cannot nominate their own business."
-  },
-  {
-    "name": "Bizee Fresh Start Business Grant",
-    "funder": "Bizee (formerly Incfile)",
-    "eligibility": "small_business",
-    "category": "general",
-    "amount": "$2,500 plus free business formation package",
-    "amountMax": 2500,
-    "deadline": "rolling",
-    "status": "rolling",
-    "description": "Grant supporting U.S. entrepreneurs starting or growing a business, providing $2,500 in funding plus a business formation package. Open to U.S. residents aged 21 or older.",
-    "link": "https://bizee.com/fresh-start-grant",
-    "source": "https://bizee.com/fresh-start-grant",
-    "notes": "Evergreen program for early-stage founders."
   },
   {
     "name": "The Halstead Grant",
@@ -763,7 +735,7 @@
     "amount": "$5,000 to $15,000",
     "amountMax": 15000,
     "deadline": "rolling",
-    "status": "open",
+    "status": "rolling",
     "description": "Grants for local restaurants and small businesses that lost revenue due to a recent state of emergency or federally declared natural disaster. Covers expenses such as rent, utilities, supplies, and inventory not covered by insurance.",
     "link": "https://merchants.doordash.com/en-us/about/disaster-relief-fund",
     "source": "https://about.doordash.com/en-us/news/doordash-announces-local-business-disaster-relief-fund",
@@ -1230,20 +1202,6 @@
     "link": "https://www.asianculturalcouncil.org/grant-opportunities",
     "source": "https://www.asianculturalcouncil.org/grant-opportunities",
     "notes": "Individual applicant (closest schema fit for an individual artist). U.S. citizens and permanent residents may apply for this fellowship; they are excluded from the New York and Graduate fellowships. Applications due 9:59 AM ET on Nov 10, 2026; letters of recommendation due Nov 16, 2026. No application fee mentioned. Verified on 2026-10-22."
-  },
-  {
-    "name": "Clif Family Foundation Open Call Grants",
-    "funder": "Clif Family Foundation",
-    "eligibility": "nonprofit",
-    "category": "food_agriculture",
-    "amount": "$5,000 to $50,000 (one-year grants)",
-    "amountMax": 50000,
-    "deadline": "2026-08-03",
-    "status": "closed",
-    "description": "Unrestricted or project grants for grassroots nonprofits working on sustainable food systems, regenerative farming, healthy food access, and related environmental health.",
-    "link": "https://cliffamilyfoundation.submittable.com/submit",
-    "source": "https://cliffamilyfoundation.org/grants-program",
-    "notes": "Recurs twice a year, with review deadlines on March 1 and August. The funder page lists the August deadline as Aug 3 (a third-party listing said Aug 1). The most recent cycle is closed; the next expected deadline is March 1, 2027, not yet confirmed on the funder page. Requires 501(c)(3) status or fiscal sponsorship and U.S. focus. Budget cap differs across sources (under $8MM on the funder page as fetched, under $3MM in a third-party listing). No application fee found. Verified on 2026-10-22."
   },
   {
     "name": "Southern Artist Spotlight Grant",

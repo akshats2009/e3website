@@ -5,3 +5,11 @@ Environmental Economics Project/
 .DS_Store
 node_modules
 .git
+
+# Internal files that should not be public
+DEPLOY_TRIGGER.txt
+scripts/
+
+# Unused full-size originals (kept in git; the site uses hero-1920.jpg)
+image/justin-main-ewKDwf05Eds-unsplash.jpg
+image/img-china-town.jpg
