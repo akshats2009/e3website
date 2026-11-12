@@ -253,7 +253,23 @@ function initSettings() {
             '<button class="font-btn" data-size="normal">A</button>' +
             '<button class="font-btn" data-size="large">A<sup>+</sup></button>' +
         '</div>';
+    panel.id = 'settings-panel';
+    panel.setAttribute('role', 'group');
+    panel.setAttribute('aria-label', 'Settings');
+    btn.setAttribute('aria-controls', 'settings-panel');
+    btn.setAttribute('aria-expanded', 'false');
     document.body.appendChild(panel);
+
+    function setPanelOpen(open, returnFocus) {
+        panel.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+            var first = panel.querySelector('input, button');
+            if (first) { first.focus(); }
+        } else if (returnFocus) {
+            btn.focus();
+        }
+    }
 
     // Sync theme toggle state
     var themeCheckbox = panel.querySelector('#settings-theme-toggle');
@@ -265,13 +281,20 @@ function initSettings() {
     // Toggle panel open/close
     btn.addEventListener('click', function (e) {
         e.stopPropagation();
-        panel.classList.toggle('open');
+        setPanelOpen(!panel.classList.contains('open'), false);
     });
 
     // Close on outside click
     document.addEventListener('click', function (e) {
         if (!panel.contains(e.target) && e.target !== btn) {
-            panel.classList.remove('open');
+            setPanelOpen(false, false);
+        }
+    });
+
+    // Close on Escape and hand focus back to the settings button
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && panel.classList.contains('open')) {
+            setPanelOpen(false, true);
         }
     });
 
@@ -392,6 +415,17 @@ function initContactForm() {
 
         // Honeypot tripped — silently pretend success, drop the submission.
         if (form.elements._honey && form.elements._honey.value) { return; }
+
+        // `required` accepts whitespace-only text; catch it here.
+        var textFields = ['name', 'subject', 'message'];
+        for (var i = 0; i < textFields.length; i++) {
+            var field = form.elements[textFields[i]];
+            if (field && !field.value.trim()) {
+                field.value = '';
+                form.reportValidity();
+                return;
+            }
+        }
 
         setStatus('Sending…', null);
         if (submitBtn) { submitBtn.disabled = true; }

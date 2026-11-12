@@ -105,3 +105,96 @@ html.light-mode .article-card:hover {
 .legal li { margin-bottom: 0.5rem; }
 .legal a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 .legal a:hover { color: var(--muted); }
+
+/* ==========================================================
+   Accessibility and readability fixes
+   ========================================================== */
+
+/* Skip link: hidden until focused */
+.skip-link {
+    position: absolute;
+    left: 8px;
+    top: -100px;
+    z-index: 1000;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    color: #000 !important;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.skip-link:focus { top: 8px; }
+main:focus { outline: none; }
+
+/* Inline citation links in article bodies: legible on both themes */
+.article-content-area a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.article-content-area a:hover { color: var(--muted); }
+
+/* Grant status tags need dark text colours on the light theme */
+html.light-mode .grant-tag.status-open { color: #047857; border-color: rgba(4, 120, 87, 0.5); }
+html.light-mode .grant-tag.status-rolling { color: #1d4ed8; border-color: rgba(29, 78, 216, 0.5); }
+html.light-mode .grant-tag.status-closed { color: #4b5563; border-color: rgba(75, 85, 99, 0.5); }
+
+/* Light theme hero: the photo is bright, so keep a dark scrim behind the white text */
+html.light-mode .hero::before { background: rgba(0, 0, 0, 0.45); }
+
+/* Keyboard access to the theme switch (the checkbox was display:none) */
+.settings-pill { position: relative; }
+.settings-pill input {
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+.settings-pill input:focus-visible + .settings-pill-track {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+}
+.settings-btn:focus-visible,
+.font-btn:focus-visible,
+.hamburger:focus-visible,
+.to-top:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+}
+
+/* Visible focus ring on contact form fields */
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+    /* The navbar is 100px tall; the open menu used to start at 68px and cover the logo subtitle */
+    .nav-links { top: 100px; }
+
+    /* Touch targets of at least 44px */
+    .hamburger,
+    .settings-btn { min-width: 44px; min-height: 44px; }
+    .footer-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 0.4rem;
+    }
+    .read-more {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+    .to-top { min-height: 44px; }
+    .font-btn { min-height: 44px; min-width: 44px; }
+}
+
+@media (max-width: 380px) {
+    /* Give the 44px menu and settings buttons room on small phones */
+    .navbar .container { padding: 0 16px; }
+}
