@@ -83,6 +83,12 @@
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/liquid-glass.css">
     <link rel="stylesheet" href="../css/override.css">
+    <style>
+        /* Long headline: cap size so it fits the first screen on phones */
+        @media (max-width: 768px) {
+            .page-header-image h1 { font-size: clamp(28px, 7vw, 64px) !important; }
+        }
+    </style>
     <!-- Umami Analytics -->
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JJDGPY8QCB"></script>
