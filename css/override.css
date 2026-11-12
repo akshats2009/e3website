@@ -95,3 +95,13 @@ html.light-mode .article-card:hover {
 .form-status { margin-top: 0.85rem; min-height: 1.2em; font-size: 0.95rem; }
 .form-status[data-state="success"] { color: #58cf9f; }
 .form-status[data-state="error"] { color: #ff9383; }
+
+/* Legal / utility pages (privacy.html, 404.html) */
+.legal { max-width: 760px; }
+.legal h2 { font-size: clamp(28px, 4vw, 40px); margin: 2.5rem 0 0.75rem; }
+.legal h3 { font-size: clamp(22px, 3vw, 28px); margin: 1.75rem 0 0.5rem; }
+.legal p, .legal ul { margin: 0 0 1rem; line-height: 1.7; }
+.legal ul { padding-left: 1.25rem; }
+.legal li { margin-bottom: 0.5rem; }
+.legal a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
+.legal a:hover { color: var(--muted); }
