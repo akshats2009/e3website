@@ -198,3 +198,12 @@ html.light-mode .hero::before { background: rgba(0, 0, 0, 0.45); }
     /* Give the 44px menu and settings buttons room on small phones */
     .navbar .container { padding: 0 16px; }
 }
+
+/* "Browse by group" links on the Grant Finder page */
+.grant-lists { margin-top: 0.75rem; }
+.grant-lists a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.grant-lists a:hover { color: var(--muted); }
