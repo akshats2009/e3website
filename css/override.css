@@ -207,3 +207,7 @@ html.light-mode .hero::before { background: rgba(0, 0, 0, 0.45); }
     text-underline-offset: 3px;
 }
 .grant-lists a:hover { color: var(--muted); }
+
+/* Images with width/height attributes keep their aspect ratio when CSS narrows them
+   (zero specificity, so rules like .card-media img { height: 100% } still win) */
+:where(img[width][height]) { height: auto; }

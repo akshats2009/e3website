@@ -50,7 +50,7 @@ function buildCard(article) {
 
     card.innerHTML =
         '<div class="card-media">' +
-            '<img src="' + escHtml(article.image) + '" alt="' + escHtml(article.imageAlt || '') + '" loading="lazy">' +
+            '<img src="' + escHtml(article.image) + '" alt="' + escHtml(article.imageAlt || '') + '" width="640" height="426" loading="lazy">' +
         '</div>' +
         '<div class="article-content">' +
             '<p class="article-date">' + escHtml(formatDate(article.date)) + '</p>' +
