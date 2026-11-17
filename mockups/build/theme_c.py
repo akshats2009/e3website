@@ -566,7 +566,7 @@ def notfound():
 
 
 def build():
-    write(f"{D}/theme.css", CSS)
+    write(f"{D}/theme.css", CSS + NOB)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
@@ -580,3 +580,20 @@ def build():
     for k, v in pages.items():
         write(f"{D}/{k}.html", v)
     return sorted(pages)
+
+# NOBORDERS
+NOB = r"""
+/* no borders: type and space do the separating */
+.nav,footer,.sh,.pub,.ph,.lede2,.lenses,.ind,.fgroup,.tip-row,.gt th,.gt td,.rule{border:0!important}
+.ln + .ln{border:0!important}
+.ph .baseguide,.pub::after{display:none}
+.pill.o{box-shadow:none;background:rgba(20,19,18,.07)}
+.inp{border:0!important;background:rgba(20,19,18,.05);padding:14px 16px;border-radius:10px;font-size:22px}
+.inp:focus{background:rgba(20,19,18,.08)}
+.bigsearch{border:0!important;background:transparent}
+.menu-btn{box-shadow:none;background:rgba(20,19,18,.06)}
+.nav ul a.on{text-decoration:none;font-variation-settings:'wght' 700}
+.fgroup,.tip-row{padding-top:12px}
+.knob{box-shadow:0 6px 14px -4px rgba(20,19,18,.3)}
+.banner img,.pub img{border-radius:10px}
+"""

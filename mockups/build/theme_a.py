@@ -688,7 +688,7 @@ def notfound():
     return shell("404", body)
 
 def build():
-    write(f"{D}/theme.css", CSS)
+    write(f"{D}/theme.css", CSS + NOB)
     write(f"{D}/theme.js", JS)
     pages = {
         "index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
@@ -704,3 +704,22 @@ def build():
     for k, v in pages.items():
         write(f"{D}/{k}.html", v)
     return sorted(pages)
+
+# NOBORDERS
+NOB = r"""
+/* no borders: surfaces separate by tone and space only */
+:root{--r:22px}
+.tile{box-shadow:none!important;border-radius:22px}
+.pill-nav{box-shadow:none}
+.crow,.grow,.check,.toc .crow{border-top:0!important}
+.cal .div,.gdetail{border:0}
+.cal .div{display:none}
+details{border-top:0!important}
+.btn.ghost{box-shadow:none;background:var(--wash)}
+footer{border-top:0}
+.tile.rows .crow + .crow,.gres .grow + .grow{box-shadow:none}
+.menu-btn{box-shadow:none}
+.knob,.mini-sw b{box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.inp:focus{box-shadow:none;background:rgb(var(--ink-rgb)/.08)}
+.cover.photo,.banner{border-radius:16px}
+"""

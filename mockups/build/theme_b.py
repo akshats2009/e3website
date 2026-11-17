@@ -590,7 +590,7 @@ def notfound():
 
 
 def build():
-    write(f"{D}/theme.css", CSS)
+    write(f"{D}/theme.css", CSS + NOB)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
@@ -604,3 +604,23 @@ def build():
     for k, v in pages.items():
         write(f"{D}/{k}.html", v)
     return sorted(pages)
+
+# NOBORDERS
+NOB = r"""
+/* no borders */
+:root{--r:22px}
+.panel::after{display:none}
+.panel::before{box-shadow:0 30px 60px -40px rgba(0,0,0,.85)}
+.nav{border-bottom:0}
+footer{border-top:0}
+.rrow,.prow,.chk,.secs a,details{border-top:0!important}
+.mrow{border:0!important}
+.strip + .strip::before,.master::before,.vline + .vline::before,.lens + .lens::before{display:none}
+.mbtn.ghost{box-shadow:none;background:rgba(255,255,255,.07)}
+.key{box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.inp{box-shadow:none;background:#0b0b0d}
+.inp:focus{box-shadow:none;background:#111114}
+.tog{box-shadow:none}
+.brand i,.fcap,.mbtn{box-shadow:0 6px 14px rgba(0,0,0,.5)}
+.mbtn.ghost{box-shadow:none}
+"""
