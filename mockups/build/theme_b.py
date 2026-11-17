@@ -408,18 +408,15 @@ if (!reduce) setTimeout(() => knob.set(2), 900);
     return shell("index", body, js)
 
 def pub_list(page, title, lede, items, extra=""):
-    """Header, one index panel, one line of related links."""
-    rows = panel('<div class="rows">' + "".join(prow(p) for p in items) + "</div>")
-    links = '<p class="cap" style="margin-top:22px">Also · <a href="journals.html" style="color:var(--text)">Journals</a> · <a href="economic-indicators.html" style="color:var(--text)">Economic indicators</a></p>'
-    return shell(page, ph("Publications", title, lede) + rows + links)
+    """Header and one index panel."""
+    return shell(page, ph("Publications", title, lede) + panel('<div class="rows">' + "".join(prow(p) for p in items) + "</div>"))
 
 def article(p):
-    """Nav, article (title, banner, text), one side panel: progress and sections."""
+    """Title, banner, text. A thin bar at the top shows reading progress."""
     a = p["data"]
-    secs, body = [], []
+    body = []
     for i, (t, txt) in enumerate(a["blocks"]):
         if t == "h2":
-            secs.append((f"s{i}", re.sub(r"<[^>]+>", "", txt)))
             body.append(f'<h2 id="s{i}">{txt}</h2>')
         elif t == "li":
             body.append(f"<ul><li>{txt}</li></ul>")
@@ -427,60 +424,44 @@ def article(p):
             body.append(f"<{t}>{txt}</{t}>")
     cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
     body.append(f'<p><a href="../../{cite}">Citations and sources →</a></p>')
-    side = panel(f"""<div class="cap">Progress</div><div style="display:flex;gap:22px;align-items:flex-end;margin-top:18px">
-      <span class="meter v" id="pm">{"<i></i>" * 24}</span><div><div class="mono" style="font-size:34px;letter-spacing:-.02em" id="pp">0%</div><div class="cap" style="margin-top:6px" id="pl">{p["min"]} min left</div></div></div>
-      {('<nav class="secs" style="margin-top:22px">' + "".join(f'<a href="#{i}" data-s="{i}"><span class="led"></span>{esc(n)}</a>' for i, n in secs) + '</nav>') if secs else ''}""", "pad")
-    body_html = f"""<div class="read" style="margin-top:40px">
-  {panel(f"""<div class="cap">{p["kind"]} · {p["date"]}</div><h1>{esc(p["title"])}</h1><div class="cap" style="letter-spacing:.1em">{esc(a["byline"] or "By " + p["author"])}</div>
+    inner = f"""<div class="cap">{p["kind"]} · {p["date"]} · {p["min"]} min</div><h1>{esc(p["title"])}</h1><div class="cap" style="letter-spacing:.1em">{esc(a["byline"] or "By " + p["author"])}</div>
     <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
-    <div class="prose" id="prose">{"".join(body)}</div>""", "atile", "article")}
-  <aside class="rside">{side}</aside></div>"""
-    js = f"""<script>
-const pr = $('#prose'), segs = $$('#pm i');
-function upd() {{ const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height));
-  segs.forEach((s, i) => s.className = i < Math.round(k * 24) ? (i >= 20 ? 'near' : 'on') : '');
-  $('#pp').textContent = Math.round(k * 100) + '%'; $('#pl').textContent = Math.max(0, Math.round((1 - k) * {p['min']})) + ' min left';
-  let cur = null; $$('#prose h2').forEach(h => {{ if (h.getBoundingClientRect().top < innerHeight * .35) cur = h.id; }}); $$('.secs a').forEach(a => a.classList.toggle('on', a.dataset.s === cur)); }}
-addEventListener('scroll', upd, {{ passive: true }}); upd();
+    <div class="prose" id="prose">{"".join(body)}</div>"""
+    body_html = f"""<style>.topbar{{position:fixed;left:0;right:0;top:0;height:3px;z-index:70}}.topbar b{{display:block;height:100%;width:0;background:rgb(var(--led-fine));box-shadow:0 0 8px rgb(var(--led-fine)/.6)}}</style>
+<div class="topbar"><b id="rb"></b></div>
+<div style="margin-top:40px;max-width:860px;margin-left:auto;margin-right:auto">{panel(inner, "atile", "article")}</div>"""
+    js = """<script>
+const pr = $('#prose');
+function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)); $('#rb').style.width = k * 100 + '%'; }
+addEventListener('scroll', upd, { passive: true }); upd();
 </script>"""
     return shell(p["slug"], body_html, js)
 
 def about():
-    """Header, one statement, team, approach."""
-    team = panel('<div class="grid" style="gap:0">' + "".join(f"""<div class="vline c4 pad">
-      <div style="height:44px;margin-bottom:20px;border-radius:12px;background:var(--metal);box-shadow:var(--metal-shadow);display:flex;align-items:center;padding:0 16px;color:#111;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase">{n}</div>
-      <div class="cap" style="color:var(--text)">{r}</div><p class="dim" style="font-size:14px;line-height:1.6;margin-top:12px">{b}</p></div>""" for n, r, b in ABOUT["team"]) + "</div>")
-    appr = panel('<div class="rows">' + "".join(f'<div class="mrow" style="border:0;border-top:1px solid var(--row-line);padding:18px 0;justify-content:flex-start;gap:24px"><span class="cap">0{i+1}</span><span style="font-size:17px;min-width:220px">{t}</span><span class="dim" style="font-size:14px">{d}</span></div>' for i, (t, d) in enumerate(ABOUT["approach"])) + "</div>")
-    body = ph("About", "About e3 Initiative", ABOUT["what"]) + f"""
-{panel(f'<p style="font-weight:300;font-size:26px;line-height:1.35;letter-spacing:-.02em;max-width:48ch">{ABOUT["who"]}</p>', "pad")}
-<section><div class="shead"><div><div class="cap">On the desk</div><h2>Our team</h2></div></div>{team}</section>
-<section><div class="shead"><div><div class="cap">We believe in</div><h2>Our approach</h2></div></div>{appr}</section>"""
+    """Header, one statement, three people."""
+    team = panel('<div class="rows">' + "".join(f'<div class="mrow" style="display:block;border:0;border-top:1px solid var(--row-line);padding:22px 0"><div style="display:flex;gap:18px;align-items:baseline;flex-wrap:wrap"><span class="cap">0{i+1}</span><b style="font:20px var(--sans);letter-spacing:-.01em">{n}</b><span class="cap" style="margin-left:auto">{r}</span></div><p class="dim" style="font-size:14px;line-height:1.6;margin:8px 0 0 40px;max-width:70ch">{b}</p></div>' for i, (n, r, b) in enumerate(ABOUT["team"])) + "</div>", "", attrs='style="margin-top:20px"')
+    body = ph("About", "About e3 Initiative", ABOUT["what"]) + panel(f'<p style="font-weight:300;font-size:26px;line-height:1.35;letter-spacing:-.02em;max-width:48ch">{ABOUT["who"]}</p>', "pad") + team + '<p class="cap" style="margin-top:22px;line-height:1.8;max-width:80ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p>'
     return shell("about", body)
 
 def journals():
     t, logo = JOURNAL
-    body = ph("Publications", "Journals", "Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.") + panel(f"""
-  <div style="display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center" class="jgrid">
-    <div style="border-radius:20px;background:var(--well);box-shadow:var(--well-shadow);padding:30px;display:grid;place-items:center"><img src="{IMG}{logo}" alt="{esc(t)}" width="220" height="220" style="border-radius:14px"></div>
-    <div><div class="cap">Journal</div><div style="font-weight:300;font-size:40px;letter-spacing:-.03em;line-height:1.08;margin:14px 0 28px">{t}</div>
-      <div class="mrow cap">Status<b style="display:flex;gap:10px;align-items:center"><span class="led near"></span>Standby</b></div><div class="mrow cap">Entries<b>Coming soon</b></div></div>
-  </div>""", "pad")
+    body = ph("Publications", "Journals", "Browse our academic journals and long-form publications.") + panel(f"""
+  <div style="display:flex;gap:34px;align-items:center;flex-wrap:wrap"><div style="border-radius:20px;background:var(--well);box-shadow:var(--well-shadow);padding:22px"><img src="{IMG}{logo}" alt="{esc(t)}" width="150" height="150" style="border-radius:12px"></div>
+  <div><div class="cap">Journal</div><div style="font-weight:300;font-size:34px;letter-spacing:-.03em;line-height:1.1;margin-top:12px;max-width:20ch">{t}</div><div class="cap" style="margin-top:14px">Entries coming soon</div></div></div>""", "pad")
     return shell("journals", body)
 
-
 def grants():
-    """Header, a compact desk (search, who, status, window; categories folded), results."""
+    """Header, one desk (search, status, knob; the rest folded), results."""
     cats = "".join(f'<button class="key" data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
     lists = " · ".join(f'<a href="{s}.html" style="color:var(--text)">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
     body = ph("Grants", "Grant Finder", f"Funding for small businesses and nonprofits. Ready-made lists: {lists}.", '<a class="mbtn ghost" href="grant-help.html" style="margin-top:20px">Help & tips →</a>') + panel(f"""
-  <div style="display:grid;grid-template-columns:1fr 200px;gap:34px" class="gdesk">
+  <div style="display:grid;grid-template-columns:1fr 190px;gap:34px" class="gdesk">
     <div>
       <label class="field"><span class="cap">Search</span><input class="inp" id="q" type="search" placeholder="WOMEN-OWNED BAKERY…" aria-label="Search grants"></label>
-      <div style="display:flex;gap:30px;flex-wrap:wrap">
-        <div><div class="cap" style="margin:6px 0 10px">Who qualifies</div><div class="keys" data-group="elig"><button class="key on" data-v="">Anyone</button><button class="key" data-v="small_business">Business</button><button class="key" data-v="nonprofit">Nonprofit</button></div></div>
-        <div><div class="cap" style="margin:6px 0 10px">Status</div><div class="keys" data-group="status"><button class="key on" data-v="live">Open + rolling</button><button class="key" data-v="">Include closed</button></div></div>
-      </div>
-      <details style="margin-top:18px"><summary class="cap" style="cursor:pointer">+ Categories</summary><div class="keys" data-group="cat" data-multi style="margin-top:12px">{cats}</div></details>
+      <div class="keys" data-group="status"><button class="key on" data-v="live">Open + rolling</button><button class="key" data-v="">Include closed</button></div>
+      <details style="margin-top:18px"><summary class="cap" style="cursor:pointer">+ More filters</summary>
+        <div class="cap" style="margin:14px 0 10px">Who qualifies</div><div class="keys" data-group="elig"><button class="key on" data-v="">Anyone</button><button class="key" data-v="small_business">Business</button><button class="key" data-v="nonprofit">Nonprofit</button></div>
+        <div class="cap" style="margin:14px 0 10px">Category</div><div class="keys" data-group="cat" data-multi>{cats}</div></details>
     </div>
     <div class="vline" style="padding-left:24px"><div class="cap">Deadline window</div><div class="knob" id="win" data-label="Deadline window" style="margin:14px auto 0"></div>
       <div class="mrow cap" style="margin-top:14px">Matching<b id="mM">—</b></div></div>
@@ -508,32 +489,24 @@ render();
     return shell("grants", body, js)
 
 def category(slug):
-    """Header, three meters, the list, one line of links."""
+    """Header and one list."""
     cat, title, what = CATEGORY_PAGES[slug]
     intro, gs = category_intro(cat, what)
     gs = sorted(gs, key=lambda g: ({"open": 0, "rolling": 1, "closed": 2}[status(g)], days_left(g) if days_left(g) is not None else 999))
-    c = {s: sum(1 for g in gs if status(g) == s) for s in ("open", "rolling", "closed")}
     others = " · ".join(f'<a href="{s}.html" style="color:var(--text)">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
-    meters = "".join(f'<div class="vline" style="padding:0 26px;display:flex;gap:18px;align-items:flex-end"><span class="meter v" data-n="12" data-lit="{n}" data-near="{n if k == "open" else 0}"></span><div><div class="mono" style="font-size:40px;letter-spacing:-.02em">{n}</div><div class="cap">{lab}</div></div></div>'
-        for k, n, lab in [("open", c["open"], "Open now"), ("rolling", c["rolling"], "Rolling"), ("closed", c["closed"], "Closed for now")])
-    body = ph("Grant list", title, intro) + panel(f'<div style="display:flex;flex-wrap:wrap;gap:20px 0;margin-left:-26px">{meters}</div>', "pad") + panel('<div class="rows">' + "".join(grow(g) for g in gs) + "</div>", "", attrs='style="margin-top:20px"') + f'<p class="cap" style="margin-top:22px">More lists · {others} · <a href="grants.html" style="color:var(--text)">Search all {len(GRANTS)}</a></p>'
+    body = ph("Grant list", title, intro) + panel('<div class="rows">' + "".join(grow(g) for g in gs) + "</div>") + f'<p class="cap" style="margin-top:22px">More lists · {others} · <a href="grants.html" style="color:var(--text)">Search all {len(GRANTS)}</a></p>'
     return shell(slug, body)
 
 def grant_help():
-    """Header, checklist (mistakes folded inside), readiness meter, free-help directory."""
+    """Header, one checklist. Mistakes and the directory are folded away."""
     tips = "".join(f'<button class="chk" data-i="{i}"><span class="no">0{i+1}</span><div><b>{a}</b><p>{b}</p></div><span class="tog"></span></button>' for i, (a, b) in enumerate(HELP["tips"]))
     mistakes = '<details style="padding:18px 0 0;border-top:1px solid var(--row-line)"><summary class="cap" style="cursor:pointer">+ Common mistakes to avoid</summary>' + "".join(f'<div class="mrow" style="justify-content:flex-start;gap:14px;align-items:flex-start;border:0;padding:8px 0"><span class="led over" style="margin-top:6px"></span><span style="font-size:14px;line-height:1.5;color:var(--body)">{m}</span></div>' for m in HELP["mistakes"]) + "</details>"
     orgs = "".join(f'<a class="rrow" href="{u}" target="_blank" rel="noopener" style="grid-template-columns:14px 1fr 170px"><span class="led on"></span><div><div class="n">{n}</div><div class="f" style="font-family:var(--sans);font-size:13px;line-height:1.5">{d}</div></div><span class="cap" style="text-align:right">{l} →</span></a>' for n, d, l, u in HELP["orgs"])
-    body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="mbtn" href="grants.html" style="margin-top:20px">Search grants →</a>') + f"""
-<div class="grid" style="align-items:start">
-  {panel('<div class="cap" style="margin-bottom:6px">How to write a strong application · switch each on as you go</div>' + tips + mistakes, "pad c8")}
-  {panel('<div class="cap">Readiness</div><div style="display:flex;gap:22px;align-items:flex-end;margin-top:18px"><span class="meter v" id="hm">' + '<i></i>' * 16 + '</span><div><div class="mono" style="font-size:40px;letter-spacing:-.02em" id="hc">0/8</div><div class="cap" style="margin-top:6px">steps done</div></div></div>', "pad c4")}
-</div>
-<section><div class="shead"><div><div class="cap">Directory</div><h2>Where to get free help</h2></div></div>{panel('<div class="rows">' + orgs + '</div>')}<p class="dim mono" style="font-size:11px;line-height:1.7;margin-top:16px;max-width:90ch">{HELP['disclaimer']}</p></section>"""
+    directory = f'<details style="padding:18px 0 0;border-top:1px solid var(--row-line);margin-top:14px"><summary class="cap" style="cursor:pointer">+ Where to get free help</summary><div style="margin-top:8px">{orgs}</div><p class="dim mono" style="font-size:11px;line-height:1.7;margin-top:14px;max-width:90ch">{HELP["disclaimer"]}</p></details>'
+    body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="mbtn" href="grants.html" style="margin-top:20px">Search grants →</a>') + panel('<div class="cap" style="margin-bottom:6px">How to write a strong application · <span id="hc">0/8</span> done</div>' + tips + mistakes + directory, "pad")
     js = """<script>
 const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
-function upd() { $$('.chk').forEach(c => c.classList.toggle('on', done.has(+c.dataset.i))); $('#hc').textContent = done.size + '/8';
-  $$('#hm i').forEach((s, i) => s.className = i < done.size * 2 ? (done.size === 8 ? 'on' : 'near') : ''); localStorage.setItem('e3-help', JSON.stringify([...done])); }
+function upd() { $$('.chk').forEach(c => c.classList.toggle('on', done.has(+c.dataset.i))); $('#hc').textContent = done.size + '/8'; localStorage.setItem('e3-help', JSON.stringify([...done])); }
 $$('.chk').forEach(c => c.addEventListener('click', () => { const i = +c.dataset.i; done.has(i) ? done.delete(i) : done.add(i); upd(); })); upd();
 </script>"""
     return shell("grant-help", body, js)
@@ -571,23 +544,20 @@ loadIndicators().then(d => { D = d; $('#note').hidden = d.live; draw(); });
     return shell("economic-indicators", body, js)
 
 def outreach():
-    cards = "".join(panel(f"""<div style="display:flex;justify-content:space-between;align-items:center"><span class="cap">{t}</span><span class="led on"></span></div>
-      <div style="font-weight:300;font-size:30px;letter-spacing:-.02em;margin:24px 0 18px">{s}</div><p style="font-size:16px;line-height:1.7;color:var(--body)">{p1}</p><p class="dim" style="font-size:14px;line-height:1.6;margin-top:14px">{p2}</p>
-      <a class="mbtn" href="contact.html" style="margin-top:28px">{'Share your story' if k == 'interview' else 'Partner with us'} →</a>""", "pad c6", attrs=f'id="{k}"') for k, (t, s, p1, p2) in OUTREACH.items())
+    cards = "".join(panel(f"""<div class="cap">{t}</div>
+      <p style="font-weight:300;font-size:26px;line-height:1.3;letter-spacing:-.02em;margin:22px 0 16px">{p1}</p><p class="dim" style="font-size:14px;line-height:1.6">{p2}</p>
+      <a class="mbtn" href="contact.html" style="margin-top:26px">{'Share your story' if k == 'interview' else 'Partner with us'} →</a>""", "pad c6", attrs=f'id="{k}"') for k, (t, s, p1, p2) in OUTREACH.items())
     return shell("outreach", ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + f'<div class="grid">{cards}</div>')
 
-
 def contact():
-    """Header, form, one side panel."""
-    form = f"""<form onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" id="cf">
+    """Header and the form."""
+    form = """<form onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" id="cf">
       <div class="grid" style="gap:0 18px"><label class="field c6"><span><span class="led" data-for="n"></span><span class="cap">Name *</span></span><input class="inp" id="n" required autocomplete="name"></label>
       <label class="field c6"><span><span class="led" data-for="e"></span><span class="cap">Email *</span></span><input class="inp" id="e" type="email" required autocomplete="email"></label></div>
       <label class="field"><span><span class="led" data-for="s"></span><span class="cap">Subject *</span></span><input class="inp" id="s" required></label>
       <label class="field"><span><span class="led" data-for="m"></span><span class="cap">Message *</span></span><textarea class="inp" id="m" required></textarea></label>
       <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button class="mbtn" type="submit">Send message</button><span class="cap" data-sent hidden style="color:rgb(var(--led-near))">Mockup: nothing was sent</span></div></form>"""
-    body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days.") + f"""
-<div class="grid" style="align-items:start">{panel(form, "pad c8")}
-  {panel('<div class="mrow cap">Reply within<b>2 business days</b></div><div class="mrow cap">Interviews<b><a href="outreach.html">Outreach →</a></b></div><div class="mrow cap">Your data<b><a href="privacy.html">Privacy →</a></b></div>', "pad c4")}</div>"""
+    body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days. We use your details only to reply.") + f'<div style="max-width:780px">{panel(form, "pad")}</div>'
     js = """<script>
 function chk() { ['n', 'e', 's', 'm'].forEach(id => { const v = $('#' + id).checkValidity() && $('#' + id).value; $(`[data-for=${id}]`).className = 'led' + (v ? ' on' : ''); }); }
 $('#cf').addEventListener('input', chk);
@@ -595,7 +565,8 @@ $('#cf').addEventListener('input', chk);
     return shell("contact", body, js)
 
 def privacy():
-    out, secs, ul = [], [], False
+    """Header and the policy."""
+    out, ul = [], False
     for i, (t, txt) in enumerate(PRIVACY):
         if t == "li":
             if not ul:
@@ -603,14 +574,11 @@ def privacy():
             out.append(f"<li>{txt}</li>"); continue
         if ul:
             out.append("</ul>"); ul = False
-        if t == "h2":
-            secs.append((f"p{i}", txt)); out.append(f'<h2 id="p{i}">{txt}</h2>')
-        else:
-            out.append(f"<{t}>{txt}</{t}>")
-    body = ph("Legal", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.", '<div class="cap" style="margin-top:14px">Last updated · Nov 12 2026</div>') + f"""
-<div class="read">{panel('<div class="prose">' + ''.join(out) + '</div>', "atile", "article")}<aside class="rside">{panel('<div class="cap" style="margin-bottom:8px">Sections</div><nav class="secs">' + ''.join(f'<a href="#{i}"><span class="led"></span>{n}</a>' for i, n in secs) + '</nav>', "pad")}</aside></div>"""
+        out.append(f"<{t}>{txt}</{t}>")
+    if ul:
+        out.append("</ul>")
+    body = ph("Legal", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.", '<div class="cap" style="margin-top:14px">Last updated · Nov 12 2026</div>') + f'<div style="max-width:860px">{panel("<div class=prose>" + "".join(out) + "</div>", "atile", "article")}</div>'
     return shell("privacy", body)
-
 
 def notfound():
     body = f"""<div style="margin-top:60px">{panel(f'''<div style="display:flex;justify-content:space-between"><span class="cap">Page not found</span><span class="led over"></span></div>

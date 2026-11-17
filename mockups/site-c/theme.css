@@ -211,5 +211,6 @@ footer a{font:13px var(--mono);color:var(--soft)}footer a:hover{color:var(--ink)
   .tip-row{grid-template-columns:44px 1fr 32px;gap:14px}.tip-row .no{font-size:32px}
   .prose{font-size:17px}.prose h2::before{display:none}
   .sh h2{font-size:36px}
+  .pub.jr{grid-template-columns:1fr!important}.grid{column-gap:0!important}.pub > *{min-width:0}.pub h3[data-lens]{font-size:28px!important}.grid h2[data-lens]{font-size:48px!important}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}

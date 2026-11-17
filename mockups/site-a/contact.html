@@ -19,18 +19,14 @@
     </div>
   </header>
   <main id="main">
-<div class="ph"><div><div class="label "><i></i>Contact</div><h1>Let's connect</h1><p>Have questions about our research or want to collaborate? Send a message and we will respond within two business days.</p></div><div></div></div>
-<div class="grid">
-  <form class="tile pad rise c8" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px">
-    <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
-    <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
-    <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
-    <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
-  </form>
-  <div class="tile pad rise c4" style="align-self:start"><div style="display:flex;gap:16px;align-items:center"><svg class="dial" data-lit="10" width="88" height="88" viewBox="0 0 200 200" aria-hidden="true"></svg><div><div class="label "><i></i>Reply within</div><div class="thin" style="font-size:36px;margin-top:6px">2 days</div></div></div>
-    <p class="muted" style="font-size:14px;line-height:1.55;margin-top:18px">Want to be interviewed? Say so in your message. We use your details only to reply (<a href="privacy.html" style="color:var(--ink)">privacy</a>).</p></div>
-</div>
+<div class="ph"><div><div class="label "><i></i>Contact</div><h1>Let's connect</h1><p>Have questions about our research or want to collaborate? Send a message and we will respond within two business days. We use your details only to reply.</p></div><div></div></div>
+<form class="tile pad rise" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px;max-width:760px">
+  <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
+  <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
+  <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
+  <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
+</form>
   </main>
   <footer>
     <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>

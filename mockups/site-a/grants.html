@@ -20,18 +20,18 @@
   </header>
   <main id="main">
 <div class="ph"><div><div class="label "><i></i>Grants</div><h1>Grant Finder</h1><p>Funding for small businesses and nonprofits. Ready-made lists: <a href="minority-owned-business-grants.html" style="color:var(--ink)">Minority-owned</a> · <a href="women-owned-business-grants.html" style="color:var(--ink)">Women-owned</a> · <a href="veteran-owned-business-grants.html" style="color:var(--ink)">Veteran-owned</a>.</p></div><div><a class="btn ghost" href="grant-help.html">Help & tips →</a></div></div>
-<div class="gfind">
-  <aside class="gside"><div class="tile pad rise">
-    <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="label "><i></i>Matching</div><span class="thin" style="font-size:40px" id="gcount">0</span></div>
-    <div class="search" style="margin-top:16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+<div class="tile pad rise" style="margin-bottom:20px">
+  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+    <div class="search" style="flex:1;min-width:240px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+    <div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div>
+    <span class="thin" style="font-size:40px" id="gcount">0</span>
+  </div>
+  <details style="margin-top:16px"><summary class="label" style="cursor:pointer">More filters</summary>
     <div class="fl"><div class="label "><i></i>Who qualifies</div><div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-    <div class="fl"><div class="label "><i></i>Status</div><div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div></div>
-    <details class="fl"><summary class="label" style="cursor:pointer">More filters</summary>
-      <div class="fl"><div class="label "><i></i>Award up to at least</div><div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-      <div class="fl"><div class="label "><i></i>Category</div><div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div></details>
-  </div></aside>
-  <div class="tile gres rise" id="gres" aria-live="polite"></div>
+    <div class="fl"><div class="label "><i></i>Award up to at least</div><div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
+    <div class="fl"><div class="label "><i></i>Category</div><div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div></details>
 </div>
+<div class="tile gres rise" id="gres" aria-live="polite"></div>
   </main>
   <footer>
     <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>

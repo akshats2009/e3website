@@ -490,18 +490,16 @@ const bars = $$('.eq b'); let last = performance.now();
     return shell("index", body, js)
 
 def pub_list(page, kicker, title, lede, items, extra=""):
-    """Header, one list, a single line of related links."""
+    """Header and one list."""
     rows = "".join(crow(p['short'][:6], esc(p['title']), f"{p['kind']} · {p['min']} min · {p['author']}", p['slug'] + '.html') for p in items)
-    links = '<p class="muted" style="margin-top:22px;font-size:14px">Also: <a href="journals.html" style="color:var(--ink)">Journals</a> · <a href="economic-indicators.html" style="color:var(--ink)">Economic indicators</a></p>'
-    return shell(page, ph(kicker, title, lede) + f'<div class="tile rows rise">{rows}</div>' + links)
+    return shell(page, ph(kicker, title, lede) + f'<div class="tile rows rise">{rows}</div>')
 
 def article(p):
-    """Nav, title, banner, text, one side tile (progress and contents), footer."""
+    """Title, banner, text. A thin bar at the top shows reading progress."""
     a = p["data"]
-    toc, body = [], []
+    body = []
     for i, (t, txt) in enumerate(a["blocks"]):
         if t == "h2":
-            toc.append((f"s{i}", re.sub(r"<[^>]+>", "", txt)))
             body.append(f'<h2 id="s{i}">{txt}</h2>')
         elif t == "li":
             body.append(f"<ul><li>{txt}</li></ul>")
@@ -509,78 +507,56 @@ def article(p):
             body.append(f"<{t}>{txt}</{t}>")
     cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
     body.append(f'<p class="muted" style="font-size:14px;margin-top:2em"><a href="../../{cite}">Citations and sources →</a></p>')
-    toc_html = "".join(f'<a class="crow" href="#{i}" data-sec="{i}"><span class="m"></span><div><div class="n">{esc(n)}</div></div></a>' for i, n in toc)
     body_html = f"""
-<div class="read">
-  <aside class="side"><div class="tile pad rise">
-    {label('Now reading')}
-    <div class="rprog"><b id="rb"></b><i id="rk"></i></div>
-    <div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:11px" id="rl">0 min</span><span style="font-size:11px">{p['min']} min</span></div>
-    {f'<nav class="toc" aria-label="Contents" style="margin-top:12px">{toc_html}</nav>' if toc else ''}
-  </div></aside>
-  <article class="tile atile rise">
-    {label(f"{p['kind']} · {p['date']}")}
-    <h1>{esc(p['title'])}</h1>
-    <div class="mono muted" style="font-size:12px">{esc(a['byline'] or 'By ' + p['author'])}</div>
-    <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
-    <div class="prose" id="prose">{''.join(body)}</div>
-  </article>
-</div>"""
-    js = f"""<script>
-const pr = $('#prose'), total = {p['min']};
-function upd() {{ const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height));
-  $('#rb').style.width = k * 100 + '%'; $('#rk').style.left = k * 100 + '%'; $('#rl').textContent = Math.round(k * total) + ' min';
-  let cur = null; $$('#prose h2').forEach(h => {{ if (h.getBoundingClientRect().top < innerHeight * .35) cur = h.id; }});
-  $$('[data-sec]').forEach(a => a.classList.toggle('next', a.dataset.sec === cur)); }}
-addEventListener('scroll', upd, {{ passive: true }}); upd();
+<style>.topbar{{position:fixed;left:0;right:0;top:0;height:3px;background:transparent;z-index:40}}.topbar b{{display:block;height:100%;width:0;background:var(--accent)}}</style>
+<div class="topbar"><b id="rb"></b></div>
+<article class="tile atile rise" style="max-width:820px;margin:0 auto">
+  {label(f"{p['kind']} · {p['date']} · {p['min']} min")}
+  <h1>{esc(p['title'])}</h1>
+  <div class="mono muted" style="font-size:12px">{esc(a['byline'] or 'By ' + p['author'])}</div>
+  <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
+  <div class="prose" id="prose">{''.join(body)}</div>
+</article>"""
+    js = """<script>
+const pr = $('#prose');
+function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)); $('#rb').style.width = k * 100 + '%'; }
+addEventListener('scroll', upd, { passive: true }); upd();
 </script>"""
     return shell(p["slug"], body_html, js)
 
 def about():
-    """Header, one statement, team, approach."""
-    team = "".join(f"""<div class="tile pad rise c4"><div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="cover {COVERS[i]}" style="width:72px;border-radius:20px"></div><span class="chip">{r}</span></div>
-        <div style="font-weight:300;font-size:28px;letter-spacing:-.8px;line-height:1.05;margin:24px 0 10px">{n}</div><p class="muted" style="font-size:14px;line-height:1.55">{b}</p></div>"""
-        for i, (n, r, b) in enumerate(ABOUT["team"]))
-    appr = "".join(crow(f"0{i+1}", t, d, "") for i, (t, d) in enumerate(ABOUT["approach"]))
+    """Header, one statement, three people."""
+    team = "".join(crow(f"0{i+1}", n, f"{r}. {b}", "") for i, (n, r, b) in enumerate(ABOUT["team"]))
     body = ph("About", "About e3 Initiative") + f"""
 <div class="tile pad rise"><p style="font-weight:300;font-size:28px;line-height:1.25;letter-spacing:-.7px;max-width:44ch">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:70ch">{ABOUT['what']}</p></div>
-<section><div class="shead"><h2>Our team</h2></div><div class="grid">{team}</div></section>
-<section><div class="shead"><h2>Our approach</h2></div><div class="tile rows rise">{appr}</div></section>"""
+<section style="margin-top:20px"><div class="tile rows rise">{team}</div>
+<p class="muted" style="font-size:14px;margin-top:20px;max-width:70ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p></section>"""
     return shell("about", body)
 
 def journals():
     t, logo = JOURNAL
-    body = ph("Publications", "Journals", "Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.") + f"""
-<div class="grid">
-  <div class="tile pad rise c5" style="display:grid;place-items:center;min-height:360px"><img src="{IMG}{logo}" alt="{esc(t)}" width="240" height="240" style="border-radius:24px"></div>
-  <div class="tile pad rise c7" style="display:flex;flex-direction:column;justify-content:space-between;min-height:360px">
-    <div>{label('Journal')}<div style="font-weight:300;font-size:40px;letter-spacing:-1.2px;line-height:1.05;margin-top:18px">{t}</div></div>
-    <div class="tile" style="box-shadow:none;background:var(--wash);border-radius:24px;padding:20px;display:flex;gap:16px;align-items:center">
-      <svg class="dial" data-lit="0" width="64" height="64" viewBox="0 0 200 200" aria-hidden="true"></svg>
-      <div><b style="font-weight:400">Entries coming soon</b><div class="muted" style="font-size:13px;margin-top:2px">New long-form work will appear here first.</div></div></div>
-  </div>
-</div>"""
+    body = ph("Publications", "Journals", "Browse our academic journals and long-form publications.") + f"""
+<div class="tile pad rise" style="display:flex;gap:30px;align-items:center;flex-wrap:wrap"><img src="{IMG}{logo}" alt="{esc(t)}" width="160" height="160" style="border-radius:20px">
+<div>{label('Journal')}<div style="font-weight:300;font-size:36px;letter-spacing:-1px;line-height:1.1;margin-top:14px;max-width:18ch">{t}</div><p class="muted" style="margin-top:10px;font-size:14px">Entries coming soon.</p></div></div>"""
     return shell("journals", body)
 
-
 def grants():
-    """Header, one filter tile (search, who, status; more filters folded away), results."""
+    """Header, one search row, results. Other filters are folded away."""
     cats = "".join(f'<button data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
     lists = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
     body = ph("Grants", "Grant Finder", f"Funding for small businesses and nonprofits. Ready-made lists: {lists}.", '<a class="btn ghost" href="grant-help.html">Help & tips →</a>') + f"""
-<div class="gfind">
-  <aside class="gside"><div class="tile pad rise">
-    <div style="display:flex;justify-content:space-between;align-items:baseline">{label('Matching')}<span class="thin" style="font-size:40px" id="gcount">0</span></div>
-    <div class="search" style="margin-top:16px">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+<div class="tile pad rise" style="margin-bottom:20px">
+  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+    <div class="search" style="flex:1;min-width:240px">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+    <div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div>
+    <span class="thin" style="font-size:40px" id="gcount">0</span>
+  </div>
+  <details style="margin-top:16px"><summary class="label" style="cursor:pointer">More filters</summary>
     <div class="fl">{label('Who qualifies')}<div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-    <div class="fl">{label('Status')}<div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div></div>
-    <details class="fl"><summary class="label" style="cursor:pointer">More filters</summary>
-      <div class="fl">{label('Award up to at least')}<div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-      <div class="fl">{label('Category')}<div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
-  </div></aside>
-  <div class="tile gres rise" id="gres" aria-live="polite"></div>
-</div>"""
+    <div class="fl">{label('Award up to at least')}<div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
+    <div class="fl">{label('Category')}<div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
+</div>
+<div class="tile gres rise" id="gres" aria-live="polite"></div>"""
     js = """<script src="../shared/grants-data.js"></script><script>
 const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
 $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const f = seg.dataset.f;
@@ -608,39 +584,27 @@ render();
     return shell("grants", body, js)
 
 def category(slug):
-    """Header, counts, the list, one line of other lists."""
+    """Header and one list."""
     cat, title, what = CATEGORY_PAGES[slug]
     intro, gs = category_intro(cat, what)
     gs = sorted(gs, key=lambda g: ({"open": 0, "rolling": 1, "closed": 2}[status(g)], days_left(g) if days_left(g) is not None else 999))
-    c = {s: sum(1 for g in gs if status(g) == s) for s in ("open", "rolling", "closed")}
     rows = "".join(crow(deadline_label(g), esc(g["name"]), esc(g["funder"]) + " · " + esc(g["amount"]), g["link"], status_chip(status(g), days_left(g)), status(g) == "open") for g in gs)
     others = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
-    body = ph("Grant list", title, intro) + f"""
-<div class="grid">
-  <div class="tile pad rise c4" style="align-self:start">{label('In this list')}<div class="count-num" data-count="{len(gs)}">0</div>
-    <div style="margin-top:14px">{lvl('spark', 'Open now', c['open']/len(gs)*100, True)}{lvl('link', 'Rolling', c['rolling']/len(gs)*100)}{lvl('doc', 'Closed for now', c['closed']/len(gs)*100)}</div></div>
-  <div class="tile rows rise c8">{rows}</div>
-</div>
-<p class="muted" style="margin-top:22px;font-size:14px">More lists: {others} · <a href="grants.html" style="color:var(--ink)">Search all {len(GRANTS)}</a></p>"""
+    body = ph("Grant list", title, intro) + f'<div class="tile rows rise">{rows}</div><p class="muted" style="margin-top:22px;font-size:14px">More lists: {others} · <a href="grants.html" style="color:var(--ink)">Search all {len(GRANTS)}</a></p>'
     return shell(slug, body)
 
 def grant_help():
-    """Header, checklist (mistakes folded inside), progress, free-help directory."""
+    """Header, one checklist. The directory is folded away."""
     tips = "".join(f'<button class="check" data-i="{i}"><span class="bx">{icon("check", 14)}</span><div><b>{a}</b><p>{b}</p></div></button>' for i, (a, b) in enumerate(HELP["tips"]))
     orgs = "".join(crow("→", n, d, u, f'<span class="chip">{l}</span>') for n, d, l, u in HELP["orgs"])
     body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="btn" href="grants.html">Search grants →</a>') + f"""
-<div class="grid">
-  <div class="tile rows rise c8" style="padding-top:18px">{label('How to write a strong application')}<div style="margin-top:6px">{tips}</div>
-    <details style="padding:16px 0;border-top:1px solid var(--line)"><summary class="label" style="cursor:pointer">Common mistakes to avoid</summary><ul style="margin:12px 0 0 18px;color:var(--muted);font-size:14px;line-height:1.7">{''.join(f'<li>{m}</li>' for m in HELP['mistakes'])}</ul></details></div>
-  <div class="tile pad rise c4" style="text-align:center;align-self:start">{label('Your progress')}
-    <div style="position:relative;width:200px;height:200px;margin:14px auto 0"><svg class="dial" id="hdial" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"></svg>
-    <div style="position:absolute;inset:0;display:grid;place-items:center"><div><div class="thin" style="font-size:44px" id="hcount">0/8</div><div class="muted" style="font-size:13px;margin-top:4px">steps done</div></div></div></div></div>
-</div>
-<section><div class="shead"><h2>Where to get free help</h2></div><div class="tile rows rise">{orgs}</div><p class="muted" style="font-size:12px;line-height:1.6;margin-top:16px;max-width:80ch">{HELP['disclaimer']}</p></section>"""
+<div class="tile rows rise" style="padding-top:18px">{label('How to write a strong application · <span id="hcount">0/8</span>')}<div style="margin-top:6px">{tips}</div>
+  <details style="padding:16px 0;border-top:1px solid var(--line)"><summary class="label" style="cursor:pointer">Common mistakes to avoid</summary><ul style="margin:12px 0 0 18px;color:var(--muted);font-size:14px;line-height:1.7">{''.join(f'<li>{m}</li>' for m in HELP['mistakes'])}</ul></details>
+  <details style="padding:16px 0;border-top:1px solid var(--line)"><summary class="label" style="cursor:pointer">Where to get free help</summary><div style="margin-top:8px">{orgs}</div><p class="muted" style="font-size:12px;line-height:1.6;margin-top:14px;max-width:80ch">{HELP['disclaimer']}</p></details></div>"""
     js = """<script>
-const setH = buildDial($('#hdial'), 0, 200), done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
-function upd() { $$('.check[data-i]').forEach(c => c.classList.toggle('done', done.has(+c.dataset.i))); $('#hcount').textContent = done.size + '/8'; setH(Math.round(done.size / 8 * 60)); localStorage.setItem('e3-help', JSON.stringify([...done])); }
-$$('.check[data-i]').forEach(c => c.addEventListener('click', () => { const i = +c.dataset.i; done.has(i) ? done.delete(i) : done.add(i); upd(); })); setTimeout(upd, 900);
+const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
+function upd() { $$('.check[data-i]').forEach(c => c.classList.toggle('done', done.has(+c.dataset.i))); $('#hcount').textContent = done.size + '/8'; localStorage.setItem('e3-help', JSON.stringify([...done])); }
+$$('.check[data-i]').forEach(c => c.addEventListener('click', () => { const i = +c.dataset.i; done.has(i) ? done.delete(i) : done.add(i); upd(); })); upd();
 </script>"""
     return shell("grant-help", body, js)
 
@@ -682,33 +646,27 @@ loadIndicators().then(D => {
     return shell("economic-indicators", body, js)
 
 def outreach():
-    body = ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + '<div class="grid">' + "".join(
-        f"""<div class="tile pad rise c6" id="{k}" style="min-height:420px;display:flex;flex-direction:column;justify-content:space-between">
-          <div style="display:flex;justify-content:space-between">{label(t)}<span class="chip">{s}</span></div>
-          <div><div class="well lg" style="margin:30px 0 22px">{icon(ic, 26)}</div><p style="font-weight:300;font-size:24px;line-height:1.3;letter-spacing:-.5px">{p1}</p><p class="muted" style="margin-top:16px;font-size:14px;line-height:1.55">{p2}</p></div>
+    cards = "".join(f"""<div class="tile pad rise c6" id="{k}" style="min-height:360px;display:flex;flex-direction:column;justify-content:space-between">
+          <div>{label(t)}<p style="font-weight:300;font-size:26px;line-height:1.25;letter-spacing:-.6px;margin-top:22px">{p1}</p><p class="muted" style="margin-top:16px;font-size:14px;line-height:1.55">{p2}</p></div>
           <a class="btn" href="contact.html" style="align-self:flex-start;margin-top:24px">{'Share your story' if k == 'interview' else 'Partner with us'} →</a></div>"""
-        for (k, (t, s, p1, p2)), ic in zip(OUTREACH.items(), ["mic", "hands"])) + "</div>"
-    return shell("outreach", body)
-
+        for k, (t, s, p1, p2) in OUTREACH.items())
+    return shell("outreach", ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + f'<div class="grid">{cards}</div>')
 
 def contact():
-    """Header, form, one side tile."""
-    body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days.") + f"""
-<div class="grid">
-  <form class="tile pad rise c8" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px">
-    <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
-    <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
-    <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
-    <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
-  </form>
-  <div class="tile pad rise c4" style="align-self:start"><div style="display:flex;gap:16px;align-items:center"><svg class="dial" data-lit="10" width="88" height="88" viewBox="0 0 200 200" aria-hidden="true"></svg><div>{label('Reply within')}<div class="thin" style="font-size:36px;margin-top:6px">2 days</div></div></div>
-    <p class="muted" style="font-size:14px;line-height:1.55;margin-top:18px">Want to be interviewed? Say so in your message. We use your details only to reply (<a href="privacy.html" style="color:var(--ink)">privacy</a>).</p></div>
-</div>"""
+    """Header and the form."""
+    body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days. We use your details only to reply.") + """
+<form class="tile pad rise" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px;max-width:760px">
+  <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
+  <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
+  <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
+  <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
+</form>"""
     return shell("contact", body)
 
 def privacy():
-    out, toc, ul = [], [], False
+    """Header and the policy."""
+    out, ul = [], False
     for i, (t, txt) in enumerate(PRIVACY):
         if t == "li":
             if not ul:
@@ -716,27 +674,18 @@ def privacy():
             out.append(f"<li>{txt}</li>"); continue
         if ul:
             out.append("</ul>"); ul = False
-        if t == "h2":
-            toc.append((f"p{i}", txt)); out.append(f'<h2 id="p{i}">{txt}</h2>')
-        else:
-            out.append(f"<{t}>{txt}</{t}>")
+        out.append(f"<{t}>{txt}</{t}>")
     if ul:
         out.append("</ul>")
-    body = ph("Legal", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.", '<span class="chip">Updated Nov 12, 2026</span>') + f"""
-<div class="read"><nav class="side tile rows toc rise" aria-label="Contents">{''.join(f'<a class="crow" href="#{i}"><span class="m"></span><div><div class="n">{n}</div></div></a>' for i, n in toc)}</nav>
-<article class="tile atile rise"><div class="prose">{''.join(out)}</div></article></div>"""
+    body = ph("Legal", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.", '<span class="chip">Updated Nov 12, 2026</span>') + f'<article class="tile atile rise" style="max-width:820px"><div class="prose">{"".join(out)}</div></article>'
     return shell("privacy", body)
 
-
 def notfound():
-    body = f"""<div class="grid" style="margin-top:20px">
-  <div class="tile rise c7" style="min-height:420px;position:relative;padding:26px">{label('Page not found')}
-    <div class="thin" style="font-size:220px;letter-spacing:-12px;margin-top:40px">404</div>
-    <p class="muted" style="max-width:40ch">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p></div>
-  <div class="tile rows rise c5">{''.join(crow('→', t, '', h) for h, t in [('index.html', 'Go to the homepage'), ('articles.html', 'Browse articles'), ('research.html', 'Browse research'), ('grants.html', 'Search grants'), ('contact.html', 'Contact us')])}</div>
-</div>"""
+    body = f"""<div class="tile rise" style="padding:26px 34px 36px;max-width:760px;margin-top:20px">{label('Page not found')}
+    <div class="thin" style="font-size:200px;letter-spacing:-12px;margin:30px 0 10px">404</div>
+    <p class="muted" style="max-width:40ch;margin-bottom:24px">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p>
+    <div class="cta"><a class="btn" href="index.html">Go home</a><a class="btn ghost" href="articles.html">Publications</a></div></div>"""
     return shell("404", body)
-
 
 def build():
     write(f"{D}/theme.css", CSS)

@@ -219,6 +219,7 @@ footer a{font:13px var(--mono);color:var(--soft)}footer a:hover{color:var(--ink)
   .tip-row{grid-template-columns:44px 1fr 32px;gap:14px}.tip-row .no{font-size:32px}
   .prose{font-size:17px}.prose h2::before{display:none}
   .sh h2{font-size:36px}
+  .pub.jr{grid-template-columns:1fr!important}.grid{column-gap:0!important}.pub > *{min-width:0}.pub h3[data-lens]{font-size:28px!important}.grid h2[data-lens]{font-size:48px!important}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 """
@@ -384,8 +385,7 @@ addEventListener('resize', () => L && fit());
 
 def pub_list(page, title, lede, items, extra=""):
     """Header, index rows, one line of related links."""
-    links = '<p class="lab" style="margin-top:24px">Also: <a href="journals.html" style="color:var(--ink)">Journals</a> · <a href="economic-indicators.html" style="color:var(--ink)">Economic indicators</a></p>'
-    return shell(page, ph("Publications", title, lede) + "".join(pub_row(i, p, False) for i, p in enumerate(items)) + links)
+    return shell(page, ph("Publications", title, lede) + "".join(pub_row(i, p, False) for i, p in enumerate(items)))
 
 def article(p):
     a = p["data"]
@@ -401,39 +401,33 @@ def article(p):
             body.append(f"<{t}>{txt}</{t}>")
     cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
     body_html = f"""
-<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span><span class="lab" id="rw">reading gives it weight · wght 100</span></div>
+<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span><span class="lab" id="rw">wght 100</span></div>
   <h1 class="long" id="title" style="font-variation-settings:'wght' 100;max-width:24ch">{esc(p['title'])}</h1>
-  <div class="lab" style="margin-top:22px">{esc(a['byline'] or 'By ' + p['author'])} · {p['min']} min</div></div>
+  <div class="lab" style="margin-top:22px">{esc(a['byline'] or 'By ' + p['author'])} · {p['min']} min · <a href="../../{cite}" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px">citations</a></div></div>
 <div class="banner"><img src="{IMG}{p['img'].replace('-640', '')}" alt="{esc(p['alt'])}"></div><div class="capt">{esc(a['caption'] or p['alt'])}</div>
-<div class="read">
-  <aside class="margin">{''.join(f'<a href="#{i}" data-s="{i}">§{k} {esc(t)}</a>' for i, t, k in secs)}<a href="../../{cite}" style="margin-top:18px">→ Citations & sources</a></aside>
-  <article class="prose" id="prose">{''.join(body)}</article>
-  <aside></aside>
-</div>"""
+<div class="read" style="grid-template-columns:1fr;max-width:700px;margin-left:auto;margin-right:auto"><article class="prose" id="prose">{''.join(body)}</article></div>"""
     js = """<script>
 const pr = $('#prose'), title = $('#title');
 function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)), w = Math.round(100 + k * 600);
-  title.style.fontVariationSettings = `'wght' ${w}`; $('#rw').textContent = 'reading gives it weight · wght ' + w;
-  let cur = null; $$('#prose h2').forEach(h => { if (h.getBoundingClientRect().top < innerHeight * .35) cur = h.id; }); $$('.margin a[data-s]').forEach(a => a.classList.toggle('on', a.dataset.s === cur)); }
+  title.style.fontVariationSettings = `'wght' ${w}`; $('#rw').textContent = 'wght ' + w;
+ }
 addEventListener('scroll', upd, { passive: true }); upd();
 </script>"""
     return shell(p["slug"], body_html, js)
 
 
 def about():
-    """Header, one statement, team, approach."""
+    """Header, one statement, three people."""
     team = "".join(f'<div class="pub"><div class="no">0{i+1}</div><div><h3 data-lens="300" style="font-size:40px">{n}</h3><p style="font-size:15px">{b}</p></div><div class="meta"><b>{r}</b></div></div>' for i, (n, r, b) in enumerate(ABOUT["team"]))
-    appr = "".join(f'<div class="ln"><span class="lab">0{i+1}</span><h3 class="w{w}" style="font-size:30px;margin:12px 0 8px">{t}</h3><p>{d}</p></div>' for i, ((t, d), w) in enumerate(zip(ABOUT["approach"], [3, 5, 7])))
     body = ph("About", "About e3 Initiative", ABOUT["what"]) + f"""
 <p style="font-size:30px;line-height:1.25;letter-spacing:-.025em;font-variation-settings:'wght' 260;max-width:40ch;margin-top:50px">{ABOUT['who']}</p>
-<section><div class="sh"><h2>Our team</h2></div>{team}</section>
-<section><div class="sh"><h2>Our approach</h2></div><div class="lenses">{appr}</div></section>"""
+<section style="margin-top:60px">{team}<p class="lab" style="margin-top:28px;line-height:1.7;max-width:80ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p></section>"""
     return shell("about", body)
 
 def journals():
     t, logo = JOURNAL
     body = ph("Publications", "Journals", "Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.") + f"""
-<div class="pub" style="grid-template-columns:260px 1fr;margin-top:30px"><img src="{IMG}{logo}" alt="{esc(t)}" width="260" height="260" style="aspect-ratio:1;filter:none;border-radius:8px">
+<div class="pub jr" style="margin-top:30px"><img src="{IMG}{logo}" alt="{esc(t)}" width="260" height="260" style="aspect-ratio:1;filter:none;border-radius:8px">
 <div><span class="lab">Journal</span><h3 data-lens="250" style="font-size:44px;margin-top:12px">{t}</h3><p style="font-size:15px">Entries coming soon. New long-form work will appear here first.</p></div></div>"""
     return shell("journals", body)
 
@@ -445,9 +439,9 @@ def grants():
     body = ph("Grants", "Grant Finder", f"Set by urgency: the closer a deadline, the heavier it is. Closed grants drop to Thin. Ready-made lists: {lists}.", '<a class="pill o" href="grant-help.html">Help & tips →</a>') + f"""
 <div style="margin-top:40px"><label class="lab" for="q">Search</label><input class="bigsearch" id="q" type="search" placeholder="women-owned bakery…" autocomplete="off"></div>
 <div style="margin-top:20px">
-  <div class="fgroup"><span class="lab">Who qualifies</span><div class="ftabs" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Small business</button><button data-v="nonprofit">Nonprofit</button></div></div>
   <div class="fgroup"><span class="lab">Status</span><div class="ftabs" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">Everything</button></div></div>
   <details class="fgroup" style="display:block"><summary class="lab" style="cursor:pointer">+ More filters</summary>
+    <div class="fgroup" style="margin-top:12px"><span class="lab">Who qualifies</span><div class="ftabs" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Small business</button><button data-v="nonprofit">Nonprofit</button></div></div>
     <div class="fgroup" style="margin-top:12px"><span class="lab">Award up to</span><div class="ftabs" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k+</button><button data-v="50000">$50k+</button><button data-v="250000">$250k+</button></div></div>
     <div class="fgroup"><span class="lab">Category</span><div class="ftabs" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
 </div>
@@ -484,8 +478,7 @@ def category(slug):
     nums = "".join(f'<div class="c4"><div class="big-num" style="font-variation-settings:{chr(39)}wght{chr(39)} {w};font-size:110px">{n}</div><div class="lab" style="margin-top:12px">{lab}</div></div>' for n, lab, w in [(c["open"], "open now", 800), (c["rolling"], "rolling", 450), (c["closed"], "closed for now", 100)])
     others = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
     body = ph("Grant list", title, intro) + f"""
-<div class="grid" style="margin-top:50px">{nums}</div>
-<table class="gt" style="margin-top:50px"><thead><tr><th>Grant</th><th>Award</th><th style="text-align:right">Deadline</th></tr></thead><tbody>{''.join(grant_tr(g) for g in gs)}</tbody></table>
+<table class="gt" style="margin-top:40px"><thead><tr><th>Grant</th><th>Award</th><th style="text-align:right">Deadline</th></tr></thead><tbody>{''.join(grant_tr(g) for g in gs)}</tbody></table>
 <p class="lab" style="margin-top:24px">More lists: {others} · <a href="grants.html" style="color:var(--ink)">Search all {len(GRANTS)}</a></p>"""
     return shell(slug, body)
 
@@ -497,7 +490,7 @@ def grant_help():
 <section style="margin-top:60px"><div class="sh"><h2>How to write a strong application</h2><span class="lab">Ready: <span id="rd" style="font-size:22px;color:var(--ink);font-family:var(--sans);font-variation-settings:'wght' 100">0 of 8</span></span></div>
 <p class="lab" style="margin:14px 0 0">Tick a step when it's done: it gains weight.</p>{tips}
 <details style="padding:20px 0;border-bottom:1px solid var(--rule)"><summary class="lab" style="cursor:pointer">+ Common mistakes to avoid</summary>{''.join(f'<p style="padding:10px 0;font-size:16px;line-height:1.5"><span class="g lab" style="margin-right:12px">✕</span>{m}</p>' for m in HELP['mistakes'])}</details></section>
-<section><div class="sh"><h2>Where to get free help</h2></div>{orgs}<p class="lab" style="margin-top:20px;line-height:1.7;max-width:90ch">{HELP['disclaimer']}</p></section>"""
+<section><details><summary class="sh" style="cursor:pointer"><h2>Where to get free help</h2><span class="lab">+ show</span></summary>{orgs}<p class="lab" style="margin-top:20px;line-height:1.7;max-width:90ch">{HELP['disclaimer']}</p></details></section>"""
     js = """<script>
 const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
 function upd() { $$('.tip-row[data-i]').forEach(c => c.classList.toggle('on', done.has(+c.dataset.i))); $('#rd').textContent = done.size + ' of 8';
@@ -543,8 +536,7 @@ def contact():
   <label class="field"><span class="fl">Subject *</span><input class="inp" required placeholder="What it's about"></label>
   <label class="field"><span class="fl">Message *</span><textarea class="inp" required placeholder="Write as much as you like."></textarea></label>
   <div class="btns" style="align-items:center"><button class="pill" type="submit">Send message →</button><span class="lab g" data-sent hidden>Mockup: nothing was sent</span></div></form>
-<aside class="c4"><div class="big-num w8" style="font-size:120px">2</div><div class="lab" style="margin-top:10px">business days to reply · wght 800</div>
-  <p style="margin-top:40px;font-size:15px;line-height:1.6;color:var(--soft)">Want to be interviewed? Say so and our <a href="outreach.html" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px;color:var(--ink)">outreach team</a> will follow up. We use your details only to reply: <a href="privacy.html" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px;color:var(--ink)">privacy policy</a>.</p></aside></div>"""
+</div>"""
     return shell("contact", body)
 
 
@@ -562,13 +554,13 @@ def privacy():
         else:
             out.append(f"<{t}>{txt}</{t}>")
     body = ph("Legal · updated Nov 12, 2026", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.") + f"""
-<div class="read"><aside class="margin">{''.join(f'<a href="#{i}">§{k} {t}</a>' for i, t, k in secs)}</aside><article class="prose" style="--bw:400">{''.join(out).replace('<p>', '<p class="np">', 1)}</article><aside></aside></div>"""
+<div class="read" style="grid-template-columns:1fr;max-width:700px"><article class="prose" style="--bw:400">{''.join(out)}</article></div>"""
     return shell("privacy", body.replace('<p class="np">', '<p style="">'))
 
 
 def notfound():
     body = f"""<div class="ph" style="border:0"><div class="top"><span class="lab">Page not found</span><span class="lab">hover the numerals</span></div>
-  <h1 data-lens="100" style="font-size:300px;letter-spacing:-.06em;line-height:.85">404</h1>
+  <h1 data-lens="100" style="font-size:clamp(110px,32vw,300px);letter-spacing:-.06em;line-height:.85">404</h1>
   <div class="lede"><p>Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p><div class="btns"><a class="pill" href="index.html">Homepage</a><a class="pill o" href="articles.html">Articles</a><a class="pill o" href="research.html">Research</a><a class="pill o" href="contact.html">Contact</a></div></div></div>"""
     return shell("404", body)
 
