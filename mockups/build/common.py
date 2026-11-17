@@ -15,29 +15,23 @@ esc = html.escape
 
 # ——— Navigation ———
 NAV = [
-    ("index.html", "Home"),
     ("about.html", "About"),
-    ("articles.html", "Articles"),
-    ("research.html", "Research"),
+    ("articles.html", "Publications"),
     ("grants.html", "Grants"),
-    ("economic-indicators.html", "Indicators"),
-    ("outreach.html", "Outreach"),
     ("contact.html", "Contact"),
 ]
 FOOT = [
-    ("articles.html", "Articles"), ("research.html", "Research"), ("journals.html", "Journals"),
-    ("economic-indicators.html", "Economic Indicators"), ("grants.html", "Grant Finder"),
-    ("grant-help.html", "Grant Help"), ("outreach.html", "Outreach"), ("contact.html", "Contact"),
-    ("privacy.html", "Privacy"),
+    ("articles.html", "Publications"), ("grants.html", "Grant Finder"), ("grant-help.html", "Grant Help"),
+    ("economic-indicators.html", "Indicators"), ("outreach.html", "Outreach"), ("privacy.html", "Privacy"),
 ]
 # which nav item a page lights up
 SECTION = {
     "index": "index.html", "about": "about.html", "articles": "articles.html", "article-railroad": "articles.html",
-    "article-chinatown": "articles.html", "research": "research.html", "research-chinatown": "research.html",
-    "journals": "research.html", "grants": "grants.html", "grant-help": "grants.html",
+    "article-chinatown": "articles.html", "research": "articles.html", "research-chinatown": "articles.html",
+    "journals": "articles.html", "grants": "grants.html", "grant-help": "grants.html",
     "minority-owned-business-grants": "grants.html", "women-owned-business-grants": "grants.html",
-    "veteran-owned-business-grants": "grants.html", "economic-indicators": "economic-indicators.html",
-    "outreach": "outreach.html", "contact": "contact.html", "privacy": "", "404": "",
+    "veteran-owned-business-grants": "grants.html", "economic-indicators": "articles.html",
+    "outreach": "about.html", "contact": "contact.html", "privacy": "", "404": "",
 }
 
 # ——— Grants ———
@@ -296,7 +290,7 @@ PAGES = ["index", "about", "articles", "article-railroad", "article-chinatown", 
          "journals", "grants", "grant-help", "minority-owned-business-grants", "women-owned-business-grants",
          "veteran-owned-business-grants", "economic-indicators", "outreach", "contact", "privacy", "404"]
 TITLES = {
-    "index": "Home", "about": "About", "articles": "Articles", "research": "Research", "journals": "Journals",
+    "index": "Home", "about": "About", "articles": "Publications", "research": "Research", "journals": "Journals",
     "grants": "Grant Finder", "grant-help": "Grant Help & Tips", "economic-indicators": "Economic Indicators",
     "outreach": "Outreach", "contact": "Contact", "privacy": "Privacy Policy", "404": "Page not found",
     "article-railroad": RAIL["title"], "article-chinatown": PUBS[2]["title"], "research-chinatown": PAPER["title"],
@@ -330,3 +324,12 @@ def write(path, text):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w") as f:
         f.write(text)
+
+KEY_INDICATORS = ["cpi", "unemployment", "fed_funds", "payrolls"]
+
+
+def replace_func(src, name, new):
+    """Swap one top-level function in a theme module's source for a new version."""
+    a = src.index(f"\ndef {name}(")
+    b = src.find("\ndef ", a + 1)
+    return src[:a + 1] + new.strip("\n") + "\n\n" + (src[b + 1:] if b != -1 else "")

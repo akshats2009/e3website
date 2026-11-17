@@ -13,41 +13,34 @@
   <header class="nav">
     <a class="brand" href="index.html"><i></i>e3 Initiative</a>
     <div class="nav-r">
-      <ul class="pill-nav" id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html" class=on aria-current=page>Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <ul class="pill-nav" id="nav"><li><a href="about.html">About</a></li><li><a href="articles.html">Publications</a></li><li><a href="grants.html" class=on aria-current=page>Grants</a></li><li><a href="contact.html">Contact</a></li></ul>
       <button class="mini-sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" stroke="none"/></svg></b></button>
       <button class="menu-btn" aria-label="Menu" aria-controls="nav" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
     </div>
   </header>
   <main id="main">
-<div class="ph"><div><div class="label "><i></i>Grants</div><h1>Grant Finder</h1><p>Funding for small businesses and nonprofits. Search by keyword, or filter by who qualifies, category, award size and deadline.</p></div><div><a class="btn ghost" href="grant-help.html">Help & tips →</a></div></div>
+<div class="ph"><div><div class="label "><i></i>Grants</div><h1>Grant Finder</h1><p>Funding for small businesses and nonprofits. Ready-made lists: <a href="minority-owned-business-grants.html" style="color:var(--ink)">Minority-owned</a> · <a href="women-owned-business-grants.html" style="color:var(--ink)">Women-owned</a> · <a href="veteran-owned-business-grants.html" style="color:var(--ink)">Veteran-owned</a>.</p></div><div><a class="btn ghost" href="grant-help.html">Help & tips →</a></div></div>
 <div class="gfind">
-  <aside class="gside">
-    <div class="tile pad rise">
-      <div class="label "><i></i>Search</div>
-      <div class="search" style="margin-top:12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
-      <div class="fl"><div class="label "><i></i>Who qualifies</div><div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-      <div class="fl"><div class="label "><i></i>Status</div><div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="open">Open</button><button data-v="">All</button></div></div>
+  <aside class="gside"><div class="tile pad rise">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="label "><i></i>Matching</div><span class="thin" style="font-size:40px" id="gcount">0</span></div>
+    <div class="search" style="margin-top:16px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+    <div class="fl"><div class="label "><i></i>Who qualifies</div><div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
+    <div class="fl"><div class="label "><i></i>Status</div><div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div></div>
+    <details class="fl"><summary class="label" style="cursor:pointer">More filters</summary>
       <div class="fl"><div class="label "><i></i>Award up to at least</div><div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-      <div class="fl"><div class="label "><i></i>Category</div><div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div>
-    </div>
-    <div class="tile pad rise" style="display:flex;gap:18px;align-items:center">
-      <svg class="dial" id="gdial" width="96" height="96" viewBox="0 0 200 200" aria-hidden="true"></svg>
-      <div><div class="label "><i></i>Matching</div><div class="count-num" id="gcount" style="margin-top:6px;font-size:48px">0</div><div class="muted" style="font-size:13px">of 87 grants</div></div>
-    </div>
-    <div class="tile pad rise"><div class="label "><i></i>Browse by group</div><div style="margin-top:6px"><a href="minority-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.2"/><circle cx="16.5" cy="10" r="2.5"/><path d="M3.5 19c.6-3 3-5 5.5-5s4.9 2 5.5 5M15 15c2.4-.2 4.4 1.3 5 3.8"/></svg></div><div class="nm">Minority-owned</div><div class="pc">0%</div><div class="bar"><b class="ch" data-w="42"><span class=shim></span></b></div></div></a><a href="women-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-6 7-6s6.2 2.4 7 6"/></svg></div><div class="nm">Women-owned</div><div class="pc">0%</div><div class="bar"><b class="" data-w="38"></b></div></div></a><a href="veteran-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></div><div class="nm">Veteran-owned</div><div class="pc">0%</div><div class="bar"><b class="" data-w="50"></b></div></div></a></div></div>
-  </aside>
+      <div class="fl"><div class="label "><i></i>Category</div><div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div></details>
+  </div></aside>
   <div class="tile gres rise" id="gres" aria-live="polite"></div>
 </div>
   </main>
   <footer>
     <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
-    <nav class="links" aria-label="Footer"><a href="articles.html">Articles</a><a href="research.html">Research</a><a href="journals.html">Journals</a><a href="economic-indicators.html">Economic Indicators</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="outreach.html">Outreach</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+    <nav class="links" aria-label="Footer"><a href="articles.html">Publications</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="economic-indicators.html">Indicators</a><a href="outreach.html">Outreach</a><a href="privacy.html">Privacy</a></nav>
   </footer>
 </div>
 <script src="theme.js"></script>
 <script src="../shared/grants-data.js"></script><script>
 const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
-const setDial = buildDial($('#gdial'), 0, 200);
 $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const f = seg.dataset.f;
   if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => x.classList.toggle('on', !x.dataset.v)); }
     else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', seg).classList.toggle('on', !F.cat.size); } }
@@ -55,13 +48,13 @@ $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b =
 $('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
 function render() {
   const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q))
-    && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || (F.status === 'live' ? g.status !== 'closed' : g.status === F.status))
+    && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || g.status !== 'closed')
     && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
     .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
-  $('#gcount').textContent = rs.length; setDial(Math.round(rs.length / GRANTS.length * 60));
+  $('#gcount').textContent = rs.length;
   $('#gres').innerHTML = rs.length ? rs.map(g => { const dt = g.days != null ? g.dl.split(' ') : null;
     return `<div class="grow ${g.status}" tabindex="0"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:20px">∞</b><span>${g.dl}</span>`}</div>
-      <div><div class="n">${g.name}</div><div class="f">${g.funder} · ${CAT_LABEL[g.cat]}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
+      <div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
       <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + 'd' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
       <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
     : '<div style="padding:40px 0;text-align:center" class="muted">No grants match these filters. Try widening them.</div>';

@@ -132,6 +132,7 @@ footer .links a:hover{color:var(--ink)}
 
 /* ——— home widgets ——— */
 .home{display:grid;grid-template-columns:repeat(4,var(--cell));grid-auto-rows:var(--cell);gap:var(--gap)}
+.home .rows .crow{padding:13px 0}.home .rows .crow .m{height:28px}
 .home .tile{height:100%}
 .w2{grid-column:span 2}
 .hero{grid-column:span 2;display:flex;flex-direction:column;justify-content:space-between;padding:4px 8px 4px 0}
@@ -220,7 +221,7 @@ html.night .focus .sw b{transform:translateX(26px)}
 .rprog{height:5px;border-radius:99px;background:var(--track);position:relative;margin:22px 0 8px}
 .rprog b{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--ink);width:0}
 .rprog i{position:absolute;top:-5px;width:15px;height:15px;margin-left:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px var(--hair),0 2px 6px rgba(0,0,0,.15);left:0}
-.toc .crow{grid-template-columns:3px 1fr;padding:12px 0}
+.toc .crow{grid-template-columns:3px 1fr;padding:10px 0;border-top:1px solid var(--line)}
 .toc .crow .m{height:26px}
 .toc .crow .n{font-size:14px}
 .atile{padding:30px 44px 50px}
@@ -270,6 +271,8 @@ html.night .focus .sw b{transform:translateX(26px)}
 .check p{font-size:14px;color:var(--muted);line-height:1.5;margin-top:4px}
 .check.done b{text-decoration:line-through;text-decoration-color:var(--accent)}
 
+[hidden]{display:none!important}
+summary{list-style:none}summary::-webkit-details-marker{display:none}summary.label::after{content:"+";margin-left:6px}
 @media (max-width:1300px){
   .home{grid-template-columns:repeat(2,var(--cell));justify-content:center}
   .wrap{max-width:calc(var(--cell)*2 + var(--gap) + 64px)}

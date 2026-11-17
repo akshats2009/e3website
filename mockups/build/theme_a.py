@@ -139,6 +139,7 @@ footer .links a:hover{color:var(--ink)}
 
 /* ——— home widgets ——— */
 .home{display:grid;grid-template-columns:repeat(4,var(--cell));grid-auto-rows:var(--cell);gap:var(--gap)}
+.home .rows .crow{padding:13px 0}.home .rows .crow .m{height:28px}
 .home .tile{height:100%}
 .w2{grid-column:span 2}
 .hero{grid-column:span 2;display:flex;flex-direction:column;justify-content:space-between;padding:4px 8px 4px 0}
@@ -227,7 +228,7 @@ html.night .focus .sw b{transform:translateX(26px)}
 .rprog{height:5px;border-radius:99px;background:var(--track);position:relative;margin:22px 0 8px}
 .rprog b{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--ink);width:0}
 .rprog i{position:absolute;top:-5px;width:15px;height:15px;margin-left:-7px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px var(--hair),0 2px 6px rgba(0,0,0,.15);left:0}
-.toc .crow{grid-template-columns:3px 1fr;padding:12px 0}
+.toc .crow{grid-template-columns:3px 1fr;padding:10px 0;border-top:1px solid var(--line)}
 .toc .crow .m{height:26px}
 .toc .crow .n{font-size:14px}
 .atile{padding:30px 44px 50px}
@@ -277,6 +278,8 @@ html.night .focus .sw b{transform:translateX(26px)}
 .check p{font-size:14px;color:var(--muted);line-height:1.5;margin-top:4px}
 .check.done b{text-decoration:line-through;text-decoration-color:var(--accent)}
 
+[hidden]{display:none!important}
+summary{list-style:none}summary::-webkit-details-marker{display:none}summary.label::after{content:"+";margin-left:6px}
 @media (max-width:1300px){
   .home{grid-template-columns:repeat(2,var(--cell));justify-content:center}
   .wrap{max-width:calc(var(--cell)*2 + var(--gap) + 64px)}
@@ -441,15 +444,9 @@ def status_chip(s, d=None):
 
 # ——— Pages ———
 def home():
+    """Seven blocks: nav, hero, now reading, deadlines, publications, mission, footer."""
     soon = DATED_SOON[:6]
-    nxt = soon[0]
     rows_js = [{"t": deadline_label(g), "n": g["name"], "d": f'{g["funder"].split(" (")[0]} · {money(g.get("amountMax"))}', "chip": f"in {days_left(g)} days"} for g in soon]
-    cats = {}
-    for g in OPEN:
-        cats[g["category"]] = cats.get(g["category"], 0) + 1
-    top = sorted(cats.items(), key=lambda x: -x[1])[:7]
-    grp = lambda c: (sum(1 for g in GRANTS if g["category"] == c and status(g) != "closed"), sum(1 for g in GRANTS if g["category"] == c))
-    mi, wo, ve = grp("minority_owned"), grp("women_owned"), grp("veteran_owned")
     pieces = [{"t": p["title"].split(":")[0], "by": f'{p["author"]} · {p["kind"]}', "len": p["min"], "href": p["slug"] + ".html"} for p in PUBS]
     import json as _j
     body = f"""
@@ -457,7 +454,7 @@ def home():
   <div class="hero">
     {label('Equity · Economics · Ethnicity')}
     <h1>{TAGLINE}<span>.</span></h1>
-    <div><p>{LEDE}</p><div class="cta"><a class="btn" href="research.html">Read the research</a><a class="btn ghost" href="grants.html">Find a grant</a></div></div>
+    <div><p>{LEDE}</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
   </div>
   <div class="tile w2 player rise">
     <div class="pcov">
@@ -477,55 +474,11 @@ def home():
   <a class="tile w2 cal rise" href="grants.html">
     {label(TODAY.strftime('%A'), 'abs')}
     <div class="day">{TODAY.day}</div><div class="month">{TODAY.strftime('%B')}</div>
-    <div class="sum">{sum(1 for g in DATED_SOON if days_left(g) <= 30)} grant deadlines in 30 days</div>
+    <div class="sum">{len(OPEN)} grants open · find yours →</div>
     <div class="div"></div><div class="list" id="list"><span class="chip a" id="chip"></span></div>
   </a>
-  <div class="tile rise">
-    {label('Next deadline', 'abs')}
-    <svg class="dial dialw" data-lit="{days_left(nxt)}" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"></svg>
-    <div class="digits"><span data-count="{days_left(nxt)}">0</span><small> days</small></div>
-    <div class="dcap">{esc(nxt['name'])}</div>
-  </div>
-  <div class="tile focus rise">
-    <div class="dark"></div>
-    {label('Reading mode', 'abs')}
-    <div class="well lg moon">{icon('moon', 26)}</div>
-    <div class="state" data-night-state>Off</div><div class="cap2" data-night-cap>Paper, for daytime</div>
-    <button class="sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b></b></button>
-  </div>
-  <div class="tile rise">
-    {label(f'{TODAY.year} so far', 'abs')}<div class="tr">Feb · Mar · Oct</div>
-    <div class="big" data-count="{len(PUBS)}">0</div><div class="sky">Pieces published</div>
-    <svg class="arcbox" width="248" height="86" viewBox="0 0 248 86" aria-hidden="true">
-      <path id="arcd" class="dotted" d="M8 76 C 60 -14, 188 -14, 240 76" stroke-width="1.2" stroke-dasharray="2 4"/>
-      <line class="hz" x1="0" x2="248" y1="76" y2="76"/>
-      <path id="arcl" class="lit" d="M8 76 C 60 -14, 188 -14, 240 76" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-      <g id="stops"></g><circle id="glow" r="14" fill="var(--sun-glow)" opacity="0"/><circle id="sun" r="6" fill="var(--accent)" opacity="0"/>
-    </svg>
-    <div class="tiny" style="left:26px">Jan</div><div class="tiny" style="right:26px">Dec</div>
-  </div>
-  <a class="tile rise" href="grants.html">
-    {label('Open grants', 'abs')}
-    <div class="cnt" data-count="{len(OPEN)}">0</div><div class="goal">of {len(GRANTS)} tracked · {round(len(OPEN)/len(GRANTS)*100)}%</div>
-    <div id="cols">{''.join(f'<div class="col" style="left:{26+i*35}px"><div class="e"></div><div class="b{" hl" if i==0 else ""}" data-h="{n/top[0][1]:.2f}"></div><div class="l">{CAT_LABEL[c][:2]}</div></div>' for i,(c,n) in enumerate(top))}</div>
-  </a>
-  <div class="tile rise">
-    {label("Who it's for", 'abs')}
-    <div class="devs">
-      <a href="minority-owned-business-grants.html">{lvl('people', 'Minority-owned', mi[0]/mi[1]*100, True)}</a>
-      <a href="women-owned-business-grants.html">{lvl('person', 'Women-owned', wo[0]/wo[1]*100)}</a>
-      <a href="veteran-owned-business-grants.html">{lvl('shield', 'Veteran-owned', ve[0]/ve[1]*100)}</a>
-    </div>
-  </div>
-  <a class="tile share rise" href="outreach.html">
-    {label('Outreach', 'abs')}<div class="well lg">{icon('mic', 24)}</div>
-    <div class="h">Share your story</div><div class="s">An interview, on your terms.</div><span class="btn sm go">Book a time →</span>
-  </a>
+  <div class="tile w2 rows rise" style="padding-top:20px">{label('Latest publications')}{''.join(crow(p['short'][:6], esc(p['title'].split(':')[0]), p['kind'], p['slug'] + '.html') for p in PUBS)}</div>
 </div>
-<section>
-  <div class="shead"><h2>Publications</h2><a href="articles.html">All articles →</a></div>
-  <div class="tile rows">{''.join(crow(p['short'][:6], p['title'], p['summary'], p['slug'] + '.html', f'<span class="chip">{p["kind"]}</span>') for p in PUBS)}</div>
-</section>
 <section class="mission">{label('Mission')}<p>{MISSION.replace(', fostering', ', <span>fostering').replace('backgrounds.', 'backgrounds.</span>')}</p></section>
 """
     js = f"""<script>
@@ -547,27 +500,17 @@ const rows = EVENTS.map(e => {{ const r = document.createElement('div'); r.class
 let top0 = 0; function place() {{ rows.forEach((r, i) => {{ const k = i - top0; r.style.top = k * 76 + 'px'; r.style.opacity = k >= 0 && k < 3 ? 1 : 0; r.classList.toggle('next', k === 0); }});
   $('#chip').style.opacity = 0; setTimeout(() => {{ $('#chip').textContent = EVENTS[top0].chip; $('#chip').style.opacity = 1; }}, 300); }}
 place(); if (!reduce) setInterval(() => {{ top0 = (top0 + 1) % (EVENTS.length - 2); place(); }}, 3600);
-const arcd = $('#arcd'), AL = arcd.getTotalLength();
-[0.09, 0.19, 0.76].forEach(k => {{ const p = arcd.getPointAtLength(AL * k), c = document.createElementNS(SVG, 'circle'); c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', 3.5); c.setAttribute('class', 'pub'); $('#stops').appendChild(c); }});
-const SUN = ({TODAY.timetuple().tm_yday} / 365);
-setTimeout(() => {{ ['#sun', '#glow'].forEach(s => $(s).setAttribute('opacity', 1)); const t0 = performance.now();
-  (function s(now) {{ const k = reduce ? 1 : Math.min(1, (now - t0) / 1600), p = arcd.getPointAtLength(AL * SUN * inOut(k));
-    ['#sun', '#glow'].forEach(x => {{ $(x).setAttribute('cx', p.x); $(x).setAttribute('cy', p.y); }}); $('#arcl').setAttribute('stroke-dashoffset', 1 - SUN * inOut(k)); $('#glow').setAttribute('r', 12 + 3 * Math.sin(now / 333)); if (!reduce) requestAnimationFrame(s); }})(t0); }}, 1000);
-$$('.col .b').forEach((b, i) => setTimeout(() => b.style.transform = `scaleY(${{b.dataset.h}})`, 1100 + i * 80));
 </script>"""
     return shell("index", body, js)
 
-
 def pub_list(page, kicker, title, lede, items, extra=""):
-    cards = "".join(f"""<a class="tile pubcard rise c12" href="{p['slug']}.html">
-      <div class="cover photo"><img src="{IMG}{p['img']}" alt="{esc(p['alt'])}" loading="lazy"></div>
-      <div>{label(f"{p['kind']} · {p['date']}")}<h3>{esc(p['title'])}</h3><p>{esc(p['summary'])}</p>
-        <div class="meta"><span class="playb">{icon('play', 16)}</span><span class="pbar"><b style="width:0"></b></span><span class="mono muted" style="font-size:11px">{p['min']} min · {p['author']}</span></div></div></a>"""
-        for p in items)
-    return shell(page, ph(kicker, title, lede) + f'<div class="grid">{cards}</div>{extra}')
-
+    """Header, one list, a single line of related links."""
+    rows = "".join(crow(p['short'][:6], esc(p['title']), f"{p['kind']} · {p['min']} min · {p['author']}", p['slug'] + '.html') for p in items)
+    links = '<p class="muted" style="margin-top:22px;font-size:14px">Also: <a href="journals.html" style="color:var(--ink)">Journals</a> · <a href="economic-indicators.html" style="color:var(--ink)">Economic indicators</a></p>'
+    return shell(page, ph(kicker, title, lede) + f'<div class="tile rows rise">{rows}</div>' + links)
 
 def article(p):
+    """Nav, title, banner, text, one side tile (progress and contents), footer."""
     a = p["data"]
     toc, body = [], []
     for i, (t, txt) in enumerate(a["blocks"]):
@@ -578,27 +521,22 @@ def article(p):
             body.append(f"<ul><li>{txt}</li></ul>")
         else:
             body.append(f"<{t}>{txt}</{t}>")
+    cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
+    body.append(f'<p class="muted" style="font-size:14px;margin-top:2em"><a href="../../{cite}">Citations and sources →</a></p>')
     toc_html = "".join(f'<a class="crow" href="#{i}" data-sec="{i}"><span class="m"></span><div><div class="n">{esc(n)}</div></div></a>' for i, n in toc)
-    banner = f'<div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>'
-    cite = {"article-railroad": "chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "chinatown-citations.html", "research-chinatown": "chinatown-solidarity-paper-citations.html"}[p["slug"]]
-    folder = "articles" if p["kind"] == "Article" else "research"
     body_html = f"""
 <div class="read">
-  <aside class="side">
-    <div class="tile pad rise">
-      {label('Now reading')}
-      <div style="font-size:18px;letter-spacing:-.3px;line-height:1.25;margin-top:14px">{esc(p['title'].split(':')[0])}</div>
-      <div class="rprog"><b id="rb"></b><i id="rk"></i></div>
-      <div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:11px" id="rl">0 min</span><span style="font-size:11px">{p['min']} min</span></div>
-    </div>
-    {f'<nav class="tile rows toc rise" aria-label="Contents">{toc_html}</nav>' if toc else ''}
-    <a class="tile pad rise" href="../../{folder}/{cite}" style="display:flex;align-items:center;gap:14px"><span class="well">{icon('doc')}</span><span><b style="font-weight:400">Citations and sources</b><br><span class="muted" style="font-size:13px">On the live site</span></span></a>
-  </aside>
+  <aside class="side"><div class="tile pad rise">
+    {label('Now reading')}
+    <div class="rprog"><b id="rb"></b><i id="rk"></i></div>
+    <div style="display:flex;justify-content:space-between" class="mono muted"><span style="font-size:11px" id="rl">0 min</span><span style="font-size:11px">{p['min']} min</span></div>
+    {f'<nav class="toc" aria-label="Contents" style="margin-top:12px">{toc_html}</nav>' if toc else ''}
+  </div></aside>
   <article class="tile atile rise">
     {label(f"{p['kind']} · {p['date']}")}
     <h1>{esc(p['title'])}</h1>
     <div class="mono muted" style="font-size:12px">{esc(a['byline'] or 'By ' + p['author'])}</div>
-    {banner}
+    <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
     <div class="prose" id="prose">{''.join(body)}</div>
   </article>
 </div>"""
@@ -612,23 +550,18 @@ addEventListener('scroll', upd, {{ passive: true }}); upd();
 </script>"""
     return shell(p["slug"], body_html, js)
 
-
 def about():
+    """Header, one statement, team, approach."""
     team = "".join(f"""<div class="tile pad rise c4"><div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div class="cover {COVERS[i]}" style="width:88px;border-radius:22px"></div><span class="chip{' a' if i < 2 else ''}">{r}</span></div>
-        <div style="font-weight:300;font-size:30px;letter-spacing:-.8px;line-height:1.05;margin:26px 0 10px">{n}</div><p class="muted" style="font-size:14px;line-height:1.55">{b}</p></div>"""
+        <div class="cover {COVERS[i]}" style="width:72px;border-radius:20px"></div><span class="chip">{r}</span></div>
+        <div style="font-weight:300;font-size:28px;letter-spacing:-.8px;line-height:1.05;margin:24px 0 10px">{n}</div><p class="muted" style="font-size:14px;line-height:1.55">{b}</p></div>"""
         for i, (n, r, b) in enumerate(ABOUT["team"]))
-    appr = "".join(f'<div class="tile pad rise c4"><div class="well lg">{icon(ic, 24)}</div><div style="font-weight:300;font-size:26px;letter-spacing:-.6px;margin:22px 0 8px">{t}</div><p class="muted" style="font-size:14px;line-height:1.5">{d}</p></div>'
-        for (t, d), ic in zip(ABOUT["approach"], ["mic", "hands", "spark"]))
-    body = ph("About", "About e3 Initiative", "", f'<div class="seg"><a class="btn ghost" href="contact.html">Get in touch</a></div>') + f"""
-<div class="grid">
-  <div class="tile pad rise c6">{label('Who we are')}<p style="font-weight:300;font-size:26px;line-height:1.25;letter-spacing:-.6px;margin-top:18px">{ABOUT['who']}</p></div>
-  <div class="tile pad rise c6">{label('What we do')}<p style="font-weight:300;font-size:26px;line-height:1.25;letter-spacing:-.6px;margin-top:18px">{ABOUT['what']}</p></div>
-</div>
+    appr = "".join(crow(f"0{i+1}", t, d, "") for i, (t, d) in enumerate(ABOUT["approach"]))
+    body = ph("About", "About e3 Initiative") + f"""
+<div class="tile pad rise"><p style="font-weight:300;font-size:28px;line-height:1.25;letter-spacing:-.7px;max-width:44ch">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:70ch">{ABOUT['what']}</p></div>
 <section><div class="shead"><h2>Our team</h2></div><div class="grid">{team}</div></section>
-<section><div class="shead"><h2>Our approach</h2><span class="muted" style="font:var(--label-font)">We believe in</span></div><div class="grid">{appr}</div></section>"""
+<section><div class="shead"><h2>Our approach</h2></div><div class="tile rows rise">{appr}</div></section>"""
     return shell("about", body)
-
 
 def journals():
     t, logo = JOURNAL
@@ -646,32 +579,24 @@ def journals():
 
 
 def grants():
-    groups = "".join(f'<a href="{slug}.html">{lvl(ic, CAT_LABEL[cat], sum(1 for g in GRANTS if g["category"]==cat and status(g)!="closed")/sum(1 for g in GRANTS if g["category"]==cat)*100, i==0)}</a>'
-        for i, ((slug, (cat, _, _)), ic) in enumerate(zip(CATEGORY_PAGES.items(), ["people", "person", "shield"])))
+    """Header, one filter tile (search, who, status; more filters folded away), results."""
     cats = "".join(f'<button data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
-    body = ph("Grants", "Grant Finder", "Funding for small businesses and nonprofits. Search by keyword, or filter by who qualifies, category, award size and deadline.",
-        f'<a class="btn ghost" href="grant-help.html">Help & tips →</a>') + f"""
+    lists = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
+    body = ph("Grants", "Grant Finder", f"Funding for small businesses and nonprofits. Ready-made lists: {lists}.", '<a class="btn ghost" href="grant-help.html">Help & tips →</a>') + f"""
 <div class="gfind">
-  <aside class="gside">
-    <div class="tile pad rise">
-      {label('Search')}
-      <div class="search" style="margin-top:12px">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
-      <div class="fl">{label('Who qualifies')}<div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-      <div class="fl">{label('Status')}<div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="open">Open</button><button data-v="">All</button></div></div>
+  <aside class="gside"><div class="tile pad rise">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">{label('Matching')}<span class="thin" style="font-size:40px" id="gcount">0</span></div>
+    <div class="search" style="margin-top:16px">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
+    <div class="fl">{label('Who qualifies')}<div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
+    <div class="fl">{label('Status')}<div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div></div>
+    <details class="fl"><summary class="label" style="cursor:pointer">More filters</summary>
       <div class="fl">{label('Award up to at least')}<div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-      <div class="fl">{label('Category')}<div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div>
-    </div>
-    <div class="tile pad rise" style="display:flex;gap:18px;align-items:center">
-      <svg class="dial" id="gdial" width="96" height="96" viewBox="0 0 200 200" aria-hidden="true"></svg>
-      <div>{label('Matching')}<div class="count-num" id="gcount" style="margin-top:6px;font-size:48px">0</div><div class="muted" style="font-size:13px">of {len(GRANTS)} grants</div></div>
-    </div>
-    <div class="tile pad rise">{label('Browse by group')}<div style="margin-top:6px">{groups}</div></div>
-  </aside>
+      <div class="fl">{label('Category')}<div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
+  </div></aside>
   <div class="tile gres rise" id="gres" aria-live="polite"></div>
 </div>"""
     js = """<script src="../shared/grants-data.js"></script><script>
 const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
-const setDial = buildDial($('#gdial'), 0, 200);
 $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const f = seg.dataset.f;
   if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => x.classList.toggle('on', !x.dataset.v)); }
     else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', seg).classList.toggle('on', !F.cat.size); } }
@@ -679,13 +604,13 @@ $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b =
 $('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
 function render() {
   const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q))
-    && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || (F.status === 'live' ? g.status !== 'closed' : g.status === F.status))
+    && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || g.status !== 'closed')
     && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
     .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
-  $('#gcount').textContent = rs.length; setDial(Math.round(rs.length / GRANTS.length * 60));
+  $('#gcount').textContent = rs.length;
   $('#gres').innerHTML = rs.length ? rs.map(g => { const dt = g.days != null ? g.dl.split(' ') : null;
     return `<div class="grow ${g.status}" tabindex="0"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:20px">∞</b><span>${g.dl}</span>`}</div>
-      <div><div class="n">${g.name}</div><div class="f">${g.funder} · ${CAT_LABEL[g.cat]}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
+      <div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
       <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + 'd' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
       <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
     : '<div style="padding:40px 0;text-align:center" class="muted">No grants match these filters. Try widening them.</div>';
@@ -696,41 +621,36 @@ render();
 </script>"""
     return shell("grants", body, js)
 
-
 def category(slug):
+    """Header, counts, the list, one line of other lists."""
     cat, title, what = CATEGORY_PAGES[slug]
     intro, gs = category_intro(cat, what)
     gs = sorted(gs, key=lambda g: ({"open": 0, "rolling": 1, "closed": 2}[status(g)], days_left(g) if days_left(g) is not None else 999))
     c = {s: sum(1 for g in gs if status(g) == s) for s in ("open", "rolling", "closed")}
     rows = "".join(crow(deadline_label(g), esc(g["name"]), esc(g["funder"]) + " · " + esc(g["amount"]), g["link"], status_chip(status(g), days_left(g)), status(g) == "open") for g in gs)
-    others = "".join(f'<a class="btn ghost" href="{s}.html">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
+    others = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
     body = ph("Grant list", title, intro) + f"""
 <div class="grid">
-  <div class="tile pad rise c4">{label('In this list')}<div class="count-num" data-count="{len(gs)}">0</div>
+  <div class="tile pad rise c4" style="align-self:start">{label('In this list')}<div class="count-num" data-count="{len(gs)}">0</div>
     <div style="margin-top:14px">{lvl('spark', 'Open now', c['open']/len(gs)*100, True)}{lvl('link', 'Rolling', c['rolling']/len(gs)*100)}{lvl('doc', 'Closed for now', c['closed']/len(gs)*100)}</div></div>
   <div class="tile rows rise c8">{rows}</div>
-  <div class="tile pad rise c6">{label('Before you apply')}{''.join(f'<div class="check done" style="cursor:default"><span class="bx">{icon("check", 14)}</span><div><b style="text-decoration:none">{a}</b><p>{b}</p></div></div>' for a, b in BEFORE_APPLY)}</div>
-  <div class="tile pad rise c6">{label('More grant lists')}<div class="seg" style="margin-top:16px;gap:10px">{others}<a class="btn" href="grants.html">Search all {len(GRANTS)}</a><a class="btn ghost" href="grant-help.html">Tips & free help</a></div></div>
-</div>"""
+</div>
+<p class="muted" style="margin-top:22px;font-size:14px">More lists: {others} · <a href="grants.html" style="color:var(--ink)">Search all {len(GRANTS)}</a></p>"""
     return shell(slug, body)
 
-
 def grant_help():
+    """Header, checklist (mistakes folded inside), progress, free-help directory."""
     tips = "".join(f'<button class="check" data-i="{i}"><span class="bx">{icon("check", 14)}</span><div><b>{a}</b><p>{b}</p></div></button>' for i, (a, b) in enumerate(HELP["tips"]))
-    orgs = "".join(f'<a class="tile pad rise c3" href="{u}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;justify-content:space-between;min-height:250px"><div><span class="well">{icon("link")}</span><div style="font-size:18px;letter-spacing:-.3px;line-height:1.2;margin:16px 0 8px">{n}</div><p class="muted" style="font-size:13px;line-height:1.5">{d}</p></div><span class="btn sm" style="align-self:flex-start;margin-top:16px">{l} →</span></a>' for n, d, l, u in HELP["orgs"])
+    orgs = "".join(crow("→", n, d, u, f'<span class="chip">{l}</span>') for n, d, l, u in HELP["orgs"])
     body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="btn" href="grants.html">Search grants →</a>') + f"""
 <div class="grid">
-  <div class="tile rows rise c8" style="padding-top:18px">{label('How to write a strong application · tick them off')}<div style="margin-top:6px">{tips}</div></div>
-  <div style="display:grid;gap:var(--gap);align-content:start" class="c4">
-    <div class="tile pad rise" style="text-align:center">{label('Your progress')}
-      <div style="position:relative;width:200px;height:200px;margin:14px auto 0"><svg class="dial" id="hdial" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"></svg>
-      <div style="position:absolute;inset:0;display:grid;place-items:center"><div><div class="thin" style="font-size:44px" id="hcount">0/8</div><div class="muted" style="font-size:13px;margin-top:4px">steps done</div></div></div></div></div>
-    <div class="tile rows rise" style="padding-top:18px">{label('Common mistakes')}{''.join(f'<div class="crow" style="grid-template-columns:3px 1fr;padding:12px 0"><span class="m" style="height:22px"></span><div class="d" style="margin:0;font-size:14px">{m}</div></div>' for m in HELP['mistakes'])}</div>
-  </div>
+  <div class="tile rows rise c8" style="padding-top:18px">{label('How to write a strong application')}<div style="margin-top:6px">{tips}</div>
+    <details style="padding:16px 0;border-top:1px solid var(--line)"><summary class="label" style="cursor:pointer">Common mistakes to avoid</summary><ul style="margin:12px 0 0 18px;color:var(--muted);font-size:14px;line-height:1.7">{''.join(f'<li>{m}</li>' for m in HELP['mistakes'])}</ul></details></div>
+  <div class="tile pad rise c4" style="text-align:center;align-self:start">{label('Your progress')}
+    <div style="position:relative;width:200px;height:200px;margin:14px auto 0"><svg class="dial" id="hdial" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"></svg>
+    <div style="position:absolute;inset:0;display:grid;place-items:center"><div><div class="thin" style="font-size:44px" id="hcount">0/8</div><div class="muted" style="font-size:13px;margin-top:4px">steps done</div></div></div></div></div>
 </div>
-<section><div class="shead"><h2>Where to get free help</h2></div><p class="muted" style="margin:-8px 0 20px;max-width:60ch">You don't have to do this alone. These organizations offer free, expert help finding funding and preparing applications. Most are government-funded or nonprofit.</p><div class="grid">{orgs}</div></section>
-<section class="grid"><div class="tile pad rise c8" style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap"><div>{label('Still have questions?')}<p style="font-weight:300;font-size:26px;letter-spacing:-.6px;margin-top:12px">We're happy to point you in the right direction.</p></div><a class="btn" href="contact.html">Contact the team →</a></div>
-<div class="tile pad rise c4"><p class="muted" style="font-size:13px;line-height:1.55">{HELP['disclaimer']}</p></div></section>"""
+<section><div class="shead"><h2>Where to get free help</h2></div><div class="tile rows rise">{orgs}</div><p class="muted" style="font-size:12px;line-height:1.6;margin-top:16px;max-width:80ch">{HELP['disclaimer']}</p></section>"""
     js = """<script>
 const setH = buildDial($('#hdial'), 0, 200), done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
 function upd() { $$('.check[data-i]').forEach(c => c.classList.toggle('done', done.has(+c.dataset.i))); $('#hcount').textContent = done.size + '/8'; setH(Math.round(done.size / 8 * 60)); localStorage.setItem('e3-help', JSON.stringify([...done])); }
@@ -738,18 +658,23 @@ $$('.check[data-i]').forEach(c => c.addEventListener('click', () => { const i = 
 </script>"""
     return shell("grant-help", body, js)
 
-
 def indicators():
-    tiles = "".join(f"""<div class="tile ind rise c6" data-key="{k}" data-unit="{u}">
+    """Header, four key charts, the other four behind one button."""
+    def tile(k, grp, name, u, d, extra):
+        return f"""<div class="tile ind rise c6{extra}" data-key="{k}" data-unit="{u}">
       {label(f'{grp}: {name}')}<div class="tr mono" data-hl></div>
       <div class="val"><span data-v>—</span><small>{u if u != 'index' else 'index'}</small></div>
       <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div class="yrs"><span>2000</span><span data-end>today</span></div>
-      <p class="desc">{d}</p></div>""" for k, grp, name, u, d in INDICATORS)
-    body = ph("Data", "Economic Indicators", "These charts help explain everyday costs, job security, and borrowing rates. Hover a chart to read any year since 2000.") + f"""
-<div class="note" id="note" hidden>{icon('spark')}<span>Preview: these lines are placeholder shapes. Live FRED data loads from <span class="mono">/api/economic-indicators</span> on the deployed site, and no numbers are shown until then.</span></div>
-<div class="grid">{tiles}</div>"""
+      <p class="desc">{d}</p></div>"""
+    key = [i for i in INDICATORS if i[0] in KEY_INDICATORS]
+    more = [i for i in INDICATORS if i[0] not in KEY_INDICATORS]
+    body = ph("Data", "Economic Indicators", "Everyday costs, job security and borrowing rates since 2000. Hover a chart to read any year.") + f"""
+<div class="note" id="note" hidden>{icon('spark')}<span>Preview: placeholder shapes. Live FRED data loads from <span class="mono">/api/economic-indicators</span> on the deployed site.</span></div>
+<div class="grid">{''.join(tile(*i, '') for i in key)}{''.join(tile(*i, ' more') for i in more)}</div>
+<div style="text-align:center;margin-top:24px"><button class="btn ghost" id="moreb" onclick="document.querySelectorAll('.ind.more').forEach(e=>e.hidden=false);this.remove()">Show all 8 indicators</button></div>"""
     js = """<script src="../shared/indicators.js"></script><script>
+$$('.ind.more').forEach(e => e.hidden = true);
 loadIndicators().then(D => {
   $('#note').hidden = D.live;
   $$('.ind').forEach(t => { const s = D.series[t.dataset.key]; if (!s) return; const svg = $('svg', t), n = s.length, lo = Math.min(...s), hi = Math.max(...s);
@@ -757,7 +682,7 @@ loadIndicators().then(D => {
     const d = s.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
     svg.innerHTML = `<line x1="0" x2="500" y1="90" y2="90" stroke="var(--hair)"/><path d="${d}" fill="none" stroke="var(--dotted)" stroke-width="1.2" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"/>
       <path class="ln" d="${d}" fill="none" stroke="var(--ink)" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke" style="transition:stroke-dashoffset 1.4s cubic-bezier(.65,0,.35,1)"/>
-      <circle cx="${x(n - 1)}" cy="${y(s[n - 1])}" r="12" fill="var(--sun-glow)"/><circle class="dot" cx="${x(n - 1)}" cy="${y(s[n - 1])}" r="5" fill="var(--accent)"/>`;
+      <circle class="dot" cx="${x(n - 1)}" cy="${y(s[n - 1])}" r="5" fill="var(--accent)"/>`;
     setTimeout(() => $('.ln', svg).setAttribute('stroke-dashoffset', 0), 300);
     $('[data-end]', t).textContent = D.years[n - 1];
     const u = t.dataset.unit, f = v => D.live ? fmtIndicator(v, u) : '—';
@@ -770,7 +695,6 @@ loadIndicators().then(D => {
 </script>"""
     return shell("economic-indicators", body, js)
 
-
 def outreach():
     body = ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + '<div class="grid">' + "".join(
         f"""<div class="tile pad rise c6" id="{k}" style="min-height:420px;display:flex;flex-direction:column;justify-content:space-between">
@@ -782,23 +706,20 @@ def outreach():
 
 
 def contact():
+    """Header, form, one side tile."""
     body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days.") + f"""
 <div class="grid">
-  <form class="tile pad rise c8" id="cf" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px">
+  <form class="tile pad rise c8" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px">
     <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
     <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
     <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
     <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
     <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
   </form>
-  <div class="c4" style="display:grid;gap:var(--gap);align-content:start">
-    <div class="tile pad rise" style="display:flex;gap:16px;align-items:center"><svg class="dial" data-lit="10" width="88" height="88" viewBox="0 0 200 200" aria-hidden="true"></svg><div>{label('Reply within')}<div class="thin" style="font-size:36px;margin-top:6px">2 days</div><div class="muted" style="font-size:13px">business days</div></div></div>
-    <a class="tile pad rise" href="outreach.html">{label('Want to be interviewed?')}<p class="muted" style="font-size:14px;margin-top:10px;line-height:1.5">Say so in your message and our outreach team will follow up.</p></a>
-    <a class="tile pad rise" href="privacy.html">{label('Privacy')}<p class="muted" style="font-size:14px;margin-top:10px;line-height:1.5">We use your details only to reply. Read the policy →</p></a>
-  </div>
+  <div class="tile pad rise c4" style="align-self:start"><div style="display:flex;gap:16px;align-items:center"><svg class="dial" data-lit="10" width="88" height="88" viewBox="0 0 200 200" aria-hidden="true"></svg><div>{label('Reply within')}<div class="thin" style="font-size:36px;margin-top:6px">2 days</div></div></div>
+    <p class="muted" style="font-size:14px;line-height:1.55;margin-top:18px">Want to be interviewed? Say so in your message. We use your details only to reply (<a href="privacy.html" style="color:var(--ink)">privacy</a>).</p></div>
 </div>"""
     return shell("contact", body)
-
 
 def privacy():
     out, toc, ul = [], [], False
@@ -837,7 +758,7 @@ def build():
     pages = {
         "index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
         "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
-        "articles": pub_list("articles", "Publications", "Articles", "Perspectives and community insights from our team and partners, from grassroots organizing to systemic policy analysis.", ARTICLES),
+        "articles": pub_list("articles", "Publications", "Publications", "Articles and research papers from our team and partners, from grassroots history to systemic policy analysis.", PUBS),
         "research": pub_list("research", "Publications", "Research", "Research papers, reports, and briefs. Each publication includes clear summaries and next steps for community leaders and decision-makers.", RESEARCH,
             '<section><div class="shead"><h2>Also in Publications</h2></div><div class="grid"><a class="tile pad rise c6" href="journals.html">' + label("Journals") + '<p style="font-weight:300;font-size:24px;letter-spacing:-.5px;margin-top:12px">Critical Debates in Humanities, Science and Global Justice →</p></a><a class="tile pad rise c6" href="economic-indicators.html">' + label("Data") + '<p style="font-weight:300;font-size:24px;letter-spacing:-.5px;margin-top:12px">Economic indicators since 2000 →</p></a></div></section>'),
     }

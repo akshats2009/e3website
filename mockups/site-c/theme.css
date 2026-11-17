@@ -57,6 +57,8 @@ section{margin-top:110px}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:28px}
 .c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
 .rule{border-top:1px solid var(--rule)}
+summary{list-style:none}summary::-webkit-details-marker{display:none}
+[hidden]{display:none!important}
 
 /* index rows: numeral + title that gains weight on hover */
 .pub{display:grid;grid-template-columns:90px 1fr 220px;gap:32px;padding:34px 0;border-bottom:1px solid var(--rule);position:relative;align-items:start}
