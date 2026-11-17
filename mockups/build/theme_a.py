@@ -404,7 +404,7 @@ def shell(page, body, scripts=""):
     <a class="brand" href="index.html"><i></i>e3 Initiative</a>
     <div class="nav-r">
       <ul class="pill-nav" id="nav">{nav}</ul>
-      <button class="mini-sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b>{icon('moon', 12)}</b></button>
+      <button class="mini-sw" role="switch" aria-checked="false" aria-label="Dark mode" data-night><b>{icon('moon', 12)}</b></button>
       <button class="menu-btn" aria-label="Menu" aria-controls="nav" aria-expanded="false">{icon('menu')}</button>
     </div>
   </header>

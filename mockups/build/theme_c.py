@@ -286,6 +286,12 @@ const urg = d => d == null ? 300 : Math.round(900 - 750 * Math.min(1, Math.max(0
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">'
 
 
+MODE_HEAD = "<script>try{if(localStorage.getItem('e3-mode-c')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>"
+MODE_JS = "<script>(function(){var r=document.documentElement;document.querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',r.classList.contains('dark'));b.onclick=function(){var on=r.classList.toggle('dark');try{localStorage.setItem('e3-mode-c',on?'dark':'light')}catch(e){}document.querySelectorAll('[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',on)})}})})();</script>"
+MODE_CSS = '.nav-end{display:flex;align-items:center;gap:10px}.mode{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);transition:background .2s}.mode:hover{background:color-mix(in srgb,var(--ink) 14%,transparent)}.mode svg{grid-area:1/1}\n.mode .sun{display:none}html.dark .mode .sun{display:block}html.dark .mode .moon{display:none}\nhtml.dark{--page:#10100f;--paper-light:#1b1a18;--ink:#f2efe8;--label-ink:rgba(242,239,232,.45);--soft:rgba(242,239,232,.62);--track:rgba(242,239,232,.12);--tick:rgba(242,239,232,.26);--rule:rgba(242,239,232,.12);--wash:rgba(242,239,232,.05)}\nhtml.dark body::after{mix-blend-mode:screen;opacity:.1}\nhtml.dark .tkl{color:rgba(242,239,232,.4)}\nhtml.dark .inp::placeholder,html.dark .bigsearch::placeholder{color:rgba(242,239,232,.25)}\nhtml.dark .pill.o{background:rgba(242,239,232,.09);color:var(--ink)}\nhtml.dark .inp{background:rgba(242,239,232,.06)}html.dark .inp:focus{background:rgba(242,239,232,.1)}\nhtml.dark .menu-btn{background:rgba(242,239,232,.08)}\nhtml.dark .knob{background:#f2efe8}\n'
+MODE_BTN = '<button class="mode" data-mode aria-label="Toggle dark mode" aria-pressed="false"><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>'
+
+
 def shell(page, body, scripts=""):
     active = SECTION.get(page, "")
     nav = "".join(f'<li><a href="{h}"{" class=on aria-current=page" if h == active else ""}>{t}</a></li>' for h, t in NAV)
@@ -293,17 +299,18 @@ def shell(page, body, scripts=""):
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{esc(TITLES[page])} · e3 Initiative</title>{FONTS}<link rel="stylesheet" href="theme.css"></head>
+<title>{esc(TITLES[page])} · e3 Initiative</title>{MODE_HEAD}{FONTS}<link rel="stylesheet" href="theme.css"></head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 <div class="wrap">
-  <header class="nav"><a class="brand" href="index.html">e3 <span>Initiative</span></a><nav aria-label="Main"><ul id="nav">{nav}</ul></nav><button class="menu-btn" aria-controls="nav" aria-expanded="false">Menu</button></header>
+  <header class="nav"><a class="brand" href="index.html">e3 <span>Initiative</span></a><nav aria-label="Main"><ul id="nav">{nav}</ul></nav><div class="nav-end">{MODE_BTN}<button class="menu-btn" aria-controls="nav" aria-expanded="false">Menu</button></div></header>
   <main id="main">
 {body}
   </main>
   <footer><span class="lab">© 2026 e3 Initiative · set in Geist</span><nav aria-label="Footer">{foot}</nav></footer>
 </div>
 <script src="theme.js"></script>
+{MODE_JS}
 {scripts}
 </body></html>
 """
@@ -566,7 +573,7 @@ def notfound():
 
 
 def build():
-    write(f"{D}/theme.css", CSS + NOB)
+    write(f"{D}/theme.css", CSS + NOB + MODE_CSS)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),

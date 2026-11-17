@@ -228,3 +228,13 @@ footer a{font:13px var(--mono);color:var(--soft)}footer a:hover{color:var(--ink)
 .fgroup,.tip-row{padding-top:12px}
 .knob{box-shadow:0 6px 14px -4px rgba(20,19,18,.3)}
 .banner img,.pub img{border-radius:10px}
+.nav-end{display:flex;align-items:center;gap:10px}.mode{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);transition:background .2s}.mode:hover{background:color-mix(in srgb,var(--ink) 14%,transparent)}.mode svg{grid-area:1/1}
+.mode .sun{display:none}html.dark .mode .sun{display:block}html.dark .mode .moon{display:none}
+html.dark{--page:#10100f;--paper-light:#1b1a18;--ink:#f2efe8;--label-ink:rgba(242,239,232,.45);--soft:rgba(242,239,232,.62);--track:rgba(242,239,232,.12);--tick:rgba(242,239,232,.26);--rule:rgba(242,239,232,.12);--wash:rgba(242,239,232,.05)}
+html.dark body::after{mix-blend-mode:screen;opacity:.1}
+html.dark .tkl{color:rgba(242,239,232,.4)}
+html.dark .inp::placeholder,html.dark .bigsearch::placeholder{color:rgba(242,239,232,.25)}
+html.dark .pill.o{background:rgba(242,239,232,.09);color:var(--ink)}
+html.dark .inp{background:rgba(242,239,232,.06)}html.dark .inp:focus{background:rgba(242,239,232,.1)}
+html.dark .menu-btn{background:rgba(242,239,232,.08)}
+html.dark .knob{background:#f2efe8}
