@@ -444,9 +444,7 @@ def status_chip(s, d=None):
 
 # ——— Pages ———
 def home():
-    """Seven blocks: nav, hero, now reading, deadlines, publications, mission, footer."""
-    soon = DATED_SOON[:6]
-    rows_js = [{"t": deadline_label(g), "n": g["name"], "d": f'{g["funder"].split(" (")[0]} · {money(g.get("amountMax"))}', "chip": f"in {days_left(g)} days"} for g in soon]
+    """Nav, hero, one player tile, footer."""
     pieces = [{"t": p["title"].split(":")[0], "by": f'{p["author"]} · {p["kind"]}', "len": p["min"], "href": p["slug"] + ".html"} for p in PUBS]
     import json as _j
     body = f"""
@@ -454,7 +452,7 @@ def home():
   <div class="hero">
     {label('Equity · Economics · Ethnicity')}
     <h1>{TAGLINE}<span>.</span></h1>
-    <div><p>{LEDE}</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
+    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
   </div>
   <div class="tile w2 player rise">
     <div class="pcov">
@@ -471,18 +469,10 @@ def home():
     <button class="play" id="play" aria-label="Pause"><svg id="pi" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
     <button class="ctl" style="left:504px" id="next" aria-label="Next piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg></button>
   </div>
-  <a class="tile w2 cal rise" href="grants.html">
-    {label(TODAY.strftime('%A'), 'abs')}
-    <div class="day">{TODAY.day}</div><div class="month">{TODAY.strftime('%B')}</div>
-    <div class="sum">{len(OPEN)} grants open · find yours →</div>
-    <div class="div"></div><div class="list" id="list"><span class="chip a" id="chip"></span></div>
-  </a>
-  <div class="tile w2 rows rise" style="padding-top:20px">{label('Latest publications')}{''.join(crow(p['short'][:6], esc(p['title'].split(':')[0]), p['kind'], p['slug'] + '.html') for p in PUBS)}</div>
 </div>
-<section class="mission">{label('Mission')}<p>{MISSION.replace(', fostering', ', <span>fostering').replace('backgrounds.', 'backgrounds.</span>')}</p></section>
 """
     js = f"""<script>
-const PIECES = {_j.dumps(pieces)}, EVENTS = {_j.dumps(rows_js)};
+const PIECES = {_j.dumps(pieces)};
 let cur = 0, pos = 0.4, playing = !reduce; const arts = $$('.art');
 function setText() {{ $('#ttl').textContent = PIECES[cur].t; $('#ttl').href = PIECES[cur].href; $('#by').textContent = PIECES[cur].by; $('#len').textContent = PIECES[cur].len + ' min'; }}
 function show(i, dir) {{ const old = arts[cur]; cur = (i + 3) % 3; const nu = arts[cur];
@@ -496,10 +486,6 @@ const bars = $$('.eq b'); let last = performance.now();
   const f = Math.min(1, pos / PIECES[cur].len), w = $('.prog').offsetWidth; $('#pf').style.width = w * f + 'px'; $('#pk').style.left = $('.prog').offsetLeft + w * f + 'px';
   $('#el').textContent = Math.floor(pos) + ':' + String(Math.floor((pos % 1) * 60)).padStart(2, '0');
   bars.forEach((b, i) => b.style.height = (playing ? 4 + 10 * Math.abs(Math.sin(now / 1000 * (5 + i * 1.7) + i)) : 3) + 'px'); requestAnimationFrame(loop); }})(last);
-const rows = EVENTS.map(e => {{ const r = document.createElement('div'); r.className = 'row'; r.innerHTML = `<span class="t">${{e.t}}</span><span class="m"></span><div><div class="n">${{e.n}}</div><div class="d">${{e.d}}</div></div>`; $('#list').insertBefore(r, $('#chip')); return r; }});
-let top0 = 0; function place() {{ rows.forEach((r, i) => {{ const k = i - top0; r.style.top = k * 76 + 'px'; r.style.opacity = k >= 0 && k < 3 ? 1 : 0; r.classList.toggle('next', k === 0); }});
-  $('#chip').style.opacity = 0; setTimeout(() => {{ $('#chip').textContent = EVENTS[top0].chip; $('#chip').style.opacity = 1; }}, 300); }}
-place(); if (!reduce) setInterval(() => {{ top0 = (top0 + 1) % (EVENTS.length - 2); place(); }}, 3600);
 </script>"""
     return shell("index", body, js)
 

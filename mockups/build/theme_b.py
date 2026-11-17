@@ -363,11 +363,10 @@ def prow(p):
 
 # ——— pages ———
 def home():
-    """Seven blocks: nav, hero, a three-channel mixer, its top matches, the latest piece, mission, footer."""
+    """Nav, hero, one three-channel mixer, footer."""
     three = [("minority_owned", "Minority", "#f1f1f3"), ("women_owned", "Women", "#c6c6cb"), ("veteran_owned", "Veteran", "#8a8a90")]
     G = [[g["category"], g["name"], g["funder"].split(" (")[0], g.get("amountMax") or 0, days_left(g)] for g in OPEN if g["category"] in [a for a, _, _ in three]]
-    p0 = PUBS[0]
-    body = ph("Equity · Economics · Ethnicity", f"{TAGLINE}<span>, and the money to build them.</span>", LEDE,
+    body = ph("Equity · Economics · Ethnicity", f"{TAGLINE}<span>.</span>", "Student-led research on who builds local economies, who gets credit and who gets left out.",
               '<div style="margin-top:26px"><a class="mbtn" href="articles.html">Read the research</a></div>') + panel(f"""
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div><div class="cap">Grant mixer</div><div style="font-size:30px;letter-spacing:-.02em;margin-top:10px">Find funding in seconds</div></div>
@@ -378,20 +377,15 @@ def home():
       <div class="cap">Deadline window</div>
       <div class="knob" id="win" data-label="Deadline window" style="margin:22px auto 0"></div>
       <div style="text-align:center;margin-top:8px"><div style="font-size:24px;letter-spacing:-.02em" id="wl">Any time</div></div>
-      <div style="margin-top:22px"><div class="mrow cap">Closing soon<b id="mC" style="color:rgb(var(--led-near))">—</b></div><div class="mrow cap">Rolling<b id="mR">—</b></div></div>
+      <a class="mbtn" href="grants.html" style="margin-top:26px;width:100%;justify-content:center">See the grants</a>
     </div>
-  </div>
-  <div id="results" style="margin-top:6px" aria-live="polite"></div>""", "desk") + f"""
-<section><div class="shead"><div><div class="cap">Latest</div><h2>Publications</h2></div><a href="articles.html">All publications →</a></div>
-  {panel(f'<img src="{IMG}{p0["img"]}" alt="{esc(p0["alt"])}"><div class="txt"><div><div class="cap">{p0["kind"]} · {p0["short"]} · {p0["author"]}</div><h3>{esc(p0["title"].split(":")[0])}</h3></div><div><p>{esc(p0["summary"])}</p><div style="display:flex;gap:12px;align-items:center;margin-top:20px">{meter(12, p0["min"])}<span class="cap">{p0["min"]} min</span></div></div></div>', "feat", "a", f'href="{p0["slug"]}.html"')}
-</section>
-<section><div class="cap">Mission</div><p style="font-weight:300;font-size:40px;line-height:1.15;letter-spacing:-.03em;max-width:28ch;margin-top:18px">{MISSION.replace(', fostering', ',<span class=dim> fostering').replace('backgrounds.', 'backgrounds.</span>')}</p></section>"""
+  </div>""", "desk")
     js = f"""<script>
 const G = {json.dumps(G, ensure_ascii=False)}, CH = {json.dumps([{"id": a, "name": b, "shade": c} for a, b, c in three])};
 const WIN = [[14, '14 days', '14D'], [30, '30 days', '30D'], [60, '60 days', '60D'], [Infinity, 'Any time', 'ANY']];
 const money = v => v >= 1e6 ? '$' + (v / 1e6).toFixed(v % 1e6 ? 1 : 0) + 'M' : v >= 1000 ? '$' + Math.round(v / 1000) + 'k' : '$' + Math.round(v);
 const valAt = p => p < .08 ? 0 : Math.pow(10, 3 + 3 * (p - .08) / .92), posOf = v => v <= 0 ? 0 : .08 + .92 * (Math.log10(v) - 3) / 3;
-const mins = {{}}, faders = {{}}; let win = 3;
+const mins = {{}}; let win = 3;
 CH.forEach(c => {{ mins[c.id] = 0; const s = document.createElement('div'); s.className = 'strip vline';
   const tk = [[1, '1M'], [posOf(1e5), '100k'], [posOf(1e4), '10k'], [0, '0']].map(([p, l]) => `<span style="top:${{(1 - p) * 100}}%">${{l}}</span>`).join('');
   s.innerHTML = `<div class="nm cap"><i style="background:${{c.shade}}"></i>${{c.name}}-owned</div>
@@ -399,19 +393,15 @@ CH.forEach(c => {{ mins[c.id] = 0; const s = document.createElement('div'); s.cl
     <div class="lm">${{Array.from({{ length: 10 }}, (_, k) => `<i style="top:${{300 - (k + 1) * 30 + 3}}px"></i>`).join('')}}</div><div class="tag"></div>
     <div class="val"></div><div class="share cap"></div>`;
   $('#board').insertBefore(s, $('.master')); c.el = s;
-  faders[c.id] = makeFader($('.fader', s), 0, p => {{ mins[c.id] = valAt(p); render(); }}); }});
+  makeFader($('.fader', s), 0, p => {{ mins[c.id] = valAt(p); render(); }}); }});
 const knob = makeKnob($('#win'), WIN.map(w => w[2]), 3, i => {{ win = i; render(); }});
-function render() {{ const W = WIN[win][0]; let M = 0, Cl = 0, R = 0; const shown = [];
+function render() {{ const W = WIN[win][0]; let M = 0;
   CH.forEach(c => {{ const hit = G.filter(g => g[0] === c.id && (!g[3] || g[3] >= mins[c.id]) && (g[4] === null || g[4] <= W)), dated = hit.filter(g => g[4] !== null).sort((a, b) => a[4] - b[4]);
-    M += hit.length; Cl += dated.length; R += hit.length - dated.length; shown.push(...hit);
-    const lit = hit.length * 2, amber = dated.length * 2, s = c.el;
+    M += hit.length; const lit = hit.length * 2, amber = dated.length * 2, s = c.el;
     $$('.lm i', s).forEach((m, k) => m.className = k < lit ? (k >= lit - amber ? 'near' : 'on') : '');
     const tag = $('.tag', s); tag.style.opacity = dated.length ? 1 : 0; tag.textContent = dated.length ? dated[0][4] + 'd' : ''; tag.style.top = 84 + 300 - Math.max(lit, 1) * 30 - 30 + 'px';
     $('.val', s).textContent = mins[c.id] ? '≥' + money(mins[c.id]) : 'Any amount'; $('.share', s).textContent = hit.length + ' match'; }});
-  $('#wl').textContent = WIN[win][1]; $('#tot').textContent = M; $('#mC').textContent = Cl || '—'; $('#mR').textContent = R;
-  shown.sort((a, b) => (a[4] ?? 999) - (b[4] ?? 999) || b[3] - a[3]);
-  $('#results').innerHTML = shown.slice(0, 3).map(g => `<a class="rrow" href="grants.html" style="grid-template-columns:14px 1fr 120px 90px"><span class="led ${{g[4] !== null ? 'near' : 'on'}}"></span><div><div class="n">${{g[1]}}</div><div class="f">${{g[2]}}</div></div><span class="a">${{g[3] ? 'up to ' + money(g[3]) : 'varies'}}</span><span class="d ${{g[4] !== null ? 'near' : ''}}">${{g[4] !== null ? 'in ' + g[4] + 'd' : 'rolling'}}</span></a>`).join('')
-    + `<a class="empty" href="grants.html" style="display:block">${{shown.length > 3 ? '+ ' + (shown.length - 3) + ' more · ' : ''}}open the full grant finder →</a>`; }}
+  $('#wl').textContent = WIN[win][1]; $('#tot').textContent = M; }}
 render();
 if (!reduce) setTimeout(() => knob.set(2), 900);
 </script>"""

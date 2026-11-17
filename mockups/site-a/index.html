@@ -24,7 +24,7 @@
   <div class="hero">
     <div class="label "><i></i>Equity · Economics · Ethnicity</div>
     <h1>Research for equitable communities<span>.</span></h1>
-    <div><p>A student-led initiative studying equity, economics and ethnicity: who builds local economies, who gets credit and who gets left out. We publish what we find and track the grants that can change it.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
+    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
   </div>
   <div class="tile w2 player rise">
     <div class="pcov">
@@ -41,15 +41,7 @@
     <button class="play" id="play" aria-label="Pause"><svg id="pi" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
     <button class="ctl" style="left:504px" id="next" aria-label="Next piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg></button>
   </div>
-  <a class="tile w2 cal rise" href="grants.html">
-    <div class="label abs"><i></i>Tuesday</div>
-    <div class="day">17</div><div class="month">November</div>
-    <div class="sum">33 grants open · find yours →</div>
-    <div class="div"></div><div class="list" id="list"><span class="chip a" id="chip"></span></div>
-  </a>
-  <div class="tile w2 rows rise" style="padding-top:20px"><div class="label "><i></i>Latest publications</div><a class="crow" href="article-railroad.html"><span class="t">Oct 04</span><span class="m"></span><div><div class="n">Chinese Labor and the Transcontinental Railroad</div><div class=d>Article</div></div></a><a class="crow" href="research-chinatown.html"><span class="t">Mar 11</span><span class="m"></span><div><div class="n">Beyond Restaurants and Boba Cafes</div><div class=d>Research paper</div></div></a><a class="crow" href="article-chinatown.html"><span class="t">Feb 02</span><span class="m"></span><div><div class="n">Beyond Restaurants, Boba Cafes, and Souvenir Shops</div><div class=d>Article</div></div></a></div>
 </div>
-<section class="mission"><div class="label "><i></i>Mission</div><p>To provide rigorous, community-centered research that bridges the gap between lived experiences and policy decisions, <span>fostering a more equitable world for all ethnicities and economic backgrounds.</span></p></section>
 
   </main>
   <footer>
@@ -59,7 +51,7 @@
 </div>
 <script src="theme.js"></script>
 <script>
-const PIECES = [{"t": "Chinese Labor and the Transcontinental Railroad", "by": "Minghao Gu \u00b7 Article", "len": 3, "href": "article-railroad.html"}, {"t": "Beyond Restaurants and Boba Cafes", "by": "Minghao Gu \u00b7 Research paper", "len": 8, "href": "research-chinatown.html"}, {"t": "Beyond Restaurants, Boba Cafes, and Souvenir Shops", "by": "Minghao Gu \u00b7 Article", "len": 4, "href": "article-chinatown.html"}], EVENTS = [{"t": "Nov 30", "n": "Spark Good Local Grants", "d": "Walmart \u00b7 $5k", "chip": "in 13 days"}, {"t": "Nov 30", "n": "Tribal Tourism Small Business Grant", "d": "Montana Department of Commerce \u00b7 $10k", "chip": "in 13 days"}, {"t": "Dec 03", "n": "North Central Region SARE Farmer Rancher Grant", "d": "North Central Region SARE \u00b7 $30k", "chip": "in 16 days"}, {"t": "Dec 14", "n": "Dental Safety Net Grant Program", "d": "Minnesota Department of Health \u00b7 $34k", "chip": "in 27 days"}, {"t": "Dec 15", "n": "2027 Heroes Small Business Grant Program", "d": "Hiring Our Heroes \u00b7 $25k", "chip": "in 28 days"}, {"t": "Dec 16", "n": "Public Humanities Projects", "d": "National Endowment for the Humanities \u00b7 $500k", "chip": "in 29 days"}];
+const PIECES = [{"t": "Chinese Labor and the Transcontinental Railroad", "by": "Minghao Gu \u00b7 Article", "len": 3, "href": "article-railroad.html"}, {"t": "Beyond Restaurants and Boba Cafes", "by": "Minghao Gu \u00b7 Research paper", "len": 8, "href": "research-chinatown.html"}, {"t": "Beyond Restaurants, Boba Cafes, and Souvenir Shops", "by": "Minghao Gu \u00b7 Article", "len": 4, "href": "article-chinatown.html"}];
 let cur = 0, pos = 0.4, playing = !reduce; const arts = $$('.art');
 function setText() { $('#ttl').textContent = PIECES[cur].t; $('#ttl').href = PIECES[cur].href; $('#by').textContent = PIECES[cur].by; $('#len').textContent = PIECES[cur].len + ' min'; }
 function show(i, dir) { const old = arts[cur]; cur = (i + 3) % 3; const nu = arts[cur];
@@ -73,10 +65,6 @@ const bars = $$('.eq b'); let last = performance.now();
   const f = Math.min(1, pos / PIECES[cur].len), w = $('.prog').offsetWidth; $('#pf').style.width = w * f + 'px'; $('#pk').style.left = $('.prog').offsetLeft + w * f + 'px';
   $('#el').textContent = Math.floor(pos) + ':' + String(Math.floor((pos % 1) * 60)).padStart(2, '0');
   bars.forEach((b, i) => b.style.height = (playing ? 4 + 10 * Math.abs(Math.sin(now / 1000 * (5 + i * 1.7) + i)) : 3) + 'px'); requestAnimationFrame(loop); })(last);
-const rows = EVENTS.map(e => { const r = document.createElement('div'); r.className = 'row'; r.innerHTML = `<span class="t">${e.t}</span><span class="m"></span><div><div class="n">${e.n}</div><div class="d">${e.d}</div></div>`; $('#list').insertBefore(r, $('#chip')); return r; });
-let top0 = 0; function place() { rows.forEach((r, i) => { const k = i - top0; r.style.top = k * 76 + 'px'; r.style.opacity = k >= 0 && k < 3 ? 1 : 0; r.classList.toggle('next', k === 0); });
-  $('#chip').style.opacity = 0; setTimeout(() => { $('#chip').textContent = EVENTS[top0].chip; $('#chip').style.opacity = 1; }, 300); }
-place(); if (!reduce) setInterval(() => { top0 = (top0 + 1) % (EVENTS.length - 2); place(); }, 3600);
 </script>
 </body>
 </html>

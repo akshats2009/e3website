@@ -346,12 +346,9 @@ def home():
   <div class="slider" id="sl" data-label="Weight" data-ro="hover the word for a lens"></div>
   <div class="lede2">
     <h1>Some contributions get set in <span class="w1">thin</span>. We research to give them their <span class="w8">full weight.</span></h1>
-    <div><p>{LEDE}</p><div class="btns"><a class="pill" href="articles.html">Read the research</a></div></div>
+    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="btns"><a class="pill" href="articles.html">Read the research</a></div></div>
   </div>
 </div>
-<section><div class="sh"><h2>Index</h2><a href="articles.html">All publications →</a></div>{''.join(pub_row(i, p, False) for i, p in enumerate(PUBS))}</section>
-<section><div class="sh"><h2>Closing soon</h2><a href="grants.html">All {len(OPEN)} open grants →</a></div>
-  <table class="gt"><thead><tr><th>Grant</th><th>Max award</th><th style="text-align:right">Deadline</th></tr></thead><tbody>{''.join(grant_tr(g) for g in soon)}</tbody></table></section>
 """
     js = r"""<script>
 const band = $('#band'), word = $('#word'), guides = $('#guides'); let L = null, weight = 100, lensX = null, G = {};
