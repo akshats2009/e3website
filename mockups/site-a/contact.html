@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact · e3 Initiative</title>
+<script>if(localStorage.getItem('e3-night')==='1')document.documentElement.classList.add('night')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400&family=Geist+Mono:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="index.html"><i></i>e3 Initiative</a>
+    <div class="nav-r">
+      <ul class="pill-nav" id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html">Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html" class=on aria-current=page>Contact</a></li></ul>
+      <button class="mini-sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" stroke="none"/></svg></b></button>
+      <button class="menu-btn" aria-label="Menu" aria-controls="nav" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+<div class="ph"><div><div class="label "><i></i>Contact</div><h1>Let's connect</h1><p>Have questions about our research or want to collaborate? Send a message and we will respond within two business days.</p></div><div></div></div>
+<div class="grid">
+  <form class="tile pad rise c8" id="cf" onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" style="padding:30px">
+    <div class="grid" style="gap:0 16px"><label class="field c6"><span><i></i>Name *</span><input class="inp" required autocomplete="name"></label>
+    <label class="field c6"><span><i></i>Email *</span><input class="inp" type="email" required autocomplete="email"></label></div>
+    <label class="field"><span><i></i>Subject *</span><input class="inp" required></label>
+    <label class="field"><span><i></i>Message *</span><textarea class="inp" required></textarea></label>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap"><button class="btn" type="submit">Send message →</button><span class="chip a" data-sent hidden>Mockup: nothing was sent</span></div>
+  </form>
+  <div class="c4" style="display:grid;gap:var(--gap);align-content:start">
+    <div class="tile pad rise" style="display:flex;gap:16px;align-items:center"><svg class="dial" data-lit="10" width="88" height="88" viewBox="0 0 200 200" aria-hidden="true"></svg><div><div class="label "><i></i>Reply within</div><div class="thin" style="font-size:36px;margin-top:6px">2 days</div><div class="muted" style="font-size:13px">business days</div></div></div>
+    <a class="tile pad rise" href="outreach.html"><div class="label "><i></i>Want to be interviewed?</div><p class="muted" style="font-size:14px;margin-top:10px;line-height:1.5">Say so in your message and our outreach team will follow up.</p></a>
+    <a class="tile pad rise" href="privacy.html"><div class="label "><i></i>Privacy</div><p class="muted" style="font-size:14px;margin-top:10px;line-height:1.5">We use your details only to reply. Read the policy →</p></a>
+  </div>
+</div>
+  </main>
+  <footer>
+    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
+    <nav class="links" aria-label="Footer"><a href="articles.html">Articles</a><a href="research.html">Research</a><a href="journals.html">Journals</a><a href="economic-indicators.html">Economic Indicators</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="outreach.html">Outreach</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+  </footer>
+</div>
+<script src="theme.js"></script>
+
+</body>
+</html>

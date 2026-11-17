@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · e3 Initiative</title>
+<script>if(localStorage.getItem('e3-night')==='1')document.documentElement.classList.add('night')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400&family=Geist+Mono:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="index.html"><i></i>e3 Initiative</a>
+    <div class="nav-r">
+      <ul class="pill-nav" id="nav"><li><a href="index.html" class=on aria-current=page>Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html">Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <button class="mini-sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" stroke="none"/></svg></b></button>
+      <button class="menu-btn" aria-label="Menu" aria-controls="nav" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+
+<div class="home">
+  <div class="hero">
+    <div class="label "><i></i>Equity · Economics · Ethnicity</div>
+    <h1>Research for equitable communities<span>.</span></h1>
+    <div><p>A student-led initiative studying equity, economics and ethnicity: who builds local economies, who gets credit and who gets left out. We publish what we find and track the grants that can change it.</p><div class="cta"><a class="btn" href="research.html">Read the research</a><a class="btn ghost" href="grants.html">Find a grant</a></div></div>
+  </div>
+  <div class="tile w2 player rise">
+    <div class="pcov">
+      <div class="art cover cv-a"><span class="mk">E3—01</span></div>
+      <div class="art cover cv-b" style="transform:translateX(110%)"><span class="mk">E3—02</span></div>
+      <div class="art cover cv-c" style="transform:translateX(110%)"><span class="mk">E3—03</span></div>
+    </div>
+    <div class="label abs"><i></i>Now reading</div>
+    <div class="eq" aria-hidden="true"><b style="left:0px"></b><b style="left:6px"></b><b style="left:12px"></b><b style="left:18px"></b><b style="left:24px"></b></div>
+    <a class="ttl" id="ttl" href="#"></a><div class="by" id="by"></div>
+    <div class="prog"><div class="f" id="pf"></div></div><div class="knob" id="pk"></div>
+    <div class="times" id="el" style="left:300px">0:00</div><div class="times" id="len" style="left:540px"></div>
+    <button class="ctl" style="left:348px" id="prev" aria-label="Previous piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2v12H7zM20 6v12l-9-6z"/></svg></button>
+    <button class="play" id="play" aria-label="Pause"><svg id="pi" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+    <button class="ctl" style="left:504px" id="next" aria-label="Next piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg></button>
+  </div>
+  <a class="tile w2 cal rise" href="grants.html">
+    <div class="label abs"><i></i>Tuesday</div>
+    <div class="day">17</div><div class="month">November</div>
+    <div class="sum">6 grant deadlines in 30 days</div>
+    <div class="div"></div><div class="list" id="list"><span class="chip a" id="chip"></span></div>
+  </a>
+  <div class="tile rise">
+    <div class="label abs"><i></i>Next deadline</div>
+    <svg class="dial dialw" data-lit="13" width="200" height="200" viewBox="0 0 200 200" aria-hidden="true"></svg>
+    <div class="digits"><span data-count="13">0</span><small> days</small></div>
+    <div class="dcap">Spark Good Local Grants</div>
+  </div>
+  <div class="tile focus rise">
+    <div class="dark"></div>
+    <div class="label abs"><i></i>Reading mode</div>
+    <div class="well lg moon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" stroke="none"/></svg></div>
+    <div class="state" data-night-state>Off</div><div class="cap2" data-night-cap>Paper, for daytime</div>
+    <button class="sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b></b></button>
+  </div>
+  <div class="tile rise">
+    <div class="label abs"><i></i>2026 so far</div><div class="tr">Feb · Mar · Oct</div>
+    <div class="big" data-count="3">0</div><div class="sky">Pieces published</div>
+    <svg class="arcbox" width="248" height="86" viewBox="0 0 248 86" aria-hidden="true">
+      <path id="arcd" class="dotted" d="M8 76 C 60 -14, 188 -14, 240 76" stroke-width="1.2" stroke-dasharray="2 4"/>
+      <line class="hz" x1="0" x2="248" y1="76" y2="76"/>
+      <path id="arcl" class="lit" d="M8 76 C 60 -14, 188 -14, 240 76" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+      <g id="stops"></g><circle id="glow" r="14" fill="var(--sun-glow)" opacity="0"/><circle id="sun" r="6" fill="var(--accent)" opacity="0"/>
+    </svg>
+    <div class="tiny" style="left:26px">Jan</div><div class="tiny" style="right:26px">Dec</div>
+  </div>
+  <a class="tile rise" href="grants.html">
+    <div class="label abs"><i></i>Open grants</div>
+    <div class="cnt" data-count="33">0</div><div class="goal">of 87 tracked · 38%</div>
+    <div id="cols"><div class="col" style="left:26px"><div class="e"></div><div class="b hl" data-h="1.00"></div><div class="l">Mi</div></div><div class="col" style="left:61px"><div class="e"></div><div class="b" data-h="0.80"></div><div class="l">Ge</div></div><div class="col" style="left:96px"><div class="e"></div><div class="b" data-h="0.80"></div><div class="l">Te</div></div><div class="col" style="left:131px"><div class="e"></div><div class="b" data-h="0.80"></div><div class="l">Ar</div></div><div class="col" style="left:166px"><div class="e"></div><div class="b" data-h="0.60"></div><div class="l">Wo</div></div><div class="col" style="left:201px"><div class="e"></div><div class="b" data-h="0.60"></div><div class="l">Ve</div></div><div class="col" style="left:236px"><div class="e"></div><div class="b" data-h="0.60"></div><div class="l">Fo</div></div></div>
+  </a>
+  <div class="tile rise">
+    <div class="label abs"><i></i>Who it's for</div>
+    <div class="devs">
+      <a href="minority-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="3.2"/><circle cx="16.5" cy="10" r="2.5"/><path d="M3.5 19c.6-3 3-5 5.5-5s4.9 2 5.5 5M15 15c2.4-.2 4.4 1.3 5 3.8"/></svg></div><div class="nm">Minority-owned</div><div class="pc">0%</div><div class="bar"><b class="ch" data-w="42"><span class=shim></span></b></div></div></a>
+      <a href="women-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-6 7-6s6.2 2.4 7 6"/></svg></div><div class="nm">Women-owned</div><div class="pc">0%</div><div class="bar"><b class="" data-w="38"></b></div></div></a>
+      <a href="veteran-owned-business-grants.html"><div class="lvl"><div class="well"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg></div><div class="nm">Veteran-owned</div><div class="pc">0%</div><div class="bar"><b class="" data-w="50"></b></div></div></a>
+    </div>
+  </div>
+  <a class="tile share rise" href="outreach.html">
+    <div class="label abs"><i></i>Outreach</div><div class="well lg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+    <div class="h">Share your story</div><div class="s">An interview, on your terms.</div><span class="btn sm go">Book a time →</span>
+  </a>
+</div>
+<section>
+  <div class="shead"><h2>Publications</h2><a href="articles.html">All articles →</a></div>
+  <div class="tile rows"><a class="crow" href="article-railroad.html"><span class="t">Oct 04</span><span class="m"></span><div><div class="n">Chinese Labor and the Transcontinental Railroad: The Uncredited Contributions and Lost Legacy</div><div class=d>Minghao Gu examines the dangerous labor, resistance, and overlooked legacy of Chinese immigrants who helped build the Transcontinental Railroad.</div></div><span class="chip">Article</span></a><a class="crow" href="research-chinatown.html"><span class="t">Mar 11</span><span class="m"></span><div><div class="n">Beyond Restaurants and Boba Cafes: The Historical and Modern Economic Solidarity of Chinatown</div><div class=d>Full research paper examining the historical origins, cultural preservation, and modern resilience of Chinatown as an ethnic economy built on solidarity, identity, and community.</div></div><span class="chip">Research paper</span></a><a class="crow" href="article-chinatown.html"><span class="t">Feb 02</span><span class="m"></span><div><div class="n">Beyond Restaurants, Boba Cafes, and Souvenir Shops: The Historical and Modern Economic Solidarity of Chinatown</div><div class=d>A historical and contemporary look at how Chinatowns foster economic solidarity, cultural preservation, and community resilience across generations.</div></div><span class="chip">Article</span></a></div>
+</section>
+<section class="mission"><div class="label "><i></i>Mission</div><p>To provide rigorous, community-centered research that bridges the gap between lived experiences and policy decisions, <span>fostering a more equitable world for all ethnicities and economic backgrounds.</span></p></section>
+
+  </main>
+  <footer>
+    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
+    <nav class="links" aria-label="Footer"><a href="articles.html">Articles</a><a href="research.html">Research</a><a href="journals.html">Journals</a><a href="economic-indicators.html">Economic Indicators</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="outreach.html">Outreach</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+  </footer>
+</div>
+<script src="theme.js"></script>
+<script>
+const PIECES = [{"t": "Chinese Labor and the Transcontinental Railroad", "by": "Minghao Gu \u00b7 Article", "len": 3, "href": "article-railroad.html"}, {"t": "Beyond Restaurants and Boba Cafes", "by": "Minghao Gu \u00b7 Research paper", "len": 8, "href": "research-chinatown.html"}, {"t": "Beyond Restaurants, Boba Cafes, and Souvenir Shops", "by": "Minghao Gu \u00b7 Article", "len": 4, "href": "article-chinatown.html"}], EVENTS = [{"t": "Nov 30", "n": "Spark Good Local Grants", "d": "Walmart \u00b7 $5k", "chip": "in 13 days"}, {"t": "Nov 30", "n": "Tribal Tourism Small Business Grant", "d": "Montana Department of Commerce \u00b7 $10k", "chip": "in 13 days"}, {"t": "Dec 03", "n": "North Central Region SARE Farmer Rancher Grant", "d": "North Central Region SARE \u00b7 $30k", "chip": "in 16 days"}, {"t": "Dec 14", "n": "Dental Safety Net Grant Program", "d": "Minnesota Department of Health \u00b7 $34k", "chip": "in 27 days"}, {"t": "Dec 15", "n": "2027 Heroes Small Business Grant Program", "d": "Hiring Our Heroes \u00b7 $25k", "chip": "in 28 days"}, {"t": "Dec 16", "n": "Public Humanities Projects", "d": "National Endowment for the Humanities \u00b7 $500k", "chip": "in 29 days"}];
+let cur = 0, pos = 0.4, playing = !reduce; const arts = $$('.art');
+function setText() { $('#ttl').textContent = PIECES[cur].t; $('#ttl').href = PIECES[cur].href; $('#by').textContent = PIECES[cur].by; $('#len').textContent = PIECES[cur].len + ' min'; }
+function show(i, dir) { const old = arts[cur]; cur = (i + 3) % 3; const nu = arts[cur];
+  nu.style.transition = 'none'; nu.style.transform = `translateX(${dir * 110}%)`; nu.style.opacity = 1; nu.style.zIndex = 2; old.style.zIndex = 1;
+  requestAnimationFrame(() => requestAnimationFrame(() => { nu.style.transition = ''; nu.style.transform = 'none'; old.style.transform = `translateX(${-dir * 40}px) scale(.94)`; old.style.opacity = .1; }));
+  ['#ttl', '#by'].forEach(s => $(s).style.opacity = 0); setTimeout(() => { setText(); ['#ttl', '#by'].forEach(s => $(s).style.opacity = 1); }, 150); pos = 0; }
+setText(); $('#next').onclick = () => show(cur + 1, 1); $('#prev').onclick = () => show(cur - 1, -1);
+$('#play').onclick = () => { playing = !playing; $('#play').setAttribute('aria-label', playing ? 'Pause' : 'Play'); $('#pi').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; };
+const bars = $$('.eq b'); let last = performance.now();
+(function loop(now) { const dt = (now - last) / 1000; last = now; if (playing) pos += dt * 0.05;
+  const f = Math.min(1, pos / PIECES[cur].len), w = $('.prog').offsetWidth; $('#pf').style.width = w * f + 'px'; $('#pk').style.left = $('.prog').offsetLeft + w * f + 'px';
+  $('#el').textContent = Math.floor(pos) + ':' + String(Math.floor((pos % 1) * 60)).padStart(2, '0');
+  bars.forEach((b, i) => b.style.height = (playing ? 4 + 10 * Math.abs(Math.sin(now / 1000 * (5 + i * 1.7) + i)) : 3) + 'px'); requestAnimationFrame(loop); })(last);
+const rows = EVENTS.map(e => { const r = document.createElement('div'); r.className = 'row'; r.innerHTML = `<span class="t">${e.t}</span><span class="m"></span><div><div class="n">${e.n}</div><div class="d">${e.d}</div></div>`; $('#list').insertBefore(r, $('#chip')); return r; });
+let top0 = 0; function place() { rows.forEach((r, i) => { const k = i - top0; r.style.top = k * 76 + 'px'; r.style.opacity = k >= 0 && k < 3 ? 1 : 0; r.classList.toggle('next', k === 0); });
+  $('#chip').style.opacity = 0; setTimeout(() => { $('#chip').textContent = EVENTS[top0].chip; $('#chip').style.opacity = 1; }, 300); }
+place(); if (!reduce) setInterval(() => { top0 = (top0 + 1) % (EVENTS.length - 2); place(); }, 3600);
+const arcd = $('#arcd'), AL = arcd.getTotalLength();
+[0.09, 0.19, 0.76].forEach(k => { const p = arcd.getPointAtLength(AL * k), c = document.createElementNS(SVG, 'circle'); c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', 3.5); c.setAttribute('class', 'pub'); $('#stops').appendChild(c); });
+const SUN = (321 / 365);
+setTimeout(() => { ['#sun', '#glow'].forEach(s => $(s).setAttribute('opacity', 1)); const t0 = performance.now();
+  (function s(now) { const k = reduce ? 1 : Math.min(1, (now - t0) / 1600), p = arcd.getPointAtLength(AL * SUN * inOut(k));
+    ['#sun', '#glow'].forEach(x => { $(x).setAttribute('cx', p.x); $(x).setAttribute('cy', p.y); }); $('#arcl').setAttribute('stroke-dashoffset', 1 - SUN * inOut(k)); $('#glow').setAttribute('r', 12 + 3 * Math.sin(now / 333)); if (!reduce) requestAnimationFrame(s); })(t0); }, 1000);
+$$('.col .b').forEach((b, i) => setTimeout(() => b.style.transform = `scaleY(${b.dataset.h})`, 1100 + i * 80));
+</script>
+</body>
+</html>

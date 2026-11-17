@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grant Finder · e3 Initiative</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet"><link rel="stylesheet" href="theme.css"></head>
+<body><svg class="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav"><a class="brand" href="index.html"><i></i>e3 Initiative</a><nav aria-label="Main"><ul id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html" class=on aria-current=page>Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <button class="menu-btn cap" aria-controls="nav" aria-expanded="false">Menu</button></header>
+  <main id="main">
+<div class="ph"><div><div class="cap">Grants</div><h1>Grant Finder</h1></div><div><p>Funding for small businesses and nonprofits. Search, then set the desk: who qualifies, category, minimum award, deadline window.</p><a class="mbtn ghost" href="grant-help.html" style="margin-top:20px">Help & tips →</a></div></div><div class="panel desk" ><div class="sheen"></div>
+  <div style="display:grid;grid-template-columns:1fr 120px 200px;gap:34px" class="gdesk">
+    <div>
+      <label class="field"><span class="cap">Search</span><input class="inp" id="q" type="search" placeholder="WOMEN-OWNED BAKERY…" aria-label="Search grants"></label>
+      <div class="cap" style="margin:6px 0 10px">Who qualifies</div><div class="keys" data-group="elig"><button class="key on" data-v="">Anyone</button><button class="key" data-v="small_business">Business</button><button class="key" data-v="nonprofit">Nonprofit</button></div>
+      <div class="cap" style="margin:18px 0 10px">Status</div><div class="keys" data-group="status"><button class="key on" data-v="live">Open + rolling</button><button class="key" data-v="open">Open only</button><button class="key" data-v="">Include closed</button></div>
+      <div class="cap" style="margin:18px 0 10px">Category · any combination</div><div class="keys" data-group="cat" data-multi><button class="key" data-v="minority_owned">Minority-owned</button><button class="key" data-v="women_owned">Women-owned</button><button class="key" data-v="veteran_owned">Veteran-owned</button><button class="key" data-v="arts_culture">Arts & culture</button><button class="key" data-v="research">Research</button><button class="key" data-v="technology">Technology</button><button class="key" data-v="community_development">Community</button><button class="key" data-v="food_agriculture">Food & farming</button><button class="key" data-v="health">Health</button><button class="key" data-v="environment">Environment</button><button class="key" data-v="general">General</button></div>
+    </div>
+    <div class="vline" style="padding-left:24px"><div class="cap">Min award</div><div class="fader" id="amt" style="height:250px;margin:22px 0 0 34px"><div class="fticks"><span style="top:0">1M</span><span style="top:33%">100k</span><span style="top:66%">10k</span><span style="top:100%">0</span></div><div class="trk"><div class="fill"></div></div><div class="fcap" tabindex="0" role="slider" aria-label="Minimum award"></div></div><div class="mono" style="font-size:18px;margin-top:22px" id="amtv">Any</div></div>
+    <div class="vline" style="padding-left:24px"><div class="cap">Deadline window</div><div class="knob" id="win" data-label="Deadline window" style="margin:14px auto 0"></div>
+      <div style="margin-top:14px"><div class="mrow cap">Matching<b id="mM">—</b></div><div class="mrow cap">Dated<b id="mD" style="color:rgb(var(--led-near))">—</b></div></div></div>
+  </div></div>
+<div class="grid" style="margin-top:20px;align-items:start">
+  <div class="panel c8" ><div class="sheen"></div><div class="rows" id="gres" aria-live="polite"></div></div>
+  <div class="panel pad c4" ><div class="sheen"></div><div class="cap" style="margin-bottom:10px">Browse by group</div><a class="mrow cap" href="minority-owned-business-grants.html">Minority-owned<b style="display:flex;gap:12px;align-items:center"><span class="meter " data-n="10" data-lit="4" data-near="0"></span>12</b></a><a class="mrow cap" href="women-owned-business-grants.html">Women-owned<b style="display:flex;gap:12px;align-items:center"><span class="meter " data-n="10" data-lit="4" data-near="0"></span>8</b></a><a class="mrow cap" href="veteran-owned-business-grants.html">Veteran-owned<b style="display:flex;gap:12px;align-items:center"><span class="meter " data-n="10" data-lit="5" data-near="0"></span>6</b></a><p class="dim mono" style="font-size:11px;line-height:1.6;margin-top:14px">Meter: share of each list open right now.</p></div>
+</div>
+  </main>
+  <footer><span class="cap">© 2026 e3 Initiative</span><nav aria-label="Footer"><a class="cap" href="articles.html">Articles</a><a class="cap" href="research.html">Research</a><a class="cap" href="journals.html">Journals</a><a class="cap" href="economic-indicators.html">Economic Indicators</a><a class="cap" href="grants.html">Grant Finder</a><a class="cap" href="grant-help.html">Grant Help</a><a class="cap" href="outreach.html">Outreach</a><a class="cap" href="contact.html">Contact</a><a class="cap" href="privacy.html">Privacy</a></nav></footer>
+</div>
+<script src="theme.js"></script>
+<script src="../shared/grants-data.js"></script><script>
+const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set(), win: 3 }, WIN = [[14, '14D'], [30, '30D'], [90, '90D'], [Infinity, 'ANY']];
+const valAt = p => p < .06 ? 0 : Math.pow(10, 3 + 3 * (p - .06) / .94);
+makeFader($('#amt'), 0, p => { F.amt = valAt(p); $('#amtv').textContent = F.amt ? '≥$' + (F.amt >= 1e6 ? (F.amt / 1e6).toFixed(1) + 'M' : Math.round(F.amt / 1000) + 'k') : 'Any'; render(); });
+makeKnob($('#win'), WIN.map(w => w[1]), 3, i => { F.win = i; render(); });
+$$('.keys[data-group]').forEach(g => g.addEventListener('change', () => { const on = $$('.key.on', g).map(k => k.dataset.v);
+  if (g.dataset.group === 'cat') F.cat = new Set(on); else F[g.dataset.group] = on[0] ?? ''; render(); }));
+$('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
+function render() { const W = WIN[F.win][0];
+  const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q)) && (!F.elig || g.elig === F.elig || g.elig === 'both')
+    && (F.status === '' || (F.status === 'live' ? g.status !== 'closed' : g.status === F.status)) && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat))
+    && (W === Infinity || (g.days != null && g.days <= W && g.days >= 0)))
+    .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
+  $('#mM').textContent = rs.length; $('#mD').textContent = rs.filter(g => g.days != null && g.status !== 'closed').length || '—';
+  $('#gres').innerHTML = rs.length ? rs.map(g => { const c = g.status === 'closed' ? 'over' : g.days != null ? 'near' : 'on';
+    return `<div class="rrow ${g.status === 'closed' ? 'closed' : ''}" tabindex="0" style="cursor:pointer"><span class="led ${c}"></span><div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div>
+      <span class="g cap">${CAT_LABEL[g.cat]}</span><span class="a">${g.max ? '$' + g.max.toLocaleString() : 'varies'}</span><span class="d ${c}">${g.status === 'closed' ? 'closed' : g.days != null ? 'in ' + g.days + 'd' : g.dl.toLowerCase()}</span>
+      <div class="x">${g.desc}<br><a class="mbtn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
+    : '<div class="empty">Nothing matches. Widen the window or lower the fader.</div>'; }
+$('#gres').addEventListener('click', e => { const r = e.target.closest('.rrow'); if (r && !e.target.closest('a')) r.classList.toggle('xo'); });
+$('#gres').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('rrow')) e.target.classList.toggle('xo'); });
+render();
+</script>
+</body></html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact · e3 Initiative</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet"><link rel="stylesheet" href="theme.css"></head>
+<body><svg class="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav"><a class="brand" href="index.html"><i></i>e3 Initiative</a><nav aria-label="Main"><ul id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html">Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html" class=on aria-current=page>Contact</a></li></ul></nav>
+    <button class="menu-btn cap" aria-controls="nav" aria-expanded="false">Menu</button></header>
+  <main id="main">
+<div class="ph"><div><div class="cap">Contact</div><h1>Let's connect</h1></div><div><p>Have questions about our research or want to collaborate? Send a message and we will respond within two business days.</p></div></div>
+<div class="grid" style="align-items:start"><div class="panel pad c8" ><div class="sheen"></div><form onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" id="cf">
+      <div class="grid" style="gap:0 18px"><label class="field c6"><span><span class="led" data-for="n"></span><span class="cap">Name *</span></span><input class="inp" id="n" required autocomplete="name"></label>
+      <label class="field c6"><span><span class="led" data-for="e"></span><span class="cap">Email *</span></span><input class="inp" id="e" type="email" required autocomplete="email"></label></div>
+      <label class="field"><span><span class="led" data-for="s"></span><span class="cap">Subject *</span></span><input class="inp" id="s" required></label>
+      <label class="field"><span><span class="led" data-for="m"></span><span class="cap">Message *</span></span><textarea class="inp" id="m" required></textarea></label>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button class="mbtn" type="submit">Send message</button><span class="cap" data-sent hidden style="color:rgb(var(--led-near))">Mockup: nothing was sent</span></div></form></div>
+  <div class="c4" style="display:grid;gap:20px"><div class="panel pad" ><div class="sheen"></div><div class="mrow cap">Reply within<b>2 business days</b></div><div class="mrow cap">Interviews<b><a href="outreach.html">Outreach →</a></b></div><div class="mrow cap">Your data<b><a href="privacy.html">Privacy →</a></b></div></div>
+  <div class="panel pad" ><div class="sheen"></div><div class="cap">Signal</div><div style="display:flex;gap:14px;align-items:center;margin-top:14px"><span class="meter" id="sig" data-n="12" data-lit="0"></span><span class="cap" id="sigl">0/4 fields</span></div></div></div></div>
+  </main>
+  <footer><span class="cap">© 2026 e3 Initiative</span><nav aria-label="Footer"><a class="cap" href="articles.html">Articles</a><a class="cap" href="research.html">Research</a><a class="cap" href="journals.html">Journals</a><a class="cap" href="economic-indicators.html">Economic Indicators</a><a class="cap" href="grants.html">Grant Finder</a><a class="cap" href="grant-help.html">Grant Help</a><a class="cap" href="outreach.html">Outreach</a><a class="cap" href="contact.html">Contact</a><a class="cap" href="privacy.html">Privacy</a></nav></footer>
+</div>
+<script src="theme.js"></script>
+<script>
+function chk() { let ok = 0; ['n', 'e', 's', 'm'].forEach(id => { const v = $('#' + id).checkValidity() && $('#' + id).value; $(`[data-for=${id}]`).className = 'led' + (v ? ' on' : ''); ok += !!v; });
+  $$('#sig i').forEach((s, i) => s.className = i < ok * 3 ? 'on' : ''); $('#sigl').textContent = ok + '/4 fields'; }
+$('#cf').addEventListener('input', chk);
+</script>
+</body></html>

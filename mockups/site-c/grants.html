@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grant Finder · e3 Initiative</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="theme.css"></head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav"><a class="brand" href="index.html">e3 <span>Initiative</span></a><nav aria-label="Main"><ul id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html" class=on aria-current=page>Grants</a></li><li><a href="economic-indicators.html">Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li></ul></nav><button class="menu-btn" aria-controls="nav" aria-expanded="false">Menu</button></header>
+  <main id="main">
+<div class="ph"><div class="top"><span class="lab">Grants</span><span class="lab">wght 200 · hover for a lens</span></div>
+  <h1 data-lens="200" class="">Grant Finder</h1>
+  <div class="lede"><p>Funding for small businesses and nonprofits, set by urgency: the closer a deadline, the heavier it is. Closed grants drop to Thin.</p><div><a class="pill o" href="grant-help.html">Help & tips →</a></div></div></div>
+<div style="margin-top:40px"><label class="lab" for="q">Search</label><input class="bigsearch" id="q" type="search" placeholder="women-owned bakery…" autocomplete="off"></div>
+<div style="margin-top:20px">
+  <div class="fgroup"><span class="lab">Who qualifies</span><div class="ftabs" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Small business</button><button data-v="nonprofit">Nonprofit</button></div></div>
+  <div class="fgroup"><span class="lab">Status</span><div class="ftabs" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="open">Open</button><button data-v="">Everything</button></div></div>
+  <div class="fgroup"><span class="lab">Award up to</span><div class="ftabs" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k+</button><button data-v="50000">$50k+</button><button data-v="250000">$250k+</button></div></div>
+  <div class="fgroup"><span class="lab">Category</span><div class="ftabs" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div>
+  <div class="fgroup"><span class="lab">Browse by group</span><div class="ftabs"><a href="minority-owned-business-grants.html" style="font:13px var(--mono);color:var(--soft)">Minority-owned (12) →</a><a href="women-owned-business-grants.html" style="font:13px var(--mono);color:var(--soft)">Women-owned (8) →</a><a href="veteran-owned-business-grants.html" style="font:13px var(--mono);color:var(--soft)">Veteran-owned (6) →</a></div></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:40px;gap:20px;flex-wrap:wrap"><div><span class="big-num" id="cnt" style="font-variation-settings:'wght' 200">0</span><span class="lab" style="margin-left:14px">of 87 grants</span></div><div class="legend lab">The closer the deadline, the heavier it is set.<span class="ramp"><span class="w9">Aa</span><span class="w5">Aa</span><span class="w1">Aa</span></span><span>today → 60 days</span></div></div>
+<table class="gt"><thead><tr><th>Grant</th><th class="c">Category</th><th>Max award</th><th style="text-align:right">Deadline</th></tr></thead><tbody id="gt" aria-live="polite"></tbody></table>
+  </main>
+  <footer><span class="lab">© 2026 e3 Initiative · set in Geist</span><nav aria-label="Footer"><a href="articles.html">Articles</a><a href="research.html">Research</a><a href="journals.html">Journals</a><a href="economic-indicators.html">Economic Indicators</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="outreach.html">Outreach</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav></footer>
+</div>
+<script src="theme.js"></script>
+<script src="../shared/grants-data.js"></script><script>
+const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
+$$('.ftabs[data-f]').forEach(t => t.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  if (t.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', t).forEach(x => x.classList.toggle('on', !x.dataset.v)); } else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', t).classList.toggle('on', !F.cat.size); } }
+  else { $$('button', t).forEach(x => x.classList.toggle('on', x === b)); F[t.dataset.f] = t.dataset.f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
+$('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); $('#q').style.fontVariationSettings = `'wght' ${200 + Math.min(500, e.target.value.length * 30)}`; render(); });
+function render() {
+  const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q)) && (!F.elig || g.elig === F.elig || g.elig === 'both')
+    && (F.status === '' || (F.status === 'live' ? g.status !== 'closed' : g.status === F.status)) && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
+    .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
+  $('#cnt').textContent = rs.length; $('#cnt').style.fontVariationSettings = `'wght' ${Math.round(100 + rs.length / GRANTS.length * 800)}`;
+  $('#gt').innerHTML = rs.length ? rs.map((g, i) => { const w = g.status === 'closed' ? 100 : urg(g.days), hot = g.days != null && g.days <= 14 && g.status !== 'closed';
+    return `<tr class="${hot ? 'hot' : ''} ${g.status === 'closed' ? 'closed' : ''}" data-i="${i}" tabindex="0"><td><div class="n">${g.name}</div><div class="f">${g.funder}</div></td><td class="c">${CAT_LABEL[g.cat]}</td>
+      <td class="a">${g.max ? '$' + g.max.toLocaleString() : 'Varies'}</td><td class="d" style="font-variation-settings:'wght' ${w}">${g.dl}<small>${g.status === 'closed' ? 'closed' : g.days != null ? 'in ' + g.days + ' days · wght ' + w : g.status}</small></td></tr>
+      <tr class="xr" hidden><td colspan="4">${g.desc} <a class="pill sm o" href="${g.link}" target="_blank" rel="noopener" style="margin-left:8px">Funder's page →</a></td></tr>`; }).join('')
+    : '<tr><td colspan="4" class="lab" style="padding:40px 0">No grants match these filters. Try widening them.</td></tr>'; }
+$('#gt').addEventListener('click', e => { const r = e.target.closest('tr[data-i]'); if (r && !e.target.closest('a')) r.nextElementSibling.hidden = !r.nextElementSibling.hidden; });
+$('#gt').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('tr[data-i]')) e.target.nextElementSibling.hidden = !e.target.nextElementSibling.hidden; });
+render();
+</script>
+</body></html>

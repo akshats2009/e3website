@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economic Indicators · e3 Initiative</title>
+<script>if(localStorage.getItem('e3-night')==='1')document.documentElement.classList.add('night')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400&family=Geist+Mono:wght@400;500&family=Inter:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav">
+    <a class="brand" href="index.html"><i></i>e3 Initiative</a>
+    <div class="nav-r">
+      <ul class="pill-nav" id="nav"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="articles.html">Articles</a></li><li><a href="research.html">Research</a></li><li><a href="grants.html">Grants</a></li><li><a href="economic-indicators.html" class=on aria-current=page>Indicators</a></li><li><a href="outreach.html">Outreach</a></li><li><a href="contact.html">Contact</a></li></ul>
+      <button class="mini-sw" role="switch" aria-checked="false" aria-label="Reading mode" data-night><b><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor" stroke="none"/></svg></b></button>
+      <button class="menu-btn" aria-label="Menu" aria-controls="nav" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button>
+    </div>
+  </header>
+  <main id="main">
+<div class="ph"><div><div class="label "><i></i>Data</div><h1>Economic Indicators</h1><p>These charts help explain everyday costs, job security, and borrowing rates. Hover a chart to read any year since 2000.</p></div><div></div></div>
+<div class="note" id="note" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg><span>Preview: these lines are placeholder shapes. Live FRED data loads from <span class="mono">/api/economic-indicators</span> on the deployed site, and no numbers are shown until then.</span></div>
+<div class="grid"><div class="tile ind rise c6" data-key="cpi" data-unit="index">
+      <div class="label "><i></i>Inflation: CPI</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>index</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">CPI tracks the prices people pay for common items like groceries, rent, and transportation. If CPI rises quickly, your paycheck usually buys less.</p></div><div class="tile ind rise c6" data-key="core_cpi" data-unit="index">
+      <div class="label "><i></i>Inflation: Core CPI</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>index</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">Core CPI removes food and energy, which jump around a lot. It shows whether inflation pressure is broad and persistent, not just a temporary shock.</p></div><div class="tile ind rise c6" data-key="ppi" data-unit="index">
+      <div class="label "><i></i>Inflation: PPI</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>index</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">PPI measures what businesses pay for materials and production. When it rises, companies often pass those costs to consumers later.</p></div><div class="tile ind rise c6" data-key="core_pce" data-unit="index">
+      <div class="label "><i></i>Inflation: Core PCE</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>index</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">Core PCE is the inflation measure the Fed watches most closely. It can influence interest-rate decisions that affect loans, mortgages, and credit cards.</p></div><div class="tile ind rise c6" data-key="fed_funds" data-unit="%">
+      <div class="label "><i></i>Rates: Fed Funds</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>%</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">This is the benchmark short-term interest rate set through Fed policy. Higher rates usually mean more expensive borrowing and slower spending.</p></div><div class="tile ind rise c6" data-key="unemployment" data-unit="%">
+      <div class="label "><i></i>Labor: Unemployment</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>%</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">The unemployment rate shows the share of people who want a job but cannot find one. Rising unemployment usually signals stress in the economy.</p></div><div class="tile ind rise c6" data-key="payrolls" data-unit="M jobs">
+      <div class="label "><i></i>Labor: Nonfarm Payrolls</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>M jobs</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">Payrolls count how many jobs employers added or lost. Strong payroll growth often means more hiring and healthier household income.</p></div><div class="tile ind rise c6" data-key="ten_year" data-unit="%">
+      <div class="label "><i></i>Growth / Rates: 10Y Yield</div><div class="tr mono" data-hl></div>
+      <div class="val"><span data-v>—</span><small>%</small></div>
+      <svg viewBox="0 0 500 96" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <div class="yrs"><span>2000</span><span data-end>today</span></div>
+      <p class="desc">The 10-year Treasury yield reflects long-term growth and inflation expectations. It influences mortgage rates and can signal how confident markets are about the future.</p></div></div>
+  </main>
+  <footer>
+    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
+    <nav class="links" aria-label="Footer"><a href="articles.html">Articles</a><a href="research.html">Research</a><a href="journals.html">Journals</a><a href="economic-indicators.html">Economic Indicators</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="outreach.html">Outreach</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a></nav>
+  </footer>
+</div>
+<script src="theme.js"></script>
+<script src="../shared/indicators.js"></script><script>
+loadIndicators().then(D => {
+  $('#note').hidden = D.live;
+  $$('.ind').forEach(t => { const s = D.series[t.dataset.key]; if (!s) return; const svg = $('svg', t), n = s.length, lo = Math.min(...s), hi = Math.max(...s);
+    const x = i => i / (n - 1) * 500, y = v => 86 - (v - lo) / (hi - lo || 1) * 76;
+    const d = s.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+    svg.innerHTML = `<line x1="0" x2="500" y1="90" y2="90" stroke="var(--hair)"/><path d="${d}" fill="none" stroke="var(--dotted)" stroke-width="1.2" stroke-dasharray="2 4" vector-effect="non-scaling-stroke"/>
+      <path class="ln" d="${d}" fill="none" stroke="var(--ink)" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke" style="transition:stroke-dashoffset 1.4s cubic-bezier(.65,0,.35,1)"/>
+      <circle cx="${x(n - 1)}" cy="${y(s[n - 1])}" r="12" fill="var(--sun-glow)"/><circle class="dot" cx="${x(n - 1)}" cy="${y(s[n - 1])}" r="5" fill="var(--accent)"/>`;
+    setTimeout(() => $('.ln', svg).setAttribute('stroke-dashoffset', 0), 300);
+    $('[data-end]', t).textContent = D.years[n - 1];
+    const u = t.dataset.unit, f = v => D.live ? fmtIndicator(v, u) : '—';
+    $('[data-v]', t).textContent = D.live ? fmtIndicator(s[n - 1], u).replace('%', '').replace('M', '') : '—';
+    $('[data-hl]', t).textContent = D.live ? `H ${f(hi)} · L ${f(lo)}` : '';
+    svg.addEventListener('pointermove', e => { const r = svg.getBoundingClientRect(), i = Math.round((e.clientX - r.left) / r.width * (n - 1));
+      $('.dot', svg).setAttribute('cx', x(i)); $('.dot', svg).setAttribute('cy', y(s[i])); $('[data-end]', t).textContent = D.years[i] + (D.live ? ' · ' + fmtIndicator(s[i], u) : ''); });
+  });
+});
+</script>
+</body>
+</html>

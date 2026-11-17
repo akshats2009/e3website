@@ -1,0 +1,666 @@
+"""Variation B: Graphite desk. Dark graphite slabs with gradient liners and grain, metal fader caps, stepped knobs,
+LED meters (white fine, amber soon, red closed) and mono uppercase captions. Built from budget-mixer."""
+import json
+from common import *
+
+D = "site-b"
+
+CSS = r"""
+:root{
+  --page:#070708; --text:#f1f1f3; --text-rgb:241 241 243; --label:rgba(241,241,243,.42); --strong:rgba(241,241,243,.85); --body:rgba(241,241,243,.78);
+  --panel-top:#1b1b1e; --panel-mid:#131315; --panel-bottom:#0f0f11;
+  --divider:rgba(255,255,255,.06); --row-line:rgba(255,255,255,.07); --track:#08080a; --tick:rgba(255,255,255,.14); --tick-label:rgba(255,255,255,.28);
+  --led-off:rgba(255,255,255,.05); --led-fine:214 236 226; --led-near:255 181 71; --led-over:255 75 62;
+  --metal:linear-gradient(180deg,#f4f4f6 0%,#d3d3d7 48%,#a9a9ae 52%,#c9c9cd 100%);
+  --metal-shadow:0 10px 18px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.5),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.25);
+  --liner:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 40%,rgba(255,255,255,.02) 70%,rgba(255,255,255,.08));
+  --well:#0b0b0d; --well-shadow:inset 0 1px 2px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.04),0 1px 0 rgba(255,255,255,.06);
+  --sans:"Geist",sans-serif; --mono:"Geist Mono",monospace; --r:32px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--page)}
+body{color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;background:radial-gradient(1400px 900px at 50% 300px,#141416 0%,#0a0a0b 60%,var(--page) 100%) no-repeat}
+.grain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:60;opacity:.06;mix-blend-mode:overlay}
+a{color:inherit;text-decoration:none}
+button,input,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer}
+img{display:block;max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.skip{position:absolute;left:-999px;top:8px;z-index:99;background:var(--metal);color:#111;padding:10px 14px;border-radius:10px}
+.skip:focus{left:12px}
+:focus-visible{outline:1.5px solid rgb(var(--led-near));outline-offset:3px}
+.cap{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--label)}
+.mono{font-family:var(--mono)}
+.dim{color:var(--label)}
+
+/* panel = the desk slab */
+.panel{position:relative;border-radius:var(--r);isolation:isolate}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;background:linear-gradient(180deg,var(--panel-top) 0%,var(--panel-mid) 45%,var(--panel-bottom) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 60px rgba(255,255,255,.025),0 40px 70px -40px rgba(0,0,0,.9)}
+.panel::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:var(--liner);pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.pad{padding:30px 34px}
+.sheen{position:absolute;left:0;right:0;top:0;height:200px;border-radius:var(--r) var(--r) 0 0;background:radial-gradient(ellipse 60% 100% at 50% 0%,rgba(255,255,255,.06),transparent 70%);pointer-events:none;z-index:-1}
+a.panel{transition:transform .25s}
+a.panel:hover{transform:translateY(-2px)}
+
+/* nav */
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px;border-bottom:1px solid var(--divider);gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font-size:15px}
+.brand i{width:30px;height:16px;border-radius:5px;background:var(--metal);box-shadow:var(--metal-shadow);position:relative;flex:none}
+.brand i::before{content:"";position:absolute;left:6px;right:6px;top:7px;height:2px;border-radius:1px;background:#1a1a1c}
+.nav ul{display:flex;gap:26px;list-style:none}
+.nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--label);display:flex;align-items:center;gap:8px;transition:color .2s}
+.nav ul a::before{content:"";width:5px;height:5px;border-radius:1px;background:var(--led-off);transition:background .2s,box-shadow .2s}
+.nav ul a:hover,.nav ul a.on{color:var(--text)}
+.nav ul a.on::before{background:rgb(var(--led-fine));box-shadow:0 0 6px rgb(var(--led-fine)/.6)}
+.menu-btn{display:none;height:40px;padding:0 14px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+
+/* buttons */
+.mbtn{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:46px;padding:0 20px;display:inline-flex;align-items:center;gap:10px;border-radius:12px;
+  background:var(--metal);color:#111;box-shadow:var(--metal-shadow);transition:transform .12s;white-space:nowrap}
+.mbtn:active{transform:translateY(1px) scale(.98)}
+.mbtn.ghost{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.mbtn.sm{height:34px;padding:0 14px;font-size:10px}
+.led{display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--led-off);flex:none}
+.led.on{background:rgb(var(--led-fine)/.95);box-shadow:0 0 8px rgb(var(--led-fine)/.35)}
+.led.near{background:rgb(var(--led-near));box-shadow:0 0 8px rgb(var(--led-near)/.6)}
+.led.over{background:rgb(var(--led-over));box-shadow:0 0 8px rgb(var(--led-over)/.6)}
+/* hardware toggle: a recessed key with an LED */
+.key{height:38px;padding:0 13px;border-radius:10px;background:linear-gradient(180deg,#26262a,#1a1a1d);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 4px 10px rgba(0,0,0,.5);
+  display:inline-flex;align-items:center;gap:9px;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--label);transition:color .2s,transform .1s}
+.key::before{content:"";width:6px;height:6px;border-radius:1.5px;background:var(--led-off);transition:background .2s,box-shadow .2s}
+.key.on{color:var(--text)}
+.key.on::before{background:rgb(var(--led-fine));box-shadow:0 0 6px rgb(var(--led-fine)/.7)}
+.key:active{transform:translateY(1px)}
+.keys{display:flex;flex-wrap:wrap;gap:8px}
+/* LED meter */
+.meter{display:flex;gap:3px}
+.meter i{width:9px;height:8px;border-radius:2px;background:var(--led-off)}
+.meter i.on{background:rgb(var(--led-fine)/.9);box-shadow:0 0 6px rgb(var(--led-fine)/.25)}
+.meter i.near{background:rgb(var(--led-near));box-shadow:0 0 6px rgb(var(--led-near)/.5)}
+.meter.v{flex-direction:column-reverse;gap:4px}
+.meter.v i{width:10px;height:7px}
+/* knob */
+.knob{position:relative;width:140px;height:140px;flex:none}
+.knob svg{position:absolute;inset:0}
+.knob .tr,.knob .pg{fill:none;stroke-width:2;stroke-linecap:round}
+.knob .tr{stroke:rgba(255,255,255,.08)}.knob .pg{stroke:#f1f1f3}
+.kbody{position:absolute;left:26px;top:26px;width:88px;height:88px;border-radius:50%;background:repeating-conic-gradient(from 0deg,#2b2b2f 0deg 3deg,#1c1c1f 3deg 6deg);
+  box-shadow:0 14px 24px rgba(0,0,0,.7),0 3px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.18);cursor:grab;touch-action:none;transition:transform .45s cubic-bezier(.65,0,.35,1)}
+.kcap{position:absolute;left:34px;top:34px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 40% 28%,#3a3a3f 0%,#232326 55%,#18181a 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -6px 12px rgba(0,0,0,.5);pointer-events:none}
+.kptr{position:absolute;left:69px;top:38px;width:2px;height:18px;border-radius:1px;background:#f4f4f6;box-shadow:0 0 8px rgba(255,255,255,.6);transform-origin:1px 32px;pointer-events:none;transition:transform .45s cubic-bezier(.65,0,.35,1)}
+.det{position:absolute;font:10px var(--mono);letter-spacing:.1em;transform:translate(-50%,-50%);color:rgb(var(--text-rgb)/.32);transition:color .3s;padding:4px;white-space:nowrap}
+.det.on{color:rgb(var(--text-rgb)/.92)}
+.knob.sm{width:100px;height:100px}
+.knob.sm .kbody{left:20px;top:20px;width:60px;height:60px}.knob.sm .kcap{left:25px;top:25px;width:50px;height:50px}
+.knob.sm .kptr{left:49px;top:27px;height:12px;transform-origin:1px 23px}
+/* fader */
+.fader{position:relative;width:64px;flex:none}
+.fader .trk{position:absolute;left:29px;top:0;bottom:0;width:6px;border-radius:3px;background:var(--track);box-shadow:inset 0 1px 2px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.06)}
+.fader .fill{position:absolute;left:0;right:0;bottom:0;border-radius:3px;background:linear-gradient(0deg,rgba(255,255,255,.05),rgba(255,255,255,.32))}
+.fcap{position:absolute;left:0;width:64px;height:32px;margin-top:-16px;border-radius:9px;background:var(--metal);box-shadow:var(--metal-shadow);cursor:grab;touch-action:none}
+.fcap::before{content:"";position:absolute;left:8px;right:8px;top:15px;height:2px;border-radius:1px;background:#1a1a1c;box-shadow:0 1px 0 rgba(255,255,255,.6)}
+.fcap::after{content:"";position:absolute;inset:-5px;border-radius:13px;box-shadow:0 0 0 1px rgba(255,255,255,.5),0 0 24px rgba(255,255,255,.18);opacity:0;transition:opacity .12s}
+.fcap:hover::after,.fcap.drag::after{opacity:1}
+.fticks{position:absolute;right:calc(100% + 6px);top:0;bottom:0;width:30px}
+.fticks span{position:absolute;right:0;font:9px var(--mono);color:var(--tick-label);transform:translateY(-50%)}
+/* hairline rows */
+.mrow{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-top:1px solid var(--row-line);gap:16px}
+.mrow:last-child{border-bottom:1px solid var(--row-line)}
+.mrow b{font:15px var(--mono);font-weight:400;color:var(--text);letter-spacing:0;text-transform:none}
+.split{display:flex;gap:3px;height:10px}
+.split i{display:block;border-radius:3px;transition:flex .4s cubic-bezier(.65,0,.35,1),opacity .3s}
+/* recessed input */
+.inp{width:100%;height:50px;border-radius:12px;border:0;background:var(--well);box-shadow:var(--well-shadow);padding:0 16px;font:14px var(--mono);color:var(--text);outline:none;transition:box-shadow .2s}
+textarea.inp{height:160px;padding:14px 16px;resize:vertical;line-height:1.6}
+.inp:focus{box-shadow:var(--well-shadow),0 0 0 1px rgba(255,255,255,.35)}
+.inp::placeholder{color:rgba(241,241,243,.25)}
+.field{display:block;margin-bottom:16px}
+.field > span{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+
+/* layout */
+.ph{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:end;padding:64px 0 48px}
+.ph h1{font-weight:300;font-size:68px;line-height:1;letter-spacing:-.035em;margin-top:20px}
+.ph h1 span{color:var(--label)}
+.ph p{color:var(--label);font-size:15px;line-height:1.6;max-width:46ch}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+section{margin-top:96px}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;gap:16px}
+.shead h2{font-weight:300;font-size:46px;letter-spacing:-.03em;line-height:1;margin-top:12px}
+.shead a{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--label)}.shead a:hover{color:var(--text)}
+.vline{position:relative}
+.vline + .vline::before{content:"";position:absolute;left:0;top:20px;bottom:20px;width:1px;background:linear-gradient(180deg,transparent,var(--divider) 20%,var(--divider) 80%,transparent)}
+
+/* rows (index) */
+.rows{padding:6px 34px}
+.prow{display:grid;grid-template-columns:110px 1fr 140px 64px;gap:26px;align-items:center;padding:22px 0;border-top:1px solid var(--row-line)}
+.prow:first-child{border-top:0}
+.prow h3{font-weight:400;font-size:18px;letter-spacing:-.02em;line-height:1.3;transition:color .2s}
+.prow p{color:var(--label);font-size:13px;margin-top:4px;line-height:1.5}
+.prow:hover h3{color:#fff}
+.prow .go{text-align:right}
+.feat{display:grid;grid-template-columns:1fr 1fr;height:420px;overflow:hidden}
+.feat img{width:100%;height:100%;object-fit:cover;border-radius:var(--r) 0 0 var(--r);filter:grayscale(1) contrast(1.1) brightness(.8)}
+.feat .txt{padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between}
+.feat h3{font-weight:300;font-size:38px;line-height:1.06;letter-spacing:-.03em;margin-top:16px}
+.feat p{color:var(--label);font-size:14px;line-height:1.6;max-width:46ch}
+
+/* prose */
+.prose{font-size:17.5px;line-height:1.78;color:var(--body);max-width:66ch}
+.prose p{margin:0 0 1.2em}
+.prose h2{font-weight:300;font-size:32px;letter-spacing:-.03em;line-height:1.1;color:var(--text);margin:1.7em 0 .6em;scroll-margin-top:24px}
+.prose h3{font:11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--text);margin:2em 0 .6em}
+.prose ul{margin:0 0 1.2em 1.1em}.prose li{margin:0 0 .5em}
+.prose a{color:var(--text);text-decoration:underline;text-decoration-color:rgb(var(--led-near));text-underline-offset:3px}
+.prose strong,.prose b{color:var(--text);font-weight:500}
+
+footer{margin-top:120px;padding:30px 0 50px;border-top:1px solid var(--divider);display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px}
+footer nav{display:flex;gap:22px;flex-wrap:wrap}
+footer a:hover{color:var(--text)}
+
+/* home desk */
+.desk{padding:40px 44px 30px}
+.board{display:grid;grid-template-columns:repeat(6,1fr) 200px;margin-top:8px}
+.strip{position:relative;height:540px}
+.strip .nm{position:absolute;left:20px;top:18px;display:flex;align-items:center;gap:8px}
+.strip .nm i{width:6px;height:6px;border-radius:2px}
+.strip .sub{position:absolute;left:20px;top:40px;font-size:10px}
+.strip .fader{position:absolute;left:24px;top:84px;height:300px}
+.strip .lm{position:absolute;left:100px;top:84px;height:300px;width:8px}
+.strip .lm i{position:absolute;left:0;width:8px;height:24px;border-radius:2px;background:var(--led-off);transition:background .25s,box-shadow .25s}
+.strip .lm i.on{background:rgb(var(--led-fine)/.95);box-shadow:0 0 8px rgb(var(--led-fine)/.25)}
+.strip .lm i.near{background:rgb(var(--led-near));box-shadow:0 0 8px rgb(var(--led-near)/.6)}
+.tag{position:absolute;left:104px;transform:translateX(-50%);padding:4px 7px;border-radius:6px;font:10px var(--mono);color:#fff;white-space:nowrap;background:rgba(255,181,71,.16);box-shadow:inset 0 0 0 1px rgba(255,181,71,.55);transition:top .3s,opacity .3s;opacity:0}
+.strip .val{position:absolute;left:20px;top:404px;font:22px var(--mono);letter-spacing:-.02em}
+.strip .share{position:absolute;left:20px;top:438px}
+.strip .top{position:absolute;left:20px;top:464px;font:11px var(--mono);color:var(--label)}
+.strip .top b{font-weight:400;color:var(--strong)}
+.master{position:relative;padding:18px 0 0 22px}
+.rrow{display:grid;grid-template-columns:14px 1fr 150px 120px 90px;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--row-line)}
+.rrow:first-child{border-top:0}
+.rrow .n{font-size:15px;letter-spacing:-.01em;line-height:1.3}
+.rrow .f{font:11px var(--mono);color:var(--label);margin-top:3px}
+.rrow .a,.rrow .d{font:13px var(--mono);text-align:right}
+.rrow .d{color:var(--label)}.rrow .d.near{color:rgb(var(--led-near))}.rrow .d.over{color:rgb(var(--led-over))}
+.rrow .g{text-align:right}
+.rrow.closed .n{color:var(--label)}
+.rrow .x{grid-column:2/-1;display:none;color:var(--body);font-size:14px;line-height:1.6;padding-top:4px}
+.rrow.xo .x{display:block}
+.rrow .x .mbtn{margin-top:12px}
+.empty{padding:22px 0;font:12px var(--mono);color:var(--label)}
+
+/* scope (indicators) */
+.scope{padding:24px 26px 22px}
+.scope .screen{position:relative;height:150px;margin:18px 0 12px;border-radius:14px;background:#050506;box-shadow:var(--well-shadow);overflow:hidden;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:100% 25%,10% 100%}
+.scope svg{position:absolute;inset:10px 0;width:100%;height:calc(100% - 20px);overflow:visible}
+.scope .readout{font:30px var(--mono);letter-spacing:-.02em}
+.scope .readout small{font-size:12px;color:var(--label);margin-left:6px}
+.scope p{color:var(--label);font-size:13px;line-height:1.55}
+.notice{display:flex;gap:12px;align-items:center;padding:14px 20px;margin-bottom:20px;font:12px/1.5 var(--mono);color:var(--label)}
+
+/* article */
+.read{display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start}
+.atile{padding:44px 56px 60px}
+.atile h1{font-weight:300;font-size:50px;line-height:1.04;letter-spacing:-.035em;margin:18px 0 16px;max-width:20ch}
+.banner{margin:28px -56px 10px;overflow:hidden}
+.banner img{width:100%;max-height:460px;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.85)}
+.capt{font:11px var(--mono);color:var(--label);margin-bottom:34px}
+.rside{position:sticky;top:20px;display:grid;gap:20px}
+.secs a{display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid var(--row-line);font-size:14px;color:var(--label);transition:color .2s}
+.secs a:first-child{border-top:0}
+.secs a.on{color:var(--text)}
+.secs a.on .led{background:rgb(var(--led-fine));box-shadow:0 0 8px rgb(var(--led-fine)/.5)}
+
+/* switch (checklist) */
+.tog{width:44px;height:24px;border-radius:99px;background:var(--well);box-shadow:var(--well-shadow);position:relative;flex:none;transition:background .2s}
+.tog::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--metal);box-shadow:0 2px 4px rgba(0,0,0,.6);transition:transform .25s cubic-bezier(.33,1,.68,1)}
+.on > .tog,.tog.on{background:rgba(214,236,226,.25)}
+.on > .tog::after,.tog.on::after{transform:translateX(20px)}
+.chk{display:grid;grid-template-columns:40px 1fr 44px;gap:18px;align-items:start;padding:20px 0;border-top:1px solid var(--row-line);width:100%;text-align:left}
+.chk:first-child{border-top:0}
+.chk .no{font:11px var(--mono);color:var(--label);padding-top:3px}
+.chk b{font-weight:400;font-size:17px;letter-spacing:-.01em}
+.chk p{color:var(--label);font-size:14px;line-height:1.55;margin-top:6px}
+.chk.on b{color:rgb(var(--led-fine))}
+
+@media (max-width:1100px){
+  .nav ul{display:none}.menu-btn{display:block}
+  .nav ul.open{display:flex;flex-direction:column;position:absolute;top:84px;left:16px;right:16px;padding:20px;gap:16px;background:#141416;border-radius:20px;z-index:30;box-shadow:0 30px 60px rgba(0,0,0,.6)}
+  .board{grid-template-columns:repeat(3,1fr)}.master{grid-column:1/-1}
+  .ph{grid-template-columns:1fr;gap:20px}
+  .grid > *{grid-column:span 12}
+  .read{grid-template-columns:1fr}.rside{position:static}
+  .rrow{grid-template-columns:14px 1fr 110px 80px}.rrow .g{display:none}
+}
+@media (max-width:700px){
+  .wrap{padding:0 16px}
+  .ph h1{font-size:46px}
+  .desk,.pad{padding:24px 20px}.rows{padding:6px 20px}
+  .board{grid-template-columns:repeat(2,1fr)}
+  .feat{grid-template-columns:1fr;height:auto}.feat img{border-radius:var(--r) var(--r) 0 0;height:220px}
+  .prow{grid-template-columns:1fr}.prow > .cap,.prow .go,.prow .meter{display:none}
+  .rrow{grid-template-columns:14px 1fr 70px}.rrow .a{display:none}
+  .atile{padding:28px 20px 40px}.atile h1{font-size:34px}.banner{margin:24px -20px 10px}
+  .shead h2{font-size:36px}
+  .gdesk{grid-template-columns:1fr!important}.gdesk > .vline{padding-left:0!important}.gdesk > .vline::before{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+"""
+
+JS = r"""
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('.menu-btn')?.addEventListener('click', () => { const n = $('.nav ul'); n.classList.toggle('open'); $('.menu-btn').setAttribute('aria-expanded', n.classList.contains('open')); });
+/* Stepped knob: 270° sweep, one detent per label. makeKnob(el, labels, start, onChange) */
+function makeKnob(el, labels, idx, onChange) {
+  const small = el.classList.contains('sm'), S = small ? 100 : 140, C = S / 2, R = small ? 44 : 62, DR = small ? 58 : 84;
+  const START = -135, SWEEP = labels.length > 1 ? 270 / (labels.length - 1) : 0;
+  const pol = (a, r) => { const t = (a - 90) * Math.PI / 180; return [C + r * Math.cos(t), C + r * Math.sin(t)]; };
+  const arc = (a0, a1) => { const p0 = pol(a0, R), p1 = pol(a1, R); return `M${p0[0]} ${p0[1]} A${R} ${R} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${p1[0]} ${p1[1]}`; };
+  el.innerHTML = `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}"><path class="tr" d="${arc(START, -START)}"/><path class="pg"/></svg><div class="kbody" tabindex="0" role="slider" aria-label="${el.dataset.label || 'Knob'}"></div><div class="kcap"></div><div class="kptr"></div>`;
+  const dets = labels.map((l, i) => { const [x, y] = pol(START + i * SWEEP, DR), d = document.createElement('div'); d.className = 'det'; d.style.left = x + 'px'; d.style.top = y + 'px'; d.textContent = l; d.style.cursor = 'pointer'; d.onclick = () => set(i); el.appendChild(d); return d; });
+  const body = $('.kbody', el);
+  function set(i, quiet) { idx = Math.max(0, Math.min(labels.length - 1, i)); const a = START + idx * SWEEP;
+    body.style.transform = $('.kptr', el).style.transform = `rotate(${a}deg)`; $('.pg', el).setAttribute('d', idx ? arc(START, a) : 'M0 0');
+    dets.forEach((d, j) => d.classList.toggle('on', j === idx)); body.setAttribute('aria-valuetext', labels[idx]); if (!quiet) onChange?.(idx); }
+  let drag = false;
+  body.addEventListener('pointerdown', e => { body.setPointerCapture(e.pointerId); drag = true; });
+  body.addEventListener('pointermove', e => { if (!drag) return; const r = el.getBoundingClientRect(); let a = Math.atan2(e.clientX - (r.left + C), -(e.clientY - (r.top + C))) * 180 / Math.PI;
+    a = Math.max(START, Math.min(-START, a)); const i = Math.round((a - START) / (SWEEP || 1)); if (i !== idx) set(i); });
+  body.addEventListener('pointerup', () => drag = false);
+  body.addEventListener('keydown', e => { if (['ArrowRight', 'ArrowUp'].includes(e.key)) { e.preventDefault(); set(idx + 1); } if (['ArrowLeft', 'ArrowDown'].includes(e.key)) { e.preventDefault(); set(idx - 1); } });
+  set(idx, true); return { set, get: () => idx };
+}
+/* Fader: value 0..1, onChange(p) */
+function makeFader(el, p, onChange) {
+  const cap = $('.fcap', el), fill = $('.fill', el);
+  function set(v, quiet) { p = Math.max(0, Math.min(1, v)); cap.style.top = (1 - p) * 100 + '%'; fill.style.height = p * 100 + '%'; if (!quiet) onChange?.(p); }
+  const from = y => { const r = $('.trk', el).getBoundingClientRect(); return 1 - (y - r.top) / r.height; };
+  cap.addEventListener('pointerdown', e => { cap.setPointerCapture(e.pointerId); cap.classList.add('drag'); set(from(e.clientY)); });
+  cap.addEventListener('pointermove', e => { if (cap.classList.contains('drag')) set(from(e.clientY)); });
+  cap.addEventListener('pointerup', () => cap.classList.remove('drag'));
+  cap.addEventListener('keydown', e => { if (e.key === 'ArrowUp') { e.preventDefault(); set(p + .05); } if (e.key === 'ArrowDown') { e.preventDefault(); set(p - .05); } });
+  set(p, true); return { set, get: () => p };
+}
+/* key groups: data-group, data-multi */
+$$('.keys[data-group]').forEach(g => g.addEventListener('click', e => { const k = e.target.closest('.key'); if (!k) return;
+  if (g.hasAttribute('data-multi')) k.classList.toggle('on'); else $$('.key', g).forEach(x => x.classList.toggle('on', x === k));
+  g.dispatchEvent(new CustomEvent('change')); }));
+/* LED meters fill in */
+$$('.meter[data-n]').forEach((m, j) => { const n = +m.dataset.n, lit = +m.dataset.lit, near = +(m.dataset.near || 0);
+  m.innerHTML = Array.from({ length: n }, () => '<i></i>').join('');
+  [...m.children].forEach((c, i) => setTimeout(() => { if (i < lit) c.className = i >= lit - near ? 'near' : 'on'; }, reduce ? 0 : 300 + j * 60 + i * 35)); });
+$$('.knob[data-labels]').forEach(k => makeKnob(k, k.dataset.labels.split('|'), +(k.dataset.idx || 0)));
+"""
+
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">'
+GRAIN = '<svg class="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>'
+
+
+def shell(page, body, scripts=""):
+    active = SECTION.get(page, "")
+    nav = "".join(f'<li><a href="{h}"{" class=on aria-current=page" if h == active else ""}>{t}</a></li>' for h, t in NAV)
+    foot = "".join(f'<a class="cap" href="{h}">{t}</a>' for h, t in FOOT)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{esc(TITLES[page])} · e3 Initiative</title>{FONTS}<link rel="stylesheet" href="theme.css"></head>
+<body>{GRAIN}
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+  <header class="nav"><a class="brand" href="index.html"><i></i>e3 Initiative</a><nav aria-label="Main"><ul id="nav">{nav}</ul></nav>
+    <button class="menu-btn cap" aria-controls="nav" aria-expanded="false">Menu</button></header>
+  <main id="main">
+{body}
+  </main>
+  <footer><span class="cap">© 2026 e3 Initiative</span><nav aria-label="Footer">{foot}</nav></footer>
+</div>
+<script src="theme.js"></script>
+{scripts}
+</body></html>
+"""
+
+
+def panel(inner, cls="", tag="div", attrs=""):
+    return f'<{tag} class="panel {cls}" {attrs}><div class="sheen"></div>{inner}</{tag}>'
+
+
+def ph(kicker, title, lede="", right=""):
+    return f'<div class="ph"><div><div class="cap">{kicker}</div><h1>{title}</h1></div><div>{f"<p>{lede}</p>" if lede else ""}{right}</div></div>'
+
+
+def meter(n, lit, near=0, cls=""):
+    return f'<span class="meter {cls}" data-n="{n}" data-lit="{lit}" data-near="{near}"></span>'
+
+
+def led_for(g):
+    s, d = status(g), days_left(g)
+    if s == "closed":
+        return "over", "closed"
+    if d is not None:
+        return "near", f"in {d}d"
+    return "on", s
+
+
+def grow(g):
+    cls, txt = led_for(g)
+    return (f'<a class="rrow{" closed" if status(g) == "closed" else ""}" href="{g["link"]}" target="_blank" rel="noopener"><span class="led {cls}"></span>'
+            f'<div><div class="n">{esc(g["name"])}</div><div class="f">{esc(g["funder"])}</div></div><span class="g cap">{CAT_LABEL[g["category"]]}</span>'
+            f'<span class="a">{esc(money(g.get("amountMax")))}</span><span class="d {cls}">{txt}</span></a>')
+
+
+def prow(p):
+    return (f'<a class="prow" href="{p["slug"]}.html"><span class="cap">{p["short"]}</span><div><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p></div>'
+            f'{meter(12, min(12, -(-p["min"] // 1)))}<span class="cap go">{p["min"]} min</span></a>')
+
+
+# ——— pages ———
+def home():
+    six = [("minority_owned", "Minority", "#f1f1f3"), ("women_owned", "Women", "#c6c6cb"), ("veteran_owned", "Veteran", "#a8a8ae"),
+           ("arts_culture", "Arts", "#8a8a90"), ("research", "Research", "#6f6f75"), ("technology", "Tech", "#5d5d63")]
+    G = [[g["category"], g["name"], g["funder"].split(" (")[0], g.get("amountMax") or 0, days_left(g)] for g in OPEN if g["category"] in dict((a, 1) for a, _, _ in six)]
+    body = ph("Equity · Economics · Ethnicity", f"{TAGLINE}<span>, and the money to build them.</span>", LEDE,
+              '<div style="display:flex;gap:10px;margin-top:26px;flex-wrap:wrap"><a class="mbtn" href="research.html">Read the research</a><a class="mbtn ghost" href="grants.html">All grants</a></div>') + panel(f"""
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div class="cap">Grant mixer</div><div style="font-size:34px;letter-spacing:-.02em;margin-top:10px">{TODAY.strftime('%B %Y')}</div></div>
+    <div style="text-align:right"><div class="cap">Matching · six groups</div><div class="mono" style="font-size:34px;letter-spacing:-.02em;margin-top:10px" id="tot">0</div></div>
+  </div>
+  <div class="split" id="split" style="margin-top:28px">{''.join(f'<i style="background:{c}"></i>' for _, _, c in six)}</div>
+  <div class="board" id="board">
+    <div class="master vline">
+      <div class="cap">Window</div>
+      <div class="knob" id="win" data-label="Deadline window" style="margin:22px auto 0"></div>
+      <div style="text-align:center;margin-top:8px"><div class="cap">Apply within</div><div style="font-size:26px;letter-spacing:-.02em;margin-top:8px" id="wl">Any time</div></div>
+      <div style="margin-top:26px"><div class="mrow cap">Matching<b id="mM">—</b></div><div class="mrow cap">Closing<b id="mC" style="color:rgb(var(--led-near))">—</b></div><div class="mrow cap">Rolling<b id="mR">—</b></div></div>
+      <p class="mono" style="font-size:10px;line-height:1.6;color:var(--tick-label);margin-top:14px">Drag a fader to set the smallest award worth your time. Turn the knob to set your deadline window.</p>
+    </div>
+  </div>""", "desk") + panel('<div class="rows" id="results"></div>', "", attrs='style="margin-top:20px" aria-live="polite"') + f"""
+<section><div class="shead"><div><div class="cap">Latest</div><h2>Publications</h2></div><a href="articles.html">All articles →</a></div>
+  {panel(f'<img src="{IMG}{PUBS[0]["img"]}" alt="{esc(PUBS[0]["alt"])}"><div class="txt"><div><div class="cap">{PUBS[0]["kind"]} · {PUBS[0]["short"]} · {PUBS[0]["author"]}</div><h3>{esc(PUBS[0]["title"].split(":")[0])}</h3></div><div><p>{esc(PUBS[0]["summary"])}</p><div style="display:flex;gap:12px;align-items:center;margin-top:20px">{meter(12, PUBS[0]["min"])}<span class="cap">{PUBS[0]["min"]} min</span></div></div></div>', "feat", "a", f'href="{PUBS[0]["slug"]}.html"')}
+  {panel('<div class="rows">' + ''.join(prow(p) for p in PUBS[1:]) + '</div>', "", attrs='style="margin-top:20px"')}
+</section>
+<section><div class="shead"><div><div class="cap">What we study</div><h2>Three channels</h2></div><a href="about.html">About us →</a></div>
+  {panel('<div class="grid" style="gap:0">' + ''.join(f'<div class="vline c4 pad" style="display:flex;gap:24px;align-items:center"><div class="knob sm" data-labels="{"|".join(["", "", ""])}" data-idx="{i}"></div><div><div class="cap">Ch 0{i+1}</div><div style="font-weight:300;font-size:28px;letter-spacing:-.02em;margin:8px 0 6px">{t}</div><p class="dim" style="font-size:13px;line-height:1.5">{d}</p></div></div>' for i, (t, d) in enumerate(PILLARS)) + '</div>')}
+</section>
+<section><div class="cap">Mission</div><p style="font-weight:300;font-size:42px;line-height:1.15;letter-spacing:-.03em;max-width:28ch;margin-top:18px">{MISSION.replace(', fostering', ',<span class=dim> fostering').replace('backgrounds.', 'backgrounds.</span>')}</p></section>"""
+    js = f"""<script>
+const G = {json.dumps(G, ensure_ascii=False)}, CH = {json.dumps([{"id": a, "name": b, "shade": c} for a, b, c in six])}, LAB = {json.dumps(CAT_LABEL)};
+const WIN = [[14, '14 days', '14D'], [30, '30 days', '30D'], [60, '60 days', '60D'], [Infinity, 'Any time', 'ANY']];
+const money = v => v >= 1e6 ? '$' + (v / 1e6).toFixed(v % 1e6 ? 1 : 0) + 'M' : v >= 1000 ? '$' + Math.round(v / 1000) + 'k' : '$' + Math.round(v);
+const valAt = p => p < .08 ? 0 : Math.pow(10, 3 + 3 * (p - .08) / .92), posOf = v => v <= 0 ? 0 : .08 + .92 * (Math.log10(v) - 3) / 3;
+const mins = {{}}, faders = {{}}; let win = 3;
+CH.forEach(c => {{ mins[c.id] = 0; const s = document.createElement('div'); s.className = 'strip vline';
+  const tk = [[1, '1M'], [posOf(1e5), '100k'], [posOf(1e4), '10k'], [posOf(1e3), '1k'], [0, '0']].map(([p, l]) => `<span style="top:${{(1 - p) * 100}}%">${{l}}</span>`).join('');
+  s.innerHTML = `<div class="nm cap"><i style="background:${{c.shade}}"></i>${{c.name}}</div><div class="sub cap"></div>
+    <div class="fader"><div class="fticks">${{tk}}</div><div class="trk"><div class="fill"></div></div><div class="fcap" tabindex="0" role="slider" aria-label="Minimum award, ${{c.name}}"></div></div>
+    <div class="lm">${{Array.from({{ length: 10 }}, (_, k) => `<i style="top:${{300 - (k + 1) * 30 + 3}}px"></i>`).join('')}}</div><div class="tag"></div>
+    <div class="val"></div><div class="share cap"></div><div class="top">Top <b></b></div>`;
+  $('#board').insertBefore(s, $('.master')); c.el = s;
+  faders[c.id] = makeFader($('.fader', s), 0, p => {{ mins[c.id] = valAt(p); render(); }}); }});
+const knob = makeKnob($('#win'), WIN.map(w => w[2]), 3, i => {{ win = i; render(); }});
+function render() {{ const W = WIN[win][0]; let M = 0, Cl = 0, R = 0; const shown = [];
+  CH.forEach((c, j) => {{ const all = G.filter(g => g[0] === c.id), hit = all.filter(g => (!g[3] || g[3] >= mins[c.id]) && (g[4] === null || g[4] <= W)), dated = hit.filter(g => g[4] !== null).sort((a, b) => a[4] - b[4]);
+    M += hit.length; Cl += dated.length; R += hit.length - dated.length; shown.push(...hit);
+    const lit = hit.length * 2, amber = dated.length * 2, s = c.el;
+    $$('.lm i', s).forEach((m, k) => m.className = k < lit ? (k >= lit - amber ? 'near' : 'on') : '');
+    const tag = $('.tag', s); tag.style.opacity = dated.length ? 1 : 0; tag.textContent = dated.length ? dated[0][4] + 'd' : ''; tag.style.top = 84 + 300 - Math.max(lit, 1) * 30 - 30 + 'px';
+    $('.sub', s).textContent = all.length + ' open'; $('.val', s).textContent = mins[c.id] ? '≥' + money(mins[c.id]) : 'Any';
+    $('.share', s).textContent = hit.length + ' match'; const top = Math.max(0, ...hit.map(g => g[3])); $('.top b', s).textContent = top ? money(top) : '—';
+    $('#split').children[j].style.flex = (hit.length || .0001) + ' 1 0'; $('#split').children[j].style.opacity = hit.length ? .9 : .15; }});
+  $('#wl').textContent = WIN[win][1]; $('#tot').textContent = M; $('#mM').textContent = M; $('#mC').textContent = Cl || '—'; $('#mR').textContent = R;
+  shown.sort((a, b) => (a[4] ?? 999) - (b[4] ?? 999) || b[3] - a[3]);
+  $('#results').innerHTML = shown.length ? shown.slice(0, 6).map(g => `<a class="rrow" href="grants.html"><span class="led ${{g[4] !== null ? 'near' : 'on'}}"></span><div><div class="n">${{g[1]}}</div><div class="f">${{g[2]}}</div></div><span class="g cap">${{LAB[g[0]]}}</span><span class="a">${{g[3] ? 'up to ' + money(g[3]) : 'varies'}}</span><span class="d ${{g[4] !== null ? 'near' : ''}}">${{g[4] !== null ? 'in ' + g[4] + 'd' : 'rolling'}}</span></a>`).join('')
+    + (shown.length > 6 ? `<a class="empty" href="grants.html" style="display:block">+ ${{shown.length - 6}} more in the grant finder →</a>` : '') : '<div class="empty">Nothing matches. Lower a fader or widen the window.</div>'; }}
+render();
+if (!reduce) {{ setTimeout(() => knob.set(2), 900); setTimeout(() => {{ let t0; requestAnimationFrame(function f(n) {{ t0 ??= n; const k = Math.min(1, (n - t0) / 1100), e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; faders.research.set(posOf(1e5) * e); if (k < 1) requestAnimationFrame(f); }}); }}, 1700); }}
+</script>"""
+    return shell("index", body, js)
+
+
+def pub_list(page, title, lede, items, extra=""):
+    first = items[0]
+    feat = panel(f'<img src="{IMG}{first["img"]}" alt="{esc(first["alt"])}"><div class="txt"><div><div class="cap">{first["kind"]} · {first["short"]} · {first["author"]}</div><h3>{esc(first["title"])}</h3></div><div><p>{esc(first["summary"])}</p><div style="display:flex;gap:12px;align-items:center;margin-top:20px">{meter(12, first["min"])}<span class="cap">{first["min"]} min</span></div></div></div>', "feat", "a", f'href="{first["slug"]}.html"')
+    rest = panel('<div class="rows">' + "".join(prow(p) for p in items[1:]) + "</div>", "", attrs='style="margin-top:20px"') if len(items) > 1 else ""
+    return shell(page, ph("Publications", title, lede) + feat + rest + extra)
+
+
+def article(p):
+    a = p["data"]
+    secs, body = [], []
+    for i, (t, txt) in enumerate(a["blocks"]):
+        if t == "h2":
+            secs.append((f"s{i}", re.sub(r"<[^>]+>", "", txt)))
+            body.append(f'<h2 id="s{i}">{txt}</h2>')
+        elif t == "li":
+            body.append(f"<ul><li>{txt}</li></ul>")
+        else:
+            body.append(f"<{t}>{txt}</{t}>")
+    cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
+    body_html = f"""<div class="read" style="margin-top:40px">
+  {panel(f'''<div class="cap">{p["kind"]} · {p["date"]}</div><h1>{esc(p["title"])}</h1><div class="cap" style="letter-spacing:.1em">{esc(a["byline"] or "By " + p["author"])}</div>
+    <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
+    <div class="prose" id="prose">{"".join(body)}</div>''', "atile", "article")}
+  <aside class="rside">
+    {panel(f'''<div class="cap">Progress</div><div style="display:flex;gap:22px;align-items:flex-end;margin-top:18px">
+      <span class="meter v" id="pm">{"<i></i>" * 24}</span><div><div class="mono" style="font-size:34px;letter-spacing:-.02em" id="pp">0%</div><div class="cap" style="margin-top:6px" id="pl">{p["min"]} min left</div></div></div>''', "pad")}
+    {panel('<div class="cap">Text size</div><div style="display:flex;justify-content:center;margin-top:6px"><div class="knob sm" id="ts" data-label="Text size"></div></div>', "pad")}
+    {panel('<div class="cap" style="margin-bottom:8px">Sections</div><nav class="secs">' + "".join(f'<a href="#{i}" data-s="{i}"><span class="led"></span>{esc(n)}</a>' for i, n in secs) + '</nav>', "pad") if secs else ""}
+    <a class="mbtn ghost" href="../../{cite}" style="justify-content:center">Citations & sources</a>
+  </aside></div>"""
+    js = f"""<script>
+const pr = $('#prose'), segs = $$('#pm i');
+makeKnob($('#ts'), ['S', 'M', 'L'], 1, i => pr.style.fontSize = [15.5, 17.5, 20][i] + 'px');
+function upd() {{ const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height));
+  segs.forEach((s, i) => s.className = i < Math.round(k * 24) ? (i >= 20 ? 'near' : 'on') : '');
+  $('#pp').textContent = Math.round(k * 100) + '%'; $('#pl').textContent = Math.max(0, Math.round((1 - k) * {p['min']})) + ' min left';
+  let cur = null; $$('#prose h2').forEach(h => {{ if (h.getBoundingClientRect().top < innerHeight * .35) cur = h.id; }}); $$('.secs a').forEach(a => a.classList.toggle('on', a.dataset.s === cur)); }}
+addEventListener('scroll', upd, {{ passive: true }}); upd();
+</script>"""
+    return shell(p["slug"], body_html, js)
+
+
+def about():
+    team = panel('<div class="grid" style="gap:0">' + "".join(f"""<div class="vline c4 pad" style="min-height:420px;display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:space-between;align-items:center"><span class="cap">Ch 0{i+1}</span><span class="led on"></span></div>
+      <div style="height:48px;margin:28px 0 22px;border-radius:12px;background:var(--metal);box-shadow:var(--metal-shadow);display:flex;align-items:center;padding:0 16px;color:#111;font:500 13px var(--mono);letter-spacing:.08em;text-transform:uppercase">{n}</div>
+      <div class="cap" style="color:var(--text)">{r}</div><p class="dim" style="font-size:14px;line-height:1.6;margin-top:12px">{b}</p></div>""" for i, (n, r, b) in enumerate(ABOUT["team"])) + "</div>")
+    appr = panel('<div class="grid" style="gap:0">' + "".join(f'<div class="vline c4 pad" style="display:flex;gap:22px;align-items:center"><div class="knob sm" data-labels="||" data-idx="{i}"></div><div><div style="font-weight:300;font-size:24px;letter-spacing:-.02em">{t}</div><p class="dim" style="font-size:13px;line-height:1.5;margin-top:6px">{d}</p></div></div>' for i, (t, d) in enumerate(ABOUT["approach"])) + "</div>")
+    body = ph("About", "About e3 Initiative", "A student-led research initiative at the intersection of equity, economics and ethnicity.") + f"""
+<div class="grid">{panel(f'<div class="cap">Who we are</div><p style="font-weight:300;font-size:24px;line-height:1.35;letter-spacing:-.02em;margin-top:16px">{ABOUT["who"]}</p>', "pad c6")}{panel(f'<div class="cap">What we do</div><p style="font-weight:300;font-size:24px;line-height:1.35;letter-spacing:-.02em;margin-top:16px">{ABOUT["what"]}</p>', "pad c6")}</div>
+<section><div class="shead"><div><div class="cap">On the desk</div><h2>Our team</h2></div></div>{team}</section>
+<section><div class="shead"><div><div class="cap">We believe in</div><h2>Our approach</h2></div><a href="contact.html">Get in touch →</a></div>{appr}</section>"""
+    return shell("about", body)
+
+
+def journals():
+    t, logo = JOURNAL
+    body = ph("Publications", "Journals", "Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.") + panel(f"""
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center" class="jgrid">
+    <div style="border-radius:20px;background:var(--well);box-shadow:var(--well-shadow);padding:30px;display:grid;place-items:center"><img src="{IMG}{logo}" alt="{esc(t)}" width="220" height="220" style="border-radius:14px"></div>
+    <div><div class="cap">Journal</div><div style="font-weight:300;font-size:40px;letter-spacing:-.03em;line-height:1.08;margin:14px 0 28px">{t}</div>
+      <div class="mrow cap">Status<b style="display:flex;gap:10px;align-items:center"><span class="led near"></span>Standby</b></div><div class="mrow cap">Entries<b>Coming soon</b></div></div>
+  </div>""", "pad")
+    return shell("journals", body)
+
+
+def grants():
+    cats = "".join(f'<button class="key" data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
+    groups = "".join(f'<a class="mrow cap" href="{s}.html">{CAT_LABEL[c]}<b style="display:flex;gap:12px;align-items:center">{meter(10, round(sum(1 for g in GRANTS if g["category"]==c and status(g)!="closed")/sum(1 for g in GRANTS if g["category"]==c)*10))}{sum(1 for g in GRANTS if g["category"]==c)}</b></a>' for s, (c, _, _) in CATEGORY_PAGES.items())
+    body = ph("Grants", "Grant Finder", "Funding for small businesses and nonprofits. Search, then set the desk: who qualifies, category, minimum award, deadline window.", '<a class="mbtn ghost" href="grant-help.html" style="margin-top:20px">Help & tips →</a>') + panel(f"""
+  <div style="display:grid;grid-template-columns:1fr 120px 200px;gap:34px" class="gdesk">
+    <div>
+      <label class="field"><span class="cap">Search</span><input class="inp" id="q" type="search" placeholder="WOMEN-OWNED BAKERY…" aria-label="Search grants"></label>
+      <div class="cap" style="margin:6px 0 10px">Who qualifies</div><div class="keys" data-group="elig"><button class="key on" data-v="">Anyone</button><button class="key" data-v="small_business">Business</button><button class="key" data-v="nonprofit">Nonprofit</button></div>
+      <div class="cap" style="margin:18px 0 10px">Status</div><div class="keys" data-group="status"><button class="key on" data-v="live">Open + rolling</button><button class="key" data-v="open">Open only</button><button class="key" data-v="">Include closed</button></div>
+      <div class="cap" style="margin:18px 0 10px">Category · any combination</div><div class="keys" data-group="cat" data-multi>{cats}</div>
+    </div>
+    <div class="vline" style="padding-left:24px"><div class="cap">Min award</div><div class="fader" id="amt" style="height:250px;margin:22px 0 0 34px"><div class="fticks"><span style="top:0">1M</span><span style="top:33%">100k</span><span style="top:66%">10k</span><span style="top:100%">0</span></div><div class="trk"><div class="fill"></div></div><div class="fcap" tabindex="0" role="slider" aria-label="Minimum award"></div></div><div class="mono" style="font-size:18px;margin-top:22px" id="amtv">Any</div></div>
+    <div class="vline" style="padding-left:24px"><div class="cap">Deadline window</div><div class="knob" id="win" data-label="Deadline window" style="margin:14px auto 0"></div>
+      <div style="margin-top:14px"><div class="mrow cap">Matching<b id="mM">—</b></div><div class="mrow cap">Dated<b id="mD" style="color:rgb(var(--led-near))">—</b></div></div></div>
+  </div>""", "desk") + f"""
+<div class="grid" style="margin-top:20px;align-items:start">
+  {panel('<div class="rows" id="gres" aria-live="polite"></div>', "c8")}
+  {panel(f'<div class="cap" style="margin-bottom:10px">Browse by group</div>{groups}<p class="dim mono" style="font-size:11px;line-height:1.6;margin-top:14px">Meter: share of each list open right now.</p>', "pad c4")}
+</div>"""
+    js = """<script src="../shared/grants-data.js"></script><script>
+const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set(), win: 3 }, WIN = [[14, '14D'], [30, '30D'], [90, '90D'], [Infinity, 'ANY']];
+const valAt = p => p < .06 ? 0 : Math.pow(10, 3 + 3 * (p - .06) / .94);
+makeFader($('#amt'), 0, p => { F.amt = valAt(p); $('#amtv').textContent = F.amt ? '≥$' + (F.amt >= 1e6 ? (F.amt / 1e6).toFixed(1) + 'M' : Math.round(F.amt / 1000) + 'k') : 'Any'; render(); });
+makeKnob($('#win'), WIN.map(w => w[1]), 3, i => { F.win = i; render(); });
+$$('.keys[data-group]').forEach(g => g.addEventListener('change', () => { const on = $$('.key.on', g).map(k => k.dataset.v);
+  if (g.dataset.group === 'cat') F.cat = new Set(on); else F[g.dataset.group] = on[0] ?? ''; render(); }));
+$('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
+function render() { const W = WIN[F.win][0];
+  const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q)) && (!F.elig || g.elig === F.elig || g.elig === 'both')
+    && (F.status === '' || (F.status === 'live' ? g.status !== 'closed' : g.status === F.status)) && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat))
+    && (W === Infinity || (g.days != null && g.days <= W && g.days >= 0)))
+    .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
+  $('#mM').textContent = rs.length; $('#mD').textContent = rs.filter(g => g.days != null && g.status !== 'closed').length || '—';
+  $('#gres').innerHTML = rs.length ? rs.map(g => { const c = g.status === 'closed' ? 'over' : g.days != null ? 'near' : 'on';
+    return `<div class="rrow ${g.status === 'closed' ? 'closed' : ''}" tabindex="0" style="cursor:pointer"><span class="led ${c}"></span><div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div>
+      <span class="g cap">${CAT_LABEL[g.cat]}</span><span class="a">${g.max ? '$' + g.max.toLocaleString() : 'varies'}</span><span class="d ${c}">${g.status === 'closed' ? 'closed' : g.days != null ? 'in ' + g.days + 'd' : g.dl.toLowerCase()}</span>
+      <div class="x">${g.desc}<br><a class="mbtn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
+    : '<div class="empty">Nothing matches. Widen the window or lower the fader.</div>'; }
+$('#gres').addEventListener('click', e => { const r = e.target.closest('.rrow'); if (r && !e.target.closest('a')) r.classList.toggle('xo'); });
+$('#gres').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('rrow')) e.target.classList.toggle('xo'); });
+render();
+</script>"""
+    return shell("grants", body, js)
+
+
+def category(slug):
+    cat, title, what = CATEGORY_PAGES[slug]
+    intro, gs = category_intro(cat, what)
+    gs = sorted(gs, key=lambda g: ({"open": 0, "rolling": 1, "closed": 2}[status(g)], days_left(g) if days_left(g) is not None else 999))
+    c = {s: sum(1 for g in gs if status(g) == s) for s in ("open", "rolling", "closed")}
+    others = "".join(f'<a class="mbtn ghost sm" href="{s}.html">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
+    meters = "".join(f'<div class="vline" style="padding:0 26px;display:flex;gap:18px;align-items:flex-end"><span class="meter v" data-n="12" data-lit="{n}" data-near="{n if k == "open" else 0}"></span><div><div class="mono" style="font-size:40px;letter-spacing:-.02em">{n}</div><div class="cap">{lab}</div></div></div>'
+        for k, n, lab in [("open", c["open"], "Open now"), ("rolling", c["rolling"], "Rolling"), ("closed", c["closed"], "Closed for now")])
+    body = ph("Grant list", title, intro) + panel(f'<div style="display:flex;flex-wrap:wrap;gap:20px 0;margin-left:-26px">{meters}</div>', "pad") + panel('<div class="rows">' + "".join(grow(g) for g in gs) + "</div>", "", attrs='style="margin-top:20px"') + f"""
+<div class="grid" style="margin-top:20px">
+  {panel('<div class="cap" style="margin-bottom:8px">Before you apply</div>' + ''.join(f'<div class="mrow" style="display:block"><b style="font:15px var(--sans)">{a}</b><p class="dim" style="font-size:13px;margin-top:4px;line-height:1.5">{b}</p></div>' for a, b in BEFORE_APPLY), "pad c7")}
+  {panel(f'<div class="cap" style="margin-bottom:14px">More grant lists</div><div style="display:flex;flex-wrap:wrap;gap:10px">{others}<a class="mbtn sm" href="grants.html">Search all {len(GRANTS)}</a><a class="mbtn ghost sm" href="grant-help.html">Tips & free help</a></div>', "pad c5")}
+</div>"""
+    return shell(slug, body)
+
+
+def grant_help():
+    tips = "".join(f'<button class="chk" data-i="{i}"><span class="no">0{i+1}</span><div><b>{a}</b><p>{b}</p></div><span class="tog"></span></button>' for i, (a, b) in enumerate(HELP["tips"]))
+    orgs = "".join(panel(f'<div class="cap" style="display:flex;justify-content:space-between">Free help<span class="led on"></span></div><div style="font-size:18px;letter-spacing:-.01em;line-height:1.25;margin:16px 0 8px">{n}</div><p class="dim" style="font-size:13px;line-height:1.55;flex:1">{d}</p><span class="mbtn sm" style="align-self:flex-start;margin-top:18px">{l} →</span>', "pad c3", "a", f'href="{u}" target="_blank" rel="noopener" style="display:flex;flex-direction:column;min-height:280px"') for n, d, l, u in HELP["orgs"])
+    body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="mbtn" href="grants.html" style="margin-top:20px">Search grants →</a>') + f"""
+<div class="grid" style="align-items:start">
+  {panel('<div class="cap" style="margin-bottom:6px">How to write a strong application · switch each on as you go</div>' + tips, "pad c8")}
+  <div class="c4" style="display:grid;gap:20px">
+    {panel('<div class="cap">Readiness</div><div style="display:flex;gap:22px;align-items:flex-end;margin-top:18px"><span class="meter v" id="hm">' + '<i></i>' * 16 + '</span><div><div class="mono" style="font-size:40px;letter-spacing:-.02em" id="hc">0/8</div><div class="cap" style="margin-top:6px">steps done</div></div></div>', "pad")}
+    {panel('<div class="cap" style="margin-bottom:10px">Common mistakes</div>' + ''.join(f'<div class="mrow" style="justify-content:flex-start;gap:14px;align-items:flex-start"><span class="led over" style="margin-top:6px"></span><span style="font-size:14px;line-height:1.5;color:var(--body)">{m}</span></div>' for m in HELP['mistakes']), "pad")}
+  </div>
+</div>
+<section><div class="shead"><div><div class="cap">Directory</div><h2>Where to get free help</h2></div></div><div class="grid">{orgs}</div></section>
+<section class="grid">{panel('<div class="cap">Still have questions?</div><p style="font-weight:300;font-size:26px;letter-spacing:-.02em;margin:12px 0 20px">We are happy to point you in the right direction.</p><a class="mbtn" href="contact.html">Contact the team →</a>', "pad c8")}{panel(f'<p class="dim mono" style="font-size:11px;line-height:1.7">{HELP["disclaimer"]}</p>', "pad c4")}</section>"""
+    js = """<script>
+const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
+function upd() { $$('.chk').forEach(c => c.classList.toggle('on', done.has(+c.dataset.i))); $('#hc').textContent = done.size + '/8';
+  $$('#hm i').forEach((s, i) => s.className = i < done.size * 2 ? (done.size === 8 ? 'on' : 'near') : ''); localStorage.setItem('e3-help', JSON.stringify([...done])); }
+$$('.chk').forEach(c => c.addEventListener('click', () => { const i = +c.dataset.i; done.has(i) ? done.delete(i) : done.add(i); upd(); })); upd();
+</script>"""
+    return shell("grant-help", body, js)
+
+
+def indicators():
+    scopes = "".join(panel(f"""<div style="display:flex;justify-content:space-between;align-items:center"><span class="cap">{grp} · {name}</span><span class="led" data-led></span></div>
+      <div class="screen"><svg viewBox="0 0 500 130" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><div class="readout"><span data-v>— —</span><small>{u}</small></div><span class="cap" data-yr></span></div>
+      <p style="margin-top:10px">{d}</p>""", "scope c6", attrs=f'data-key="{k}" data-unit="{u}"') for k, grp, name, u, d in INDICATORS)
+    body = ph("Data", "Economic Indicators", "These charts help explain everyday costs, job security, and borrowing rates. Turn the knob to change the time range; hover a screen to read any year.",
+              '<div style="display:flex;align-items:center;gap:24px;margin-top:18px"><div class="knob" id="rng" data-label="Time range"></div><div><div class="cap">Range</div><div class="mono" style="font-size:22px;margin-top:6px" id="rngl">2000 →</div></div></div>') + f"""
+{panel('<span class="led near"></span><span>Preview: no live data here. These traces are placeholder shapes; real FRED data loads from /api/economic-indicators on the deployed site, and readouts stay blank until then.</span>', "notice", attrs='id="note" hidden')}
+<div class="grid">{scopes}</div>"""
+    js = """<script src="../shared/indicators.js"></script><script>
+let D, from = 0; const STARTS = [2000, 2008, 2016, 2020];
+makeKnob($('#rng'), STARTS.map(String), 0, i => { from = i; draw(); });
+function draw() { if (!D) return; const y0 = STARTS[from]; $('#rngl').textContent = y0 + ' →';
+  $$('.scope').forEach(t => { const all = D.series[t.dataset.key]; if (!all) return; const i0 = Math.max(0, D.years.indexOf(y0)), s = all.slice(i0), yrs = D.years.slice(i0), n = s.length;
+    const lo = Math.min(...s), hi = Math.max(...s), x = i => i / (n - 1) * 500, y = v => 120 - (v - lo) / (hi - lo || 1) * 110, svg = $('svg', t);
+    const d = s.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+    svg.innerHTML = `<path d="${d}" fill="none" stroke="rgba(214,236,226,.25)" stroke-width="6" vector-effect="non-scaling-stroke" style="filter:blur(3px)"/>
+      <path d="${d}" fill="none" stroke="rgb(214,236,226)" stroke-width="1.6" vector-effect="non-scaling-stroke" ${D.live ? '' : 'stroke-dasharray="4 4"'}/>
+      <line class="cur" x1="${x(n - 1)}" x2="${x(n - 1)}" y1="0" y2="130" stroke="rgba(255,181,71,.6)" vector-effect="non-scaling-stroke"/>`;
+    const u = t.dataset.unit, show = i => { $('[data-v]', t).textContent = D.live ? fmtIndicator(s[i], u).replace(/[%M]/g, '') : '— —'; $('[data-yr]', t).textContent = yrs[i]; $('.cur', svg).setAttribute('x1', x(i)); $('.cur', svg).setAttribute('x2', x(i)); };
+    show(n - 1); $('[data-led]', t).className = 'led ' + (D.live ? 'on' : 'near');
+    svg.onpointermove = e => { const r = svg.getBoundingClientRect(); show(Math.round((e.clientX - r.left) / r.width * (n - 1))); }; svg.onpointerleave = () => show(n - 1); }); }
+loadIndicators().then(d => { D = d; $('#note').hidden = d.live; draw(); });
+</script>"""
+    return shell("economic-indicators", body, js)
+
+
+def outreach():
+    cards = "".join(panel(f"""<div style="display:flex;justify-content:space-between;align-items:center"><span class="cap">{t}</span><span class="led on"></span></div>
+      <div style="font-weight:300;font-size:30px;letter-spacing:-.02em;margin:24px 0 18px">{s}</div><p style="font-size:16px;line-height:1.7;color:var(--body)">{p1}</p><p class="dim" style="font-size:14px;line-height:1.6;margin-top:14px">{p2}</p>
+      <a class="mbtn" href="contact.html" style="margin-top:28px">{'Share your story' if k == 'interview' else 'Partner with us'} →</a>""", "pad c6", attrs=f'id="{k}"') for k, (t, s, p1, p2) in OUTREACH.items())
+    return shell("outreach", ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + f'<div class="grid">{cards}</div>')
+
+
+def contact():
+    form = f"""<form onsubmit="event.preventDefault();this.querySelector('[data-sent]').hidden=false" id="cf">
+      <div class="grid" style="gap:0 18px"><label class="field c6"><span><span class="led" data-for="n"></span><span class="cap">Name *</span></span><input class="inp" id="n" required autocomplete="name"></label>
+      <label class="field c6"><span><span class="led" data-for="e"></span><span class="cap">Email *</span></span><input class="inp" id="e" type="email" required autocomplete="email"></label></div>
+      <label class="field"><span><span class="led" data-for="s"></span><span class="cap">Subject *</span></span><input class="inp" id="s" required></label>
+      <label class="field"><span><span class="led" data-for="m"></span><span class="cap">Message *</span></span><textarea class="inp" id="m" required></textarea></label>
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button class="mbtn" type="submit">Send message</button><span class="cap" data-sent hidden style="color:rgb(var(--led-near))">Mockup: nothing was sent</span></div></form>"""
+    body = ph("Contact", "Let's connect", "Have questions about our research or want to collaborate? Send a message and we will respond within two business days.") + f"""
+<div class="grid" style="align-items:start">{panel(form, "pad c8")}
+  <div class="c4" style="display:grid;gap:20px">{panel('<div class="mrow cap">Reply within<b>2 business days</b></div><div class="mrow cap">Interviews<b><a href="outreach.html">Outreach →</a></b></div><div class="mrow cap">Your data<b><a href="privacy.html">Privacy →</a></b></div>', "pad")}
+  {panel('<div class="cap">Signal</div><div style="display:flex;gap:14px;align-items:center;margin-top:14px"><span class="meter" id="sig" data-n="12" data-lit="0"></span><span class="cap" id="sigl">0/4 fields</span></div>', "pad")}</div></div>"""
+    js = """<script>
+function chk() { let ok = 0; ['n', 'e', 's', 'm'].forEach(id => { const v = $('#' + id).checkValidity() && $('#' + id).value; $(`[data-for=${id}]`).className = 'led' + (v ? ' on' : ''); ok += !!v; });
+  $$('#sig i').forEach((s, i) => s.className = i < ok * 3 ? 'on' : ''); $('#sigl').textContent = ok + '/4 fields'; }
+$('#cf').addEventListener('input', chk);
+</script>"""
+    return shell("contact", body, js)
+
+
+def privacy():
+    out, secs, ul = [], [], False
+    for i, (t, txt) in enumerate(PRIVACY):
+        if t == "li":
+            if not ul:
+                out.append("<ul>"); ul = True
+            out.append(f"<li>{txt}</li>"); continue
+        if ul:
+            out.append("</ul>"); ul = False
+        if t == "h2":
+            secs.append((f"p{i}", txt)); out.append(f'<h2 id="p{i}">{txt}</h2>')
+        else:
+            out.append(f"<{t}>{txt}</{t}>")
+    body = ph("Legal", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.", '<div class="cap" style="margin-top:14px">Last updated · Nov 12 2026</div>') + f"""
+<div class="read">{panel('<div class="prose">' + ''.join(out) + '</div>', "atile", "article")}<aside class="rside">{panel('<div class="cap" style="margin-bottom:8px">Sections</div><nav class="secs">' + ''.join(f'<a href="#{i}"><span class="led"></span>{n}</a>' for i, n in secs) + '</nav>', "pad")}</aside></div>"""
+    return shell("privacy", body)
+
+
+def notfound():
+    body = f"""<div style="margin-top:60px">{panel(f'''<div style="display:flex;justify-content:space-between"><span class="cap">Page not found</span><span class="led over"></span></div>
+  <div style="display:flex;gap:40px;align-items:center;margin:40px 0;flex-wrap:wrap"><div class="mono" style="font-size:150px;letter-spacing:-.04em;line-height:1">404</div>
+  <div style="display:flex;gap:6px">{"".join(f'<span class="meter v" data-n="14" data-lit="0"></span>' for _ in range(6))}</div><div class="cap" style="color:rgb(var(--led-over))">No signal</div></div>
+  <p class="dim" style="max-width:46ch;margin-bottom:26px">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="mbtn" href="index.html">Homepage</a><a class="mbtn ghost" href="articles.html">Articles</a><a class="mbtn ghost" href="research.html">Research</a><a class="mbtn ghost" href="contact.html">Contact</a></div>''', "desk")}</div>"""
+    return shell("404", body)
+
+
+def build():
+    write(f"{D}/theme.css", CSS)
+    write(f"{D}/theme.js", JS)
+    pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
+             "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
+             "articles": pub_list("articles", "Articles", "Perspectives and community insights from our team and partners, from grassroots organizing to systemic policy analysis.", ARTICLES),
+             "research": pub_list("research", "Research", "Research papers, reports, and briefs, each with clear summaries and next steps for community leaders and decision-makers.", RESEARCH,
+                 '<section class="grid">' + panel('<div class="cap">Journals</div><p style="font-weight:300;font-size:24px;letter-spacing:-.02em;margin-top:12px">Critical Debates in Humanities, Science and Global Justice →</p>', "pad c6", "a", 'href="journals.html"') + panel('<div class="cap">Data</div><p style="font-weight:300;font-size:24px;letter-spacing:-.02em;margin-top:12px">Economic indicators since 2000 →</p>', "pad c6", "a", 'href="economic-indicators.html"') + '</section>')}
+    for p in PUBS:
+        pages[p["slug"]] = article(p)
+    for s in CATEGORY_PAGES:
+        pages[s] = category(s)
+    for k, v in pages.items():
+        write(f"{D}/{k}.html", v)
+    return sorted(pages)
