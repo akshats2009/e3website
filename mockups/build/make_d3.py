@@ -14,8 +14,8 @@ def home():
     <div class="cta"><a class="btn" href="articles.html">Read the research</a></div>
   </div>
   <div class="spic rise">
-    <img class="p-day" src="../shared/img/street.jpg" alt="A Chinatown street with hanging lanterns and shopfront signs" fetchpriority="high">
-    <img class="p-night" src="../shared/img/lanterns.jpg" alt="A lantern-lit Chinatown gate at night">
+    <img class="p-day" src="../shared/img/web/fire.jpg" alt="Brick tenements with fire escapes and shop signs on a Chinatown street in Manhattan" fetchpriority="high">
+    <img class="p-night" src="../shared/img/web/night.jpg" alt="Mott Street in Manhattan at night, strung with lights">
   </div>
 </div>
 """
@@ -25,7 +25,7 @@ s = replace_func(s, "home", HOME)
 
 PUBS_FN = r'''
 def pimg(p):
-    return "../shared/img/" + ("workers.jpg" if "workers" in p["img"] else "street.jpg" if "street" in p["img"] else "lanterns.jpg")
+    return "../shared/img/" + ("web/rail.jpg" if "workers" in p["img"] else "web/street.jpg" if "street" in p["img"] else "web/lanterns.jpg")
 
 
 def pub_list(page, kicker, title, lede, items, extra=""):
@@ -41,7 +41,7 @@ def about():
     """Header, a photograph beside one statement, three people."""
     team = "".join(crow(f"0{i+1}", n, f"{r}. {b}", "") for i, (n, r, b) in enumerate(ABOUT["team"]))
     body = ph("About", "About e3 Initiative") + f"""
-<div class="abt"><div class="abimg rise"><img src="../shared/img/gate.jpg" alt="A decorated Chinatown gate at dusk" loading="lazy"></div>
+<div class="abt"><div class="abimg rise"><img src="../shared/img/web/yoko.jpg" alt="A narrow lantern-lit street in Chinatown" loading="lazy"></div>
 <div class="abtx"><p style="font-weight:400;font-size:28px;line-height:1.25;letter-spacing:-.7px">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:60ch">{ABOUT['what']}</p></div></div>
 <section style="margin-top:20px"><div class="tile rows rise">{team}</div></section>"""
     return shell("about", body)
@@ -71,5 +71,6 @@ CSS = r"""
 @media(min-width:901px) and (max-width:1200px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 """
 s = s.replace('CITYJS = r"""', 'CITY += r"""' + CSS + '"""\n\nCITYJS = r"""', 1)
+s = s.replace("© 2026 e3 Initiative</span>", "© 2026 e3 Initiative · Photos: Wikimedia Commons</span>")
 s = s.replace('{IMG}{p["img"].replace("-640", "")}', '{pimg(p)}')
 open("theme_d.py", "w").write(s)
