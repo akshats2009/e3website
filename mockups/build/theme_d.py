@@ -381,8 +381,11 @@ def label(t, cls=""):
 COVERS = ["cv-a", "cv-b", "cv-c"]
 
 
+PHOTOS = ["street.jpg", "lanterns.jpg", "gate.jpg", "arch.jpg", "workers.jpg"]
+
+
 def cover(i, mk=None):
-    return f'<div class="cover {COVERS[i % 3]}"><span class="mk">{mk or f"E3—0{i+1}"}</span></div>'
+    return f'<div class="cover photo"><img src="../shared/img/{PHOTOS[i % 5]}" alt="" loading="lazy"></div>'
 
 
 def shell(page, body, scripts=""):
@@ -413,7 +416,6 @@ def shell(page, body, scripts=""):
   <main id="main">
 {body}
   </main>
-  <div class="city mini" aria-hidden="true">{skyline(110, True, 3)}</div>
   <footer>
     <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
     <nav class="links" aria-label="Footer">{foot}</nav>
@@ -473,25 +475,32 @@ def skyline(h=300, mini=False, seed=7):
 
 
 def home():
-    """Nav, headline, one line, one button, one skyline, footer."""
+    """Nav, headline + one line + one button on the left, one photograph on the right, footer."""
     body = f"""
-<div class="chome">
-  <div class="chero">
+<div class="split">
+  <div class="stxt">
     {label('Equity · Economics · Ethnicity')}
     <h1>{TAGLINE}<span>.</span></h1>
-    <div class="cside"><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
+    <p>Student-led research on who builds local economies, who gets credit and who gets left out.</p>
+    <div class="cta"><a class="btn" href="articles.html">Read the research</a></div>
   </div>
-  <div class="city rise" id="sky">{skyline(340)}
-    <div class="route" aria-hidden="true"><i></i><b style="left:12%"></b><b style="left:38%"></b><b style="left:64%"></b><b style="left:88%"></b><em id="train"></em></div>
+  <div class="spic rise">
+    <img class="p-day" src="../shared/img/street.jpg" alt="A Chinatown street with hanging lanterns and shopfront signs" fetchpriority="high">
+    <img class="p-night" src="../shared/img/lanterns.jpg" alt="A lantern-lit Chinatown gate at night">
   </div>
 </div>
 """
     return shell("index", body)
 
+def pimg(p):
+    return "../shared/img/" + ("workers.jpg" if "workers" in p["img"] else "street.jpg" if "street" in p["img"] else "lanterns.jpg")
+
+
 def pub_list(page, kicker, title, lede, items, extra=""):
-    """Header and one list."""
-    rows = "".join(crow(p['short'][:6], esc(p['title']), f"{p['kind']} · {p['min']} min · {p['author']}", p['slug'] + '.html') for p in items)
-    return shell(page, ph(kicker, title, lede) + f'<div class="tile rows rise">{rows}</div>')
+    """Header and a grid of photo cards."""
+    cards = "".join(f"""<a class="pcard rise" href="{p['slug']}.html"><div class="pimg"><img src="{pimg(p)}" alt="{esc(p['alt'])}" loading="lazy"></div>
+      <div class="pmeta"><span class="chip">{p['kind']}</span><span class="mono">{p['short'][:6]} · {p['min']} min</span></div><h3>{esc(p['title'])}</h3><p class="muted">{esc(p['author'])}</p></a>""" for p in items)
+    return shell(page, ph(kicker, title, lede) + f'<div class="pgrid">{cards}</div>' + extra)
 
 def article(p):
     """Title, banner, text. A thin bar at the top shows reading progress."""
@@ -513,7 +522,7 @@ def article(p):
   {label(f"{p['kind']} · {p['date']} · {p['min']} min")}
   <h1>{esc(p['title'])}</h1>
   <div class="mono muted" style="font-size:12px">{esc(a['byline'] or 'By ' + p['author'])}</div>
-  <div class="banner"><img src="{IMG}{p["img"].replace("-640", "")}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
+  <div class="banner"><img src="{pimg(p)}" alt="{esc(p["alt"])}"></div><div class="capt">{esc(a["caption"] or p["alt"])}</div>
   <div class="prose" id="prose">{''.join(body)}</div>
 </article>"""
     js = """<script>
@@ -524,12 +533,12 @@ addEventListener('scroll', upd, { passive: true }); upd();
     return shell(p["slug"], body_html, js)
 
 def about():
-    """Header, one statement, three people."""
+    """Header, a photograph beside one statement, three people."""
     team = "".join(crow(f"0{i+1}", n, f"{r}. {b}", "") for i, (n, r, b) in enumerate(ABOUT["team"]))
     body = ph("About", "About e3 Initiative") + f"""
-<div class="tile pad rise"><p style="font-weight:300;font-size:28px;line-height:1.25;letter-spacing:-.7px;max-width:44ch">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:70ch">{ABOUT['what']}</p></div>
-<section style="margin-top:20px"><div class="tile rows rise">{team}</div>
-<p class="muted" style="font-size:14px;margin-top:20px;max-width:70ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p></section>"""
+<div class="abt"><div class="abimg rise"><img src="../shared/img/gate.jpg" alt="A decorated Chinatown gate at dusk" loading="lazy"></div>
+<div class="abtx"><p style="font-weight:400;font-size:28px;line-height:1.25;letter-spacing:-.7px">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:60ch">{ABOUT['what']}</p></div></div>
+<section style="margin-top:20px"><div class="tile rows rise">{team}</div></section>"""
     return shell("about", body)
 
 def journals():
@@ -757,6 +766,47 @@ html:not(.night) .sky-svg .w.on{opacity:.55}
 .city.mini{max-width:100%;contain:paint}.city.mini .sky-svg{position:static;display:block;width:100%;height:96px}
 @media(max-width:900px){.chero{grid-template-columns:1fr}.chero h1{font-size:54px}#sky{height:260px}}
 @media(prefers-reduced-motion:reduce){.route em{display:none}}
+"""
+
+CITY += r"""
+/* photo pass */
+.phero{position:relative;border-radius:22px;overflow:hidden;height:min(76vh,700px);min-height:480px;background:#111}
+.phero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s}
+.phero .p-day{object-position:50% 40%}.phero .p-night{opacity:0}
+html.night .phero .p-night{opacity:1}html.night .phero .p-day{opacity:0}
+.phero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,9,13,.25) 0%,rgba(6,9,13,0) 28%,rgba(6,9,13,.78) 100%)}
+.ptxt{position:absolute;left:48px;right:48px;bottom:44px;color:#fff;display:grid;gap:18px}
+.ptxt .label{color:rgba(255,255,255,.85)}.ptxt .label i{background:var(--peach)}
+.ptxt h1{font-size:92px;line-height:.94;max-width:11ch;color:#fff}.ptxt h1 span{color:var(--peach)}
+.prow{display:flex;justify-content:space-between;align-items:flex-end;gap:28px}
+.prow p{font-size:16px;line-height:1.5;color:rgba(255,255,255,.82);max-width:40ch}
+.phero .btn{background:#fff;color:#101318}
+.cover.photo{border-radius:20px}.cover.photo img,.banner img{filter:none}
+.banner{border-radius:22px}
+@media(max-width:900px){.phero{height:84vh;min-height:520px}.ptxt{left:24px;right:24px;bottom:28px}.ptxt h1{font-size:54px}.prow{flex-direction:column;align-items:flex-start}}
+"""
+
+CITY += r"""
+/* split layout */
+.split{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:stretch;min-height:640px}
+.stxt{display:flex;flex-direction:column;justify-content:flex-end;gap:22px;padding-bottom:6px}
+.stxt h1{font-size:88px;line-height:.94;max-width:9ch}.stxt h1 span{color:var(--accent)}
+.stxt p{font-size:16px;line-height:1.55;color:var(--muted);max-width:38ch}
+.spic{position:relative;border-radius:22px;overflow:hidden;min-height:560px;background:#111}
+.spic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s}
+.spic .p-night{opacity:0}html.night .spic .p-night{opacity:1}html.night .spic .p-day{opacity:0}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.pcard{display:block}
+.pimg{border-radius:20px;overflow:hidden;aspect-ratio:4/3;background:var(--wash)}
+.pimg img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.33,1,.68,1)}
+.pcard:hover .pimg img{transform:scale(1.04)}
+.pmeta{display:flex;align-items:center;gap:10px;margin:16px 0 8px;color:var(--muted);font-size:12px}
+.pcard h3{font-weight:600;font-size:21px;line-height:1.2;letter-spacing:-.02em}
+.pcard p{margin-top:8px;font-size:14px}
+.abt > *{min-width:0}.abt{display:grid;grid-template-columns:5fr 6fr;gap:44px;align-items:center}
+.abimg{border-radius:22px;overflow:hidden;height:540px}.abimg img{width:100%;height:100%;object-fit:cover}
+@media(max-width:900px){.split,.abt{grid-template-columns:1fr;gap:28px;min-height:0}.stxt h1{font-size:56px}.spic{min-height:340px}.pgrid{grid-template-columns:1fr}.abimg{height:300px}}
+@media(min-width:901px) and (max-width:1200px){.pgrid{grid-template-columns:repeat(2,1fr)}}
 """
 
 CITYJS = r"""
