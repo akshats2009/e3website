@@ -9,6 +9,7 @@ THEMES = [
     ("a", "Paper widgets", "Warm paper, white tiles, thin numerals, one ultramarine accent. Built from paper-widgets."),
     ("b", "Graphite desk", "Dark graphite hardware: metal faders, a stepped knob, LED meters. Built from budget-mixer."),
     ("c", "Type specimen", "Warm paper and a variable font: weight carries meaning, orange type guides. Built from weight-axis."),
+    ("d", "Night city", "A skyline with lit windows, a transit-line nav with stations, signage type, light and dark. Built on the paper-widgets tiles."),
 ]
 
 
@@ -43,8 +44,8 @@ h2 span{{display:inline-grid;place-items:center;width:30px;height:30px;border-ra
 p{{color:#6b6862;margin:8px 0 14px}} ul{{margin:0;padding:0;list-style:none;columns:2;column-gap:20px}} li{{margin:4px 0;break-inside:avoid}}
 a{{color:#2b36ff;text-decoration:none}} a:hover{{text-decoration:underline}}
 </style></head><body>
-<h1>e3 Initiative: three site-wide directions</h1>
-<p>Same pages, same content, three designs. Open the pages over a local server (for example <code>python3 -m http.server</code> from the repo root) so the shared data loads.</p>
+<h1>e3 Initiative: four site-wide directions</h1>
+<p>Same pages, same content, four designs. Open the pages over a local server (for example <code>python3 -m http.server</code> from the repo root) so the shared data loads.</p>
 <div class="grid">{cards}</div>
 </body></html>
 """)
