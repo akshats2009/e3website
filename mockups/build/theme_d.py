@@ -58,7 +58,7 @@ html.night .mini-sw b{transform:translateX(18px)}
 .tr{position:absolute;right:26px;top:22px;font-size:13px;color:var(--muted)}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
-.thin{font-weight:300;letter-spacing:-.035em;line-height:1}
+.thin{font-weight:300;letter-spacing:-.02em;line-height:1}
 .chip{display:inline-flex;align-items:center;font:500 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;padding:5px 9px;border-radius:99px;background:var(--wash);color:var(--muted);white-space:nowrap}
 .chip.a{background:var(--accent);color:#fff}
 .chip.ink{background:var(--ink);color:var(--tile)}
@@ -71,13 +71,13 @@ html.night .mini-sw b{transform:translateX(18px)}
 
 /* page header */
 .ph{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;margin:6px 0 30px}
-.ph h1{font-weight:300;font-size:var(--s5);line-height:.98;letter-spacing:-.035em;margin-top:14px}
+.ph h1{font-weight:300;font-size:var(--s5);line-height:.98;letter-spacing:-.02em;margin-top:14px}
 .ph p{color:var(--muted);font-size:var(--s1);line-height:1.5;max-width:58ch;margin-top:16px}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gap)}
 .c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
 section{margin-top:72px}
 .shead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;gap:16px}
-.shead h2{font-weight:300;font-size:var(--s4);letter-spacing:-.03em;line-height:1.02}
+.shead h2{font-weight:300;font-size:var(--s4);letter-spacing:-.018em;line-height:1.02}
 .shead a{font:500 14px var(--sans);color:var(--muted)}.shead a:hover{color:var(--ink)}
 
 /* calendar rows: the list primitive */
@@ -130,7 +130,6 @@ textarea.inp{height:150px;padding:14px 16px;resize:vertical;line-height:1.5}
 
 /* prose */
 .prose{font-family:var(--serif);font-variation-settings:"opsz" 14,"SOFT" 0;font-feature-settings:"kern","liga","onum","pnum";font-variant-numeric:oldstyle-nums proportional-nums;font-size:clamp(1.0625rem,1rem + .3vw,1.2rem);line-height:1.68;max-width:64ch;hanging-punctuation:first;font-weight:380}
-.prose>p:first-child::first-line{font-variant-caps:all-small-caps;letter-spacing:.04em}
 .prose p{margin:0 0 1.15em}
 .prose h2{font-weight:340;font-size:var(--s3);letter-spacing:-.025em;line-height:1.08;margin:1.7em 0 .55em;font-variation-settings:var(--disp);scroll-margin-top:24px}
 .prose h3{font:600 var(--s1)/1.3 var(--sans);letter-spacing:-.012em;margin:1.8em 0 .4em}
@@ -147,7 +146,7 @@ footer .links a:hover{color:var(--ink)}
 .home .tile{height:100%}
 .w2{grid-column:span 2}
 .hero{grid-column:span 2;display:flex;flex-direction:column;justify-content:space-between;padding:4px 8px 4px 0}
-.hero h1{font-weight:300;font-size:clamp(3rem,2rem + 4vw,4.1rem);line-height:.96;letter-spacing:-.04em}
+.hero h1{font-weight:300;font-size:clamp(3rem,2rem + 4vw,4.1rem);line-height:.96;letter-spacing:-.022em}
 .hero h1 span{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
 .hero h1 span{color:var(--accent)}
 .hero p{font-size:15px;line-height:1.5;color:var(--muted);max-width:46ch;margin-bottom:16px}
@@ -166,7 +165,7 @@ footer .links a:hover{color:var(--ink)}
 .ctl{position:absolute;top:232px;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;transition:transform .15s,background .15s}
 .ctl:active{transform:scale(.88);background:rgb(var(--ink-rgb)/.07)}
 .play{position:absolute;left:420px;top:226px;width:52px;height:52px;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:var(--tile)}
-.cal .day{position:absolute;left:20px;top:64px;font-size:150px;font-weight:250;letter-spacing:-.06em;line-height:1}
+.cal .day{position:absolute;left:20px;top:64px;font-size:150px;font-weight:250;letter-spacing:-.04em;line-height:1}
 .cal .month{position:absolute;left:28px;top:222px;font:500 17px var(--sans);letter-spacing:-.01em}
 .cal .sum{position:absolute;left:28px;top:246px;font-size:13px;color:var(--muted)}
 .cal .div{position:absolute;left:262px;top:28px;bottom:28px;width:1px;background:var(--line)}
@@ -180,7 +179,7 @@ footer .links a:hover{color:var(--ink)}
 .row .d{font-size:12px;color:var(--muted);margin-top:2px}
 .list .chip{position:absolute;right:0;top:16px;transition:opacity .2s}
 .dialw{position:absolute;left:46px;top:56px}
-.digits{position:absolute;left:46px;top:124px;width:200px;text-align:center;font-size:44px;font-weight:300;letter-spacing:-.04em}
+.digits{position:absolute;left:46px;top:124px;width:200px;text-align:center;font-size:44px;font-weight:300;letter-spacing:-.022em}
 .digits small{font-size:18px;letter-spacing:0;color:var(--muted)}
 .dcap{position:absolute;left:46px;top:178px;width:200px;text-align:center;font-size:13px;color:var(--muted)}
 .focus .dark{position:absolute;inset:0;background:var(--focus-dark);opacity:0;transition:opacity .45s}
@@ -188,19 +187,19 @@ html.night .focus .dark{opacity:1}
 html.night .focus{color:#f4f3f0}
 .moon{position:absolute;left:24px;top:70px;transition:transform .45s,background .45s}
 html.night .focus .moon{background:rgba(255,255,255,.1);transform:rotate(-40deg)}
-.state{position:absolute;left:26px;top:160px;font-size:32px;font-weight:300;letter-spacing:-.03em}
+.state{position:absolute;left:26px;top:160px;font-size:32px;font-weight:300;letter-spacing:-.018em}
 .cap2{position:absolute;left:27px;top:200px;font-size:13px;color:var(--muted)}
 .sw{position:absolute;left:26px;top:238px;width:60px;height:34px;border-radius:99px;background:var(--hair);transition:background .3s,transform .15s}
 html.night .focus .sw{background:var(--accent)}
 .sw b{position:absolute;left:3px;top:3px;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .3s cubic-bezier(.33,1,.68,1)}
 html.night .focus .sw b{transform:translateX(26px)}
-.big{position:absolute;left:22px;top:58px;font-size:92px;font-weight:250;letter-spacing:-.05em;line-height:1}
+.big{position:absolute;left:22px;top:58px;font-size:92px;font-weight:250;letter-spacing:-.03em;line-height:1}
 .sky{position:absolute;left:27px;top:160px;font-size:15px}
 .arcbox{position:absolute;left:24px;top:182px;overflow:visible}
 .arcbox .dotted{fill:none;stroke:var(--dotted)}.arcbox .hz{stroke:var(--hair)}
 .arcbox .lit{fill:none;stroke:var(--accent);stroke-linecap:round}.arcbox .pub{fill:var(--tile);stroke:var(--ink);stroke-width:1.5}
 .tiny{position:absolute;top:268px;font:10.5px/1 var(--mono);color:var(--muted)}
-.cnt{position:absolute;left:24px;top:58px;font-size:56px;font-weight:300;letter-spacing:-.04em;line-height:1}
+.cnt{position:absolute;left:24px;top:58px;font-size:56px;font-weight:300;letter-spacing:-.022em;line-height:1}
 .goal{position:absolute;left:27px;top:118px;font-size:13px;color:var(--muted)}
 .col{position:absolute;top:0}
 .col .e,.col .b{position:absolute;left:0;top:166px;width:22px;height:90px;border-radius:7px}
@@ -209,12 +208,12 @@ html.night .focus .sw b{transform:translateX(26px)}
 .col .b.hl{background:var(--accent);opacity:1}
 .col .l{position:absolute;left:-6px;top:264px;width:34px;text-align:center;font:10.5px/1 var(--mono);color:var(--muted)}
 .devs{position:absolute;left:24px;right:26px;top:60px}
-.share .h{position:absolute;left:26px;top:160px;font-size:30px;font-weight:300;letter-spacing:-.03em;line-height:1.05}
+.share .h{position:absolute;left:26px;top:160px;font-size:30px;font-weight:300;letter-spacing:-.018em;line-height:1.05}
 .share .s{position:absolute;left:27px;top:200px;font-size:13px;color:var(--muted);right:24px}
 .share .go{position:absolute;left:26px;top:238px}
 .share .well{position:absolute;left:24px;top:70px}
 .mission{display:grid;grid-template-columns:var(--cell) 1fr;gap:var(--gap)}
-.mission p{font-weight:300;font-size:var(--s4);line-height:1.1;letter-spacing:-.03em;max-width:24ch}
+.mission p{font-weight:300;font-size:var(--s4);line-height:1.1;letter-spacing:-.018em;max-width:24ch}
 .mission p span{color:var(--muted)}
 
 /* publication cards */
@@ -237,7 +236,7 @@ html.night .focus .sw b{transform:translateX(26px)}
 .toc .crow .m{height:26px}
 .toc .crow .n{font-size:14px;font-weight:450}
 .atile{padding:30px 44px 50px}
-.atile h1{font-weight:300;font-size:var(--s4);line-height:1.02;letter-spacing:-.03em;margin:18px 0 20px;max-width:18ch}
+.atile h1{font-weight:300;font-size:var(--s4);line-height:1.02;letter-spacing:-.018em;margin:18px 0 20px;max-width:18ch}
 .banner{border-radius:24px;overflow:hidden;margin:26px 0 8px}
 .banner img{width:100%;max-height:440px;object-fit:cover;filter:grayscale(1) contrast(1.05)}
 .capt{font:12.5px/1.4 var(--sans);color:var(--muted);margin-bottom:30px}
@@ -250,24 +249,24 @@ html.night .focus .sw b{transform:translateX(26px)}
 .search svg{position:absolute;left:16px;top:17px;color:var(--muted)}
 .fl{margin-top:18px}.fl > .label{margin-bottom:10px}
 .gres{padding:6px 26px}
-.grow{display:grid;grid-template-columns:64px 1fr 110px 88px;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--line);cursor:pointer}
+.grow{display:grid;grid-template-columns:64px 1fr 140px 88px;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--line);cursor:pointer}
 .grow:first-child{border-top:0}
 .grow .dd{text-align:center}
-.grow .dd b{display:block;font-weight:300;font-size:32px;letter-spacing:-.04em;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.grow .dd b{display:block;font-weight:300;font-size:32px;letter-spacing:-.022em;line-height:1;font-variant-numeric:lining-nums tabular-nums}
 .grow .dd span{font:500 10.5px/1 var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 .grow .n{font-size:16.5px;font-weight:500;letter-spacing:-.011em;line-height:1.3}
 .grow .f{font-size:13.5px;color:var(--muted);margin-top:3px}
-.grow .amt{font:500 13px/1.2 var(--mono);text-align:right}
+.grow .amt{white-space:nowrap;font:500 13px/1.2 var(--mono);text-align:right}
 .grow .st{text-align:right}
 .grow.closed{opacity:.55}
 .gdetail{grid-column:1/-1;display:none;padding:4px 0 6px 80px;color:var(--muted);font-size:14.5px;line-height:1.6;max-width:62ch}
 .grow.x .gdetail{display:block}
 .gdetail .btn{margin-top:12px}
-.count-num{font-weight:300;font-size:var(--s5);letter-spacing:-.04em;line-height:1;margin-top:20px}
+.count-num{font-weight:300;font-size:var(--s5);letter-spacing:-.022em;line-height:1;margin-top:20px}
 
 /* indicators */
 .ind{padding:22px 26px 22px;min-height:292px;position:relative}
-.ind .val{font-weight:300;font-size:var(--s5);letter-spacing:-.04em;line-height:1;margin-top:26px}
+.ind .val{font-weight:300;font-size:var(--s5);letter-spacing:-.022em;line-height:1;margin-top:26px}
 .ind .val small{font:400 18px var(--sans);letter-spacing:0;color:var(--muted);margin-left:6px}
 .ind .desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin-top:10px;max-width:46ch}
 .ind svg{display:block;width:100%;height:96px;margin-top:16px;overflow:visible}
@@ -693,7 +692,7 @@ def privacy():
 
 def notfound():
     body = f"""<div class="tile rise" style="padding:26px 34px 36px;max-width:760px;margin-top:20px">{label('Page not found')}
-    <div class="thin" style="font-family:var(--serif);font-variation-settings:var(--disp);font-size:clamp(8rem,28vw,13rem);font-weight:250;letter-spacing:-.06em;margin:30px 0 10px;color:var(--accent)">404</div>
+    <div class="thin" style="font-family:var(--serif);font-variation-settings:var(--disp);font-size:clamp(8rem,28vw,13rem);font-weight:250;letter-spacing:-.04em;margin:30px 0 10px;color:var(--accent)">404</div>
     <p class="muted" style="max-width:40ch;margin-bottom:24px">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p>
     <div class="cta"><a class="btn" href="index.html">Go home</a><a class="btn ghost" href="articles.html">Publications</a></div></div>"""
     return shell("404", body)
