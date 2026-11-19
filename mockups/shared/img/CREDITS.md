@@ -7,3 +7,5 @@ Downloaded from Wikimedia Commons. Check each licence before using on the live s
 - `web/lanterns.jpg`: Paper lanterns in Chinatown (Unsplash).jpg, Boris Stefanik bstefanik, CC0. https://commons.wikimedia.org/wiki/File:Paper_lanterns_in_Chinatown_(Unsplash).jpg
 - `web/rail.jpg`: Chinese railroad workers sierra nevada.jpg, "B&amp;H", illustrator; sketch by Joesph Becker (1841-1910), Public domain. https://commons.wikimedia.org/wiki/File:Chinese_railroad_workers_sierra_nevada.jpg
 - `web/yoko.jpg`: Yokohama Chinatown Narrow Street 01.jpg, Tokyo538, CC0. https://commons.wikimedia.org/wiki/File:Yokohama_Chinatown_Narrow_Street_01.jpg
+- `web/shop.jpg`: "Chinatown Storefront", Gary Soup, CC BY 2.0. https://www.flickr.com/photos/87117631@N00/6598613247
+- `web/bakery.jpg`: "Chinatown October 7, 2008 007", Me in ME, CC BY 2.0. https://www.flickr.com/photos/12357841@N02/4512574904

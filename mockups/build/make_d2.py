@@ -23,7 +23,7 @@ s = replace_func(s, "home", HOME)
 
 # photo covers instead of drawn ones
 s = s.replace('''def cover(i, mk=None):
-    return f'<div class="cover {COVERS[i % 3]}"><span class="mk">{mk or f"E3—0{i+1}"}</span></div>\'''', '''PHOTOS = ["web/street.jpg", "web/lanterns.jpg", "web/yoko.jpg", "web/skyline.jpg", "web/rail.jpg"]
+    return f'<div class="cover {COVERS[i % 3]}"><span class="mk">{mk or f"E3—0{i+1}"}</span></div>\'''', '''PHOTOS = ["web/street.jpg", "web/lanterns.jpg", "web/shop.jpg", "web/skyline.jpg", "web/rail.jpg"]
 
 
 def cover(i, mk=None):

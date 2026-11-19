@@ -381,7 +381,7 @@ def label(t, cls=""):
 COVERS = ["cv-a", "cv-b", "cv-c"]
 
 
-PHOTOS = ["web/street.jpg", "web/lanterns.jpg", "web/yoko.jpg", "web/skyline.jpg", "web/rail.jpg"]
+PHOTOS = ["web/street.jpg", "web/lanterns.jpg", "web/shop.jpg", "web/skyline.jpg", "web/rail.jpg"]
 
 
 def cover(i, mk=None):
@@ -417,7 +417,7 @@ def shell(page, body, scripts=""):
 {body}
   </main>
   <footer>
-    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative · Photos: Wikimedia Commons</span>
+    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative · Photos: Wikimedia Commons, Flickr (CC)</span>
     <nav class="links" aria-label="Footer">{foot}</nav>
   </footer>
 </div>
@@ -536,7 +536,7 @@ def about():
     """Header, a photograph beside one statement, three people."""
     team = "".join(crow(f"0{i+1}", n, f"{r}. {b}", "") for i, (n, r, b) in enumerate(ABOUT["team"]))
     body = ph("About", "About e3 Initiative") + f"""
-<div class="abt"><div class="abimg rise"><img src="../shared/img/web/yoko.jpg" alt="A narrow lantern-lit street in Chinatown" loading="lazy"></div>
+<div class="abt"><div class="abimg rise"><img src="../shared/img/web/bakery.jpg" alt="Customers outside a bakery and produce stand in Chinatown" loading="lazy"></div>
 <div class="abtx"><p style="font-weight:400;font-size:28px;line-height:1.25;letter-spacing:-.7px">{ABOUT['who']}</p><p class="muted" style="font-size:15px;line-height:1.6;margin-top:18px;max-width:60ch">{ABOUT['what']}</p></div></div>
 <section style="margin-top:20px"><div class="tile rows rise">{team}</div></section>"""
     return shell("about", body)
