@@ -1,4 +1,4 @@
-"""Variation C: Type specimen. Warm grained paper, Geist variable 100–900, Geist Mono labels, orange type guides.
+"""Variation C: Type specimen. Warm grained paper, Fraunces (opsz/wght/SOFT/WONK) for display, Newsreader (opsz/wght) for text, Geist Mono labels, orange type guides.
 Weight carries meaning everywhere: page titles are live specimens with a weight lens, urgent deadlines are heavier,
 finished checklist steps gain weight, reading an article gives its title weight. Built from weight-axis."""
 import json
@@ -10,7 +10,7 @@ CSS = r"""
 :root{
   --page:#ebe7df; --paper-light:#f6f3ee; --ink:#141312; --guide:#ff5a2a; --guide-rgb:255 90 42;
   --label-ink:rgba(20,19,18,.42); --soft:rgba(20,19,18,.58); --track:rgba(20,19,18,.1); --tick:rgba(20,19,18,.22); --rule:rgba(20,19,18,.12); --wash:rgba(20,19,18,.04);
-  --sans:"Geist",ui-sans-serif,sans-serif; --mono:"Geist Mono",monospace;
+  --display:"Fraunces","Iowan Old Style",Georgia,serif; --text:"Newsreader","Iowan Old Style",Georgia,serif; --sans:var(--text); --mono:"Geist Mono",ui-monospace,monospace;
   --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 .35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -219,7 +219,7 @@ footer a{font:13px var(--mono);color:var(--soft)}footer a:hover{color:var(--ink)
   .tip-row{grid-template-columns:44px 1fr 32px;gap:14px}.tip-row .no{font-size:32px}
   .prose{font-size:17px}.prose h2::before{display:none}
   .sh h2{font-size:36px}
-  .pub.jr{grid-template-columns:1fr!important}.grid{column-gap:0!important}.pub > *{min-width:0}.pub h3[data-lens]{font-size:28px!important}.grid h2[data-lens]{font-size:48px!important}
+  .pub.jr{grid-template-columns:1fr!important}.grid{column-gap:0!important}.pub > *{min-width:0}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 """
@@ -244,20 +244,22 @@ function letters(el, base) {
     [...part].forEach(ch => { const s = document.createElement('span'); s.className = 'lt'; s.textContent = ch; w.appendChild(s); ls.push({ el: s, w: base, v: 0, y: 0, vy: 0, t: base, ty: 0, k: 190 - Math.min(ls.length, 10) * 12, c: 20 - Math.min(ls.length, 10) * .5 }); });
     el.appendChild(w); });
   const L = { ls, base, step(dt) { ls.forEach(l => { if (reduce) { l.w = l.t; l.y = l.ty; } else { l.v += ((l.t - l.w) * l.k - l.v * l.c) * dt; l.w += l.v * dt; l.vy += ((l.ty - l.y) * 260 - l.vy * 22) * dt; l.y += l.vy * dt; }
-      l.el.style.fontVariationSettings = `'wght' ${Math.max(100, Math.min(900, l.w)).toFixed(0)}`; l.el.style.transform = `translateY(${l.y.toFixed(2)}px)`; }); } };
+      const w = Math.max(100, Math.min(900, l.w)); l.el.style.fontVariationSettings = `'wght' ${w.toFixed(0)}, 'SOFT' ${((w - 100) / 8).toFixed(0)}, 'WONK' 1`; l.el.style.transform = `translateY(${l.y.toFixed(2)}px)`; }); } };
   springs.add(L); return L;
 }
 /* Lens: letters under the pointer go to 900 and lift; neighbours fall off on a bell curve */
 function lens(el, base = +(el.dataset.lens || 200), lo = 160) {
-  const L = letters(el, base), fs = () => parseFloat(getComputedStyle(el).fontSize);
+  const L = letters(el, base), fs = () => parseFloat(getComputedStyle(el).fontSize), rd = el.closest('.ph')?.querySelector('.rd');
+  const say = w => { if (!rd) return; const f = fs(); rd.textContent = `Fraunces ${Math.round(f)}px / ${Math.round(f * .75)}pt · opsz ${Math.min(144, Math.max(9, Math.round(f)))} · wght ${Math.round(w)} · SOFT ${Math.round((w - 100) / 8)}`; };
+  say(base); addEventListener('resize', () => say(L.base));
   el.addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; const f = fs();
     L.ls.forEach(l => { const r = l.el.getBoundingClientRect(), dx = (r.left + r.width / 2 - e.clientX) / (f * .55), dy = (r.top + r.height / 2 - e.clientY) / (f * .9), k = Math.exp(-(dx * dx + dy * dy) * 1.4);
-      l.t = lo + (900 - lo) * k; l.ty = -f * .045 * k; }); });
-  el.addEventListener('pointerleave', () => L.ls.forEach(l => { l.t = L.base; l.ty = 0; }));
+      l.t = lo + (900 - lo) * k; l.ty = -f * .045 * k; }); say(Math.max(...L.ls.map(l => l.t))); });
+  el.addEventListener('pointerleave', () => { L.ls.forEach(l => { l.t = L.base; l.ty = 0; }); say(L.base); });
   L.setBase = w => { L.base = w; L.ls.forEach(l => { l.t = w; }); };
   return L;
 }
-document.fonts.load('400 40px Geist').then(() => $$('[data-lens]').forEach(el => { const L = lens(el); el._lens = L;
+Promise.all([document.fonts.load('400 40px Fraunces'), document.fonts.load('400 20px Newsreader'), document.fonts.load('400 12px "Geist Mono"')]).then(() => $$('[data-lens]').forEach(el => { const L = lens(el); el._lens = L;
   if (!reduce) { L.ls.forEach(l => { l.w = 100; }); } }));
 
 /* Weight slider: makeSlider(root, value, onChange) */
@@ -283,13 +285,23 @@ $$('.slider[data-label]').forEach(s => s.innerHTML = sliderHTML(s.dataset.label,
 const urg = d => d == null ? 300 : Math.round(900 - 750 * Math.min(1, Math.max(0, d) / 60));
 """
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">'
 
 
 MODE_HEAD = "<script>try{if(localStorage.getItem('e3-mode-c')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>"
 MODE_JS = "<script>(function(){var r=document.documentElement;document.querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',r.classList.contains('dark'));b.onclick=function(){var on=r.classList.toggle('dark');try{localStorage.setItem('e3-mode-c',on?'dark':'light')}catch(e){}document.querySelectorAll('[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',on)})}})})();</script>"
 MODE_CSS = '.nav-end{display:flex;align-items:center;gap:10px}.mode{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink);transition:background .2s}.mode:hover{background:color-mix(in srgb,var(--ink) 14%,transparent)}.mode svg{grid-area:1/1}\n.mode .sun{display:none}html.dark .mode .sun{display:block}html.dark .mode .moon{display:none}\nhtml.dark{--page:#10100f;--paper-light:#1b1a18;--ink:#f2efe8;--label-ink:rgba(242,239,232,.45);--soft:rgba(242,239,232,.62);--track:rgba(242,239,232,.12);--tick:rgba(242,239,232,.26);--rule:rgba(242,239,232,.12);--wash:rgba(242,239,232,.05)}\nhtml.dark body::after{mix-blend-mode:screen;opacity:.1}\nhtml.dark .tkl{color:rgba(242,239,232,.4)}\nhtml.dark .inp::placeholder,html.dark .bigsearch::placeholder{color:rgba(242,239,232,.25)}\nhtml.dark .pill.o{background:rgba(242,239,232,.09);color:var(--ink)}\nhtml.dark .inp{background:rgba(242,239,232,.06)}html.dark .inp:focus{background:rgba(242,239,232,.1)}\nhtml.dark .menu-btn{background:rgba(242,239,232,.08)}\nhtml.dark .knob{background:#f2efe8}\n'
 MODE_BTN = '<button class="mode" data-mode aria-label="Toggle dark mode" aria-pressed="false"><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></button>'
+
+
+def typo(html):
+    """Typographic quotes, dashes and ellipses on text nodes only."""
+    def fix(t):
+        t = t.replace("...", "…").replace(" -- ", "\u2009—\u2009").replace("--", "—")
+        t = re.sub(r'(^|[\s(\[—])"', "\\1\u201c", t); t = t.replace('"', "\u201d")
+        t = re.sub(r"(^|[\s(\[—\u201c])'", "\\1\u2018", t); t = t.replace("'", "\u2019")
+        return t
+    return "".join(p if p.startswith("<") else fix(p) for p in re.split(r"(<[^>]+>)", html))
 
 
 def shell(page, body, scripts=""):
@@ -307,7 +319,7 @@ def shell(page, body, scripts=""):
   <main id="main">
 {body}
   </main>
-  <footer><span class="lab">© 2026 e3 Initiative · set in Geist</span><nav aria-label="Footer">{foot}</nav></footer>
+  <footer><span class="lab">© 2026 e3 Initiative · Fraunces · Newsreader · Geist Mono · scale ×1.25</span><nav aria-label="Footer">{foot}</nav></footer>
 </div>
 <script src="theme.js"></script>
 {MODE_JS}
@@ -316,9 +328,9 @@ def shell(page, body, scripts=""):
 """
 
 
-def ph(kicker, title, lede="", right="", readout="wght 200 · hover for a lens"):
+def ph(kicker, title, lede="", right="", readout="Fraunces · wght 200 · hover for a lens"):
     long = " long" if len(title) > 26 else ""
-    return f"""<div class="ph"><div class="top"><span class="lab">{kicker}</span><span class="lab">{readout}</span></div>
+    return f"""<div class="ph"><div class="top"><span class="lab">{kicker}</span><span class="lab rd">{readout}</span></div>
   <h1 data-lens="200" class="{long.strip()}">{esc(title)}</h1>
   {f'<div class="lede"><p>{lede}</p><div>{right}</div></div>' if lede or right else ''}</div>"""
 
@@ -364,13 +376,13 @@ function setWord(w) { word.textContent = w; if (L) springs.delete(L); L = letter
 function fit() { const max = Math.min(232, band.clientHeight * .82); word.style.fontSize = max + 'px';
   L.ls.forEach(l => l.el.style.fontVariationSettings = "'wght' 900"); const sw = L.ls.reduce((s, l) => s + l.el.getBoundingClientRect().width, 0), room = band.clientWidth * .96;
   if (sw > room) word.style.fontSize = max * room / sw + 'px';
-  const fs = parseFloat(word.style.fontSize), c = document.createElement('canvas').getContext('2d'); c.font = `400 ${fs}px Geist`; const m = c.measureText('H');
+  const fs = parseFloat(word.style.fontSize), c = document.createElement('canvas').getContext('2d'); c.font = `400 ${fs}px Fraunces`; const m = c.measureText('H');
   const top = L.ls[0].el.getBoundingClientRect().top - band.getBoundingClientRect().top - L.ls[0].y, base = top + (fs - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
   G = { base, cap: base - m.actualBoundingBoxAscent, x: base - c.measureText('x').actualBoundingBoxAscent }; }
 let go = 0;
 function frame() { const br = band.getBoundingClientRect(), fs = parseFloat(word.style.fontSize);
   L.ls.forEach(l => { if (lensX !== null) { const r = l.el.getBoundingClientRect(), d = (r.left + r.width / 2 - br.left - lensX) / (fs * .55), k = Math.exp(-d * d * 1.4); l.t = 160 + 740 * k; l.ty = -10 * k; } else { l.t = weight; l.ty = 0; } });
-  $('#axis').textContent = lensX !== null ? 'wght lens' : 'wght ' + Math.round(L.ls[0].w);
+  { const w = Math.round(L.ls[0].w); $('#axis').textContent = (lensX !== null ? 'wght lens' : 'wght ' + w) + ' · opsz ' + Math.min(144, Math.round(parseFloat(word.style.fontSize))) + ' · SOFT ' + Math.round((w - 100) / 8) + ' · ' + Math.round(parseFloat(word.style.fontSize)) + 'px / ' + Math.round(parseFloat(word.style.fontSize) * .75) + 'pt'; }
   go += ((lensX !== null ? 1 : 0) - go) * .15; const W = band.clientWidth, x0 = W * .1, x1 = W * .86;
   const line = (y, t) => `<line x1="${x0}" x2="${x1}" y1="${y}" y2="${y}" stroke-dasharray="3 5" opacity="${.6 * go}"/><text x="${x1 + 6}" y="${y + 4}" opacity="${.8 * go}">${t}</text>`;
   guides.innerHTML = line(G.cap, 'Cap') + line(G.x, 'x') + line(G.base, 'Base') + (lensX !== null ? `<line x1="${lensX}" x2="${lensX}" y1="20" y2="${band.clientHeight - 10}" stroke-width="1.5" opacity="${.8 * go}"/>` : '');
@@ -379,7 +391,7 @@ band.addEventListener('pointermove', e => { if (e.pointerType !== 'touch') { len
 band.addEventListener('pointerleave', () => lensX = null);
 const S = makeSlider($('#sl'), 100, w => weight = w);
 $$('.tabs button').forEach(b => b.onclick = () => { $$('.tabs button').forEach(x => x.classList.toggle('on', x === b)); setWord(b.dataset.w); });
-document.fonts.load('400 100px Geist').then(() => { setWord('Equity'); requestAnimationFrame(frame);
+document.fonts.load('400 100px Fraunces').then(() => { setWord('Equity'); requestAnimationFrame(frame);
   if (reduce) { S.set(400); return; }
   const t0 = performance.now(), path = [[0, 100], [600, 100], [2200, 900], [3400, 900], [4600, 400]];
   (function step(now) { if ($('#sl').dataset.touched) return; const t = now - t0;
@@ -401,22 +413,22 @@ def article(p):
         if t == "h2":
             n += 1
             secs.append((f"s{i}", re.sub(r"<[^>]+>", "", txt), n))
-            body.append(f'<h2 id="s{i}" data-n="§{n}">{txt}</h2>')
+            body.append(f'<h2 id="s{i}" data-n="§{n}">{typo(txt)}</h2>')
         elif t == "li":
-            body.append(f"<ul><li>{txt}</li></ul>")
+            body.append(f"<ul><li>{typo(txt)}</li></ul>")
         else:
-            body.append(f"<{t}>{txt}</{t}>")
+            body.append(f"<{t}>{typo(txt)}</{t}>")
     cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
     body_html = f"""
-<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span><span class="lab" id="rw">wght 100</span></div>
-  <h1 class="long" id="title" style="font-variation-settings:'wght' 100;max-width:24ch">{esc(p['title'])}</h1>
+<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span><span class="lab" id="rw">Fraunces · wght 100</span></div>
+  <h1 class="long" id="title" style="font-variation-settings:'wght' 100, 'WONK' 1;max-width:24ch">{typo(esc(p['title']))}</h1>
   <div class="lab" style="margin-top:22px">{esc(a['byline'] or 'By ' + p['author'])} · {p['min']} min · <a href="../../{cite}" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px">citations</a></div></div>
 <div class="banner"><img src="{IMG}{p['img'].replace('-640', '')}" alt="{esc(p['alt'])}"></div><div class="capt">{esc(a['caption'] or p['alt'])}</div>
-<div class="read" style="grid-template-columns:1fr;max-width:700px;margin-left:auto;margin-right:auto"><article class="prose" id="prose">{''.join(body)}</article></div>"""
+<div class="read" style="grid-template-columns:1fr;max-width:none"><article class="prose" id="prose">{''.join(body)}</article></div>"""
     js = """<script>
 const pr = $('#prose'), title = $('#title');
 function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)), w = Math.round(100 + k * 600);
-  title.style.fontVariationSettings = `'wght' ${w}`; $('#rw').textContent = 'wght ' + w;
+  title.style.fontVariationSettings = `'wght' ${w}, 'SOFT' ${Math.round((w - 100) / 6)}, 'WONK' 1`; $('#rw').textContent = 'Fraunces · wght ' + w + ' · reading ' + Math.round(k * 100) + '%';
  }
 addEventListener('scroll', upd, { passive: true }); upd();
 </script>"""
@@ -425,9 +437,9 @@ addEventListener('scroll', upd, { passive: true }); upd();
 
 def about():
     """Header, one statement, three people."""
-    team = "".join(f'<div class="pub"><div class="no">0{i+1}</div><div><h3 data-lens="300" style="font-size:40px">{n}</h3><p style="font-size:15px">{b}</p></div><div class="meta"><b>{r}</b></div></div>' for i, (n, r, b) in enumerate(ABOUT["team"]))
+    team = "".join(f'<div class="pub"><div class="no">0{i+1}</div><div><h3 data-lens="300" style="font-size:var(--s3)">{n}</h3><p style="font-size:15px">{b}</p></div><div class="meta"><b>{r}</b></div></div>' for i, (n, r, b) in enumerate(ABOUT["team"]))
     body = ph("About", "About e3 Initiative", ABOUT["what"]) + f"""
-<p style="font-size:30px;line-height:1.25;letter-spacing:-.025em;font-variation-settings:'wght' 260;max-width:40ch;margin-top:50px">{ABOUT['who']}</p>
+<p class="statement">{ABOUT['who']}</p>
 <section style="margin-top:60px">{team}<p class="lab" style="margin-top:28px;line-height:1.7;max-width:80ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p></section>"""
     return shell("about", body)
 
@@ -435,7 +447,7 @@ def journals():
     t, logo = JOURNAL
     body = ph("Publications", "Journals", "Browse our academic journals and long-form publications. Each journal entry includes comprehensive analysis and scholarly insights.") + f"""
 <div class="pub jr" style="margin-top:30px"><img src="{IMG}{logo}" alt="{esc(t)}" width="260" height="260" style="aspect-ratio:1;filter:none;border-radius:8px">
-<div><span class="lab">Journal</span><h3 data-lens="250" style="font-size:44px;margin-top:12px">{t}</h3><p style="font-size:15px">Entries coming soon. New long-form work will appear here first.</p></div></div>"""
+<div><span class="lab">Journal</span><h3 data-lens="250" style="font-size:var(--s3);margin-top:12px">{t}</h3><p style="font-size:15px">Entries coming soon. New long-form work will appear here first.</p></div></div>"""
     return shell("journals", body)
 
 
@@ -532,7 +544,7 @@ loadIndicators().then(D => { $('#note').hidden = D.live;
     return shell("economic-indicators", body, js)
 
 def outreach():
-    cols = "".join(f'<div class="c6" id="{k}"><span class="lab">0{i+1} · {s}</span><h2 data-lens="250" style="font-size:72px;letter-spacing:-.045em;font-weight:normal;line-height:1;margin:16px 0 24px">{t}</h2><p style="font-size:18px;line-height:1.65;font-variation-settings:{chr(39)}wght{chr(39)} 360">{p1}</p><p style="color:var(--soft);font-size:15px;line-height:1.6;margin:16px 0 26px">{p2}</p><a class="pill" href="contact.html">{"Share your story" if k == "interview" else "Partner with us"} →</a></div>' for i, (k, (t, s, p1, p2)) in enumerate(OUTREACH.items()))
+    cols = "".join(f'<div class="c6" id="{k}"><span class="lab">0{i+1} · {s}</span><h2 data-lens="250" style="font-size:var(--d2);font-weight:normal;line-height:1;margin:16px 0 24px">{t}</h2><p style="line-height:1.6">{p1}</p><p style="color:var(--soft);font-size:15px;line-height:1.6;margin:16px 0 26px">{p2}</p><a class="pill" href="contact.html">{"Share your story" if k == "interview" else "Partner with us"} →</a></div>' for i, (k, (t, s, p1, p2)) in enumerate(OUTREACH.items()))
     return shell("outreach", ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + f'<div class="grid" style="margin-top:60px;gap:56px">{cols}</div>')
 
 
@@ -553,15 +565,15 @@ def privacy():
         if t == "li":
             if not ul:
                 out.append("<ul>"); ul = True
-            out.append(f"<li>{txt}</li>"); continue
+            out.append(f"<li>{typo(txt)}</li>"); continue
         if ul:
             out.append("</ul>"); ul = False
         if t == "h2":
-            n += 1; secs.append((f"p{i}", txt, n)); out.append(f'<h2 id="p{i}" data-n="§{n}">{txt}</h2>')
+            n += 1; secs.append((f"p{i}", txt, n)); out.append(f'<h2 id="p{i}" data-n="§{n}">{typo(txt)}</h2>')
         else:
-            out.append(f"<{t}>{txt}</{t}>")
+            out.append(f"<{t}>{typo(txt)}</{t}>")
     body = ph("Legal · updated Nov 12, 2026", "Privacy Policy", "The e3 Initiative is a small research organization. This page explains what information this website collects, why, and the choices you have.") + f"""
-<div class="read" style="grid-template-columns:1fr;max-width:700px"><article class="prose" style="--bw:400">{''.join(out)}</article></div>"""
+<div class="read" style="grid-template-columns:1fr;max-width:none"><article class="prose" style="--bw:400">{''.join(out)}</article></div>"""
     return shell("privacy", body.replace('<p class="np">', '<p style="">'))
 
 
@@ -573,7 +585,7 @@ def notfound():
 
 
 def build():
-    write(f"{D}/theme.css", CSS + NOB + MODE_CSS)
+    write(f"{D}/theme.css", CSS + NOB + MODE_CSS + TYPE)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
@@ -603,4 +615,120 @@ NOB = r"""
 .fgroup,.tip-row{padding-top:12px}
 .knob{box-shadow:0 6px 14px -4px rgba(20,19,18,.3)}
 .banner img,.pub img{border-radius:10px}
+"""
+
+# TYPE: the typographic system (loaded last, so it wins over the structural CSS above)
+TYPE = r"""
+/* ── Scale: base fluid 17→20px, ×1.25 (major third); display steps get a vw term ── */
+:root{
+  --b:clamp(1.0625rem,1rem + .3vw,1.25rem);
+  --s-1:calc(var(--b)*.82); --s1:calc(var(--b)*1.25); --s2:calc(var(--b)*1.5625); --s3:calc(var(--b)*1.953); --s4:calc(var(--b)*2.441);
+  --d2:clamp(2.6rem,1.4rem + 4.2vw,4.5rem);   /* ≈72px */
+  --d1:clamp(2.1rem,1.2rem + 2.6vw,3.25rem);  /* ≈52px */
+  --d0:clamp(3.25rem,.9rem + 8.2vw,6.25rem);  /* ≈100px hero */
+  --measure:60ch;
+}
+html{font-optical-sizing:auto;text-rendering:optimizeLegibility;font-kerning:normal;-webkit-text-size-adjust:100%}
+body{font-family:var(--text);font-size:var(--b);line-height:1.5;font-variation-settings:normal;font-weight:400;font-feature-settings:"kern","liga","calt"}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+
+/* display voice: Fraunces */
+.brand,.ph h1,.sh h2,.pub .no,.pub h3,.lede2 h1,.glyph .e,.ln h3,.prose h2,.prose>p:first-of-type::first-letter,.bigsearch,.tip-row .no,.tip-row b,.big-num,.ind .val,.gt .d,.word,.legend .ramp,.tabs button.dsp,.statement,.inp,.slider .sl{font-family:var(--display)}
+.brand{font-size:var(--s1);letter-spacing:-.01em;font-variation-settings:'wght' 600,'SOFT' 100,'WONK' 1}
+.brand span{font-variation-settings:'wght' 200,'SOFT' 0,'WONK' 1;font-style:italic}
+.ph h1{font-size:var(--d0);line-height:.98;letter-spacing:-.025em;max-width:13ch;font-variation-settings:'wght' 200,'WONK' 1}
+.ph h1.long{font-size:var(--d1);max-width:20ch;line-height:1.02}
+.ph .lede p{font-size:var(--s1);line-height:1.5;max-width:44ch;color:var(--soft)}
+.sh h2{font-size:var(--d1);letter-spacing:-.02em;line-height:1.02;font-variation-settings:'wght' 300,'WONK' 1}
+.pub .no{font-size:var(--d2);letter-spacing:-.03em;line-height:.8;font-variation-settings:'wght' 100;font-variant-numeric:lining-nums}
+.pub h3{font-size:var(--s2);letter-spacing:-.015em;line-height:1.12;font-variation-settings:'wght' 300}
+.pub:hover h3{font-variation-settings:'wght' 620,'SOFT' 60}
+.pub:hover .no{font-variation-settings:'wght' 900,'SOFT' 100}
+.pub p{font-size:var(--b);line-height:1.5;max-width:56ch;margin-top:10px}
+.pub .meta{font-size:12px;letter-spacing:.02em}
+.lede2 h1{font-size:var(--d1);letter-spacing:-.02em;line-height:1.04;font-variation-settings:'wght' 250,'WONK' 1}
+.lede2 h1 .w8{font-style:italic;font-variation-settings:'wght' 800,'SOFT' 100,'WONK' 1}
+.lede2 h1 .w1{font-variation-settings:'wght' 100,'WONK' 1}
+.lede2 p{font-size:var(--s1);line-height:1.5}
+.ln h3{font-size:var(--s3);letter-spacing:-.015em;font-variation-settings:'wght' 400}
+.ln p{font-size:var(--b)}
+.glyph .e{letter-spacing:-.02em}
+.statement{font-size:var(--s3);line-height:1.22;letter-spacing:-.012em;font-variation-settings:'wght' 300,'WONK' 1;max-width:34ch;margin-top:50px;text-wrap:balance}
+.word{letter-spacing:-.025em}
+
+/* labels: mono, small, tracked; tabular so figures align in specimens */
+.lab,.pub .meta,.gt th,.gt .a,.gt .c,.gt .d small,.margin,.field .fl,.ftabs button,.tabs button,.pill,.sh a,footer a,.menu-btn,.notice,.capt,.prose h3,.tip,.tkl{font-family:var(--mono);font-variant-numeric:tabular-nums slashed-zero}
+.lab{font-size:12px;letter-spacing:.015em;line-height:1.5}
+.lab.rd{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.gt th{letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+.field .fl{text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+
+/* nav */
+.nav ul a{font-size:var(--b);font-variation-settings:'wght' 400;letter-spacing:0}
+.nav ul a:hover,.nav ul a.on{font-variation-settings:'wght' 700}
+.nav ul a.on{font-variation-settings:'wght' 700}
+
+/* tables: Newsreader text, Fraunces figures, tabular + lining */
+.gt{font-variant-numeric:tabular-nums lining-nums}
+.gt .n{font-size:var(--s1);letter-spacing:-.005em;font-variation-settings:'wght' 500;line-height:1.25;text-wrap:balance}
+.gt .f{font-size:var(--s-1);font-style:italic;color:var(--soft);margin-top:4px}
+.gt .a{font-size:14px;letter-spacing:0}
+.gt .d{font-size:var(--s3);letter-spacing:-.01em;font-variant-numeric:tabular-nums lining-nums;line-height:1.05}
+.gt .d small{font-size:11.5px;letter-spacing:.01em}
+.gt tr.xr td{font-size:var(--b);line-height:1.55;max-width:60ch}
+.big-num{letter-spacing:-.04em;font-variant-numeric:lining-nums}
+.ind .val{letter-spacing:-.035em;font-variant-numeric:lining-nums tabular-nums}
+.ind p{font-size:var(--b);line-height:1.5}
+.legend .ramp{font-size:var(--s2)}
+
+/* forms */
+.inp{font-size:var(--s2);letter-spacing:-.005em;font-variation-settings:'wght' 300;line-height:1.25}
+.inp:focus{font-variation-settings:'wght' 500,'SOFT' 100}
+textarea.inp{font-family:var(--text);font-size:var(--s1);line-height:1.55;font-variation-settings:'wght' 400;letter-spacing:0}
+textarea.inp:focus{font-variation-settings:'wght' 460}
+.bigsearch{font-size:var(--d2);letter-spacing:-.025em;font-variation-settings:'wght' 200,'WONK' 1}
+.inp::placeholder{font-style:italic}
+.pill{font-size:13px;letter-spacing:.01em}
+
+/* checklist */
+.tip-row .no{font-size:var(--d2);letter-spacing:-.03em;font-variation-settings:'wght' 100}
+.tip-row b{font-size:var(--s2);letter-spacing:-.01em;line-height:1.15;font-variation-settings:'wght' 250}
+.tip-row.on b{font-variation-settings:'wght' 720,'SOFT' 60}
+.tip-row p{font-size:var(--b);line-height:1.5}
+
+/* long-form: ~60ch measure, hanging punctuation, drop cap, small-caps lead-in */
+.read{display:block}
+.prose{font-family:var(--text);font-size:calc(var(--b)*1.075);line-height:1.58;max-width:var(--measure);margin:0 auto;font-variation-settings:'wght' var(--bw,400);font-feature-settings:"kern","liga","onum","pnum";hanging-punctuation:first allow-end last;hyphens:manual}
+.prose p{margin:0 0 1em;text-wrap:pretty}
+.prose p + p{margin-top:0}
+.prose>p:first-of-type{font-size:calc(var(--b)*1.2);line-height:1.5}
+.prose>p:first-of-type::first-line{font-variant-caps:all-small-caps;letter-spacing:.06em}
+.prose>p:first-of-type::first-letter{float:left;font-size:5.6em;line-height:.78;margin:.07em .09em 0 0;font-variation-settings:'wght' 800,'SOFT' 100,'WONK' 1;letter-spacing:0;font-variant-caps:normal;color:var(--ink)}
+.prose h2{font-size:var(--s3);line-height:1.1;letter-spacing:-.015em;font-variation-settings:'wght' 300,'WONK' 1;margin:2em 0 .55em;max-width:24ch}
+.prose h2::before{font-size:11.5px;letter-spacing:.02em}
+.prose h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin:2.2em 0 .6em}
+.prose ul{margin:0 0 1em 1.2em}.prose li{margin:0 0 .45em}
+.prose strong,.prose b{font-variation-settings:'wght' 700}
+.prose em,.prose i{font-style:italic}
+.prose a{text-decoration-thickness:1px;text-underline-offset:.22em}
+.banner + .capt{margin-top:10px}
+.capt{font-size:11.5px;letter-spacing:.01em;max-width:var(--measure)}
+.margin{font-size:12px}
+footer .lab{font-size:11.5px}
+footer a{font-size:12px}
+
+html.dark .prose{--bw:430!important}
+html.dark .gt .n{font-variation-settings:'wght' 540}
+html.dark .ph .lede p,html.dark .pub p{font-variation-settings:'wght' 430}
+
+@media (max-width:760px){
+  .ph .top{flex-direction:column;gap:6px;margin-bottom:20px}
+  .lab.rd{text-align:left;white-space:normal}
+  .ph h1{max-width:none}
+  .pub .no{font-size:var(--s4)}
+  .gt .d{font-size:var(--s1)}
+  .prose{font-size:calc(var(--b)*1.05)}
+  .statement{margin-top:34px}
+}
 """

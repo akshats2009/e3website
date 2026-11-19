@@ -15,7 +15,7 @@ CSS = r"""
   --metal-shadow:0 10px 18px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.5),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.25);
   --liner:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 40%,rgba(255,255,255,.02) 70%,rgba(255,255,255,.08));
   --well:#0b0b0d; --well-shadow:inset 0 1px 2px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.04),0 1px 0 rgba(255,255,255,.06);
-  --sans:"Geist",sans-serif; --mono:"Geist Mono",monospace; --r:32px;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif; --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,monospace; --r:32px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{background:var(--page)}
@@ -300,7 +300,96 @@ $$('.meter[data-n]').forEach((m, j) => { const n = +m.dataset.n, lit = +m.datase
 $$('.knob[data-labels]').forEach(k => makeKnob(k, k.dataset.labels.split('|'), +(k.dataset.idx || 0)));
 """
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">'
+TYPE = r"""
+/* ===== TYPE SYSTEM =====
+ Display/text: Archivo (variable wght+wdth). Mono: Martian Mono (variable). Fluid modular scale, ratio ~1.25.
+ Hardware logic: labels are engraved caps in wide mono; everything numeric is tabular+slashed-zero; headlines are semi-expanded
+ Archivo at medium weight so they read like a front-panel legend rather than a web-default light sans. */
+:root{
+  --t-2xs:.625rem; --t-xs:.6875rem; --t-s:clamp(.8125rem,.79rem + .1vw,.875rem); --t-m:clamp(.9375rem,.91rem + .12vw,1rem);
+  --t-read:clamp(1.0625rem,1rem + .28vw,1.1875rem); --t-l:clamp(1.25rem,1.15rem + .45vw,1.5rem); --t-xl:clamp(1.5rem,1.3rem + .9vw,1.875rem);
+  --t-2xl:clamp(1.875rem,1.5rem + 1.7vw,2.875rem); --t-3xl:clamp(2.25rem,1.6rem + 2.9vw,3.75rem); --t-4xl:clamp(2.625rem,1.8rem + 3.9vw,4.5rem);
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;text-rendering:optimizeLegibility}
+body{font-family:var(--sans);font-size:var(--t-m);line-height:1.55;font-weight:400;font-optical-sizing:auto;
+  font-kerning:normal;font-variant-ligatures:common-ligatures contextual;font-feature-settings:"kern","liga","calt","ss01";font-variant-numeric:tabular-nums lining-nums;
+  -moz-osx-font-smoothing:grayscale;hanging-punctuation:first last}
+h1,h2,h3,.t-xl,.t-xl2,.t-lede,.t-l,.t-name{text-wrap:balance}
+p,li,.prose p{text-wrap:pretty}
+.mono,.cap,.det,.fticks span,.mbtn,.key,.nav ul a,.inp,.tag,.strip .val,.rrow .a,.rrow .d,.rrow .f,.chk .no,.capt,.empty,.notice,.mrow b,.shead a,.scope .readout,.t-read,.t-read2,.t-404{
+  font-family:var(--mono);font-feature-settings:"zero","tnum","calt";font-variant-numeric:slashed-zero tabular-nums;font-optical-sizing:auto}
+/* engraved caps: small, wide-tracked, medium weight so they hold on dark metal */
+.cap,.nav ul a,.shead a,.mbtn,.key,.det{text-transform:uppercase;font-weight:500;font-stretch:90%}
+.cap{font-size:var(--t-2xs);letter-spacing:.2em;line-height:1.6}
+.nav ul a{font-size:var(--t-2xs);letter-spacing:.18em}
+.shead a{font-size:var(--t-2xs);letter-spacing:.2em}
+.mbtn{font-size:var(--t-2xs);letter-spacing:.18em;font-weight:600}.mbtn.sm{font-size:.5625rem;letter-spacing:.16em}
+.key{font-size:.5625rem;letter-spacing:.16em}
+.det{font-size:.5625rem;letter-spacing:.1em;font-weight:500}
+.fticks span{font-size:.5rem;letter-spacing:.04em;font-weight:400}
+.tag{font-size:.5625rem;letter-spacing:.06em;font-weight:500}
+.brand{font-size:1.0625rem;font-weight:620;font-stretch:112%;letter-spacing:-.01em}
+/* headlines: semi-expanded Archivo, medium weight, tight tracking that relaxes as size drops */
+.ph h1,.atile h1,.shead h2,.feat h3,.prose h2,.t-xl,.t-xl2,.t-lede,.t-l,.t-name,.prow h3,.chk b,.rrow .n{font-family:var(--sans);font-stretch:112%}
+.ph h1{font-size:var(--t-4xl);font-weight:520;line-height:1;letter-spacing:-.045em;margin-top:22px}
+.ph h1 span{font-weight:360}
+.ph p{font-size:var(--t-m);line-height:1.6;max-width:46ch;letter-spacing:.002em}
+.shead h2{font-size:var(--t-2xl);font-weight:560;letter-spacing:-.04em;line-height:1.02}
+.feat h3{font-size:var(--t-2xl);font-weight:540;line-height:1.04;letter-spacing:-.04em}
+.feat p{font-size:var(--t-m);line-height:1.6;max-width:46ch}
+.atile h1{font-size:var(--t-3xl);font-weight:560;line-height:1.02;letter-spacing:-.045em;max-width:18ch;margin:20px 0 20px}
+.t-xl{font-size:var(--t-xl);font-weight:520;line-height:1.1;letter-spacing:-.03em}
+.t-xl2{font-size:var(--t-xl);font-weight:540;line-height:1.1;letter-spacing:-.035em}
+.t-l{font-size:var(--t-l);font-weight:500;line-height:1.2;letter-spacing:-.025em}
+.t-lede{font-size:var(--t-xl);font-weight:420;line-height:1.28;letter-spacing:-.022em}
+.t-name{font-size:var(--t-l);font-weight:560;letter-spacing:-.025em;line-height:1.15}
+.t-s{font-size:var(--t-s);line-height:1.6;max-width:64ch}
+.t-fine{font-size:var(--t-xs);line-height:1.75;letter-spacing:.01em;max-width:80ch;font-weight:400}
+.t-read{font-size:var(--t-xl);font-weight:400;letter-spacing:-.03em;line-height:1}
+.t-read2{font-size:var(--t-l);font-weight:400;letter-spacing:-.03em}
+.t-404{font-size:clamp(5.5rem,3rem + 12vw,11rem);font-weight:300;letter-spacing:-.07em;line-height:.9;font-stretch:80%}
+/* rows / ledger */
+.prow h3{font-size:var(--t-l);font-weight:520;line-height:1.2;letter-spacing:-.025em}
+.prow p{font-size:var(--t-s);line-height:1.5;margin-top:5px;max-width:60ch}
+.rrow .n{font-size:var(--t-m);font-weight:540;font-stretch:104%;letter-spacing:-.012em;line-height:1.25}
+.rrow .f{font-size:var(--t-xs);font-weight:400;letter-spacing:.01em;line-height:1.5;margin-top:4px}
+.rrow .a,.rrow .d{font-size:.8125rem;font-weight:400;letter-spacing:-.01em}
+.rrow .x{font-size:var(--t-s);line-height:1.65;max-width:62ch}
+.empty{font-size:.75rem;line-height:1.6}
+.mrow b{font-size:.9375rem;font-weight:400;letter-spacing:-.02em}
+.chk .no{font-size:var(--t-xs);letter-spacing:.06em;font-weight:500}
+.chk b{font-size:var(--t-l);font-weight:520;letter-spacing:-.025em;line-height:1.2}
+.chk p{font-size:var(--t-s);line-height:1.6;max-width:60ch}
+.strip .val{font-size:1.125rem;font-weight:400;letter-spacing:-.04em;line-height:1.2;white-space:nowrap}
+.strip .top{font-size:.625rem;letter-spacing:.02em}
+.strip .sub{font-size:.625rem}
+.scope .readout{font-size:var(--t-xl);font-weight:400;letter-spacing:-.045em;line-height:1.1}
+.scope .readout small{font-size:var(--t-xs);letter-spacing:.04em;font-weight:500}
+.scope p{font-size:var(--t-s);line-height:1.6}
+.notice{font-size:.75rem;line-height:1.6}
+.capt{font-size:var(--t-xs);line-height:1.5;letter-spacing:.02em}
+.secs a{font-size:var(--t-s);line-height:1.4;font-stretch:104%}
+/* long-form article body */
+.prose{font-size:var(--t-read);line-height:1.72;max-width:64ch;letter-spacing:.003em;font-weight:400;font-variant-numeric:oldstyle-nums proportional-nums;font-feature-settings:"kern","liga","onum","pnum","ss01";hyphens:auto;hyphenate-limit-chars:6 3 3}
+.prose p{margin:0 0 1.25em}
+.prose h2{font-size:var(--t-xl);font-weight:560;line-height:1.1;letter-spacing:-.035em;margin:2em 0 .6em}
+.prose h3{font-family:var(--mono);font-size:var(--t-2xs);font-weight:500;letter-spacing:.2em;line-height:1.6;margin:2.4em 0 .8em;font-stretch:90%}
+.prose ul{margin:0 0 1.25em 1.15em}.prose li{margin:0 0 .55em;padding-left:.2em}.prose li::marker{color:var(--label)}
+.prose strong,.prose b{font-weight:640}
+.prose em{font-style:italic;font-variation-settings:"slnt" 0}
+.prose blockquote{font-size:var(--t-l);font-weight:420;font-stretch:108%;line-height:1.3;letter-spacing:-.02em;margin:1.6em 0;text-wrap:balance}
+.prose a{text-decoration-thickness:1px;text-underline-offset:.22em}
+.prose .num,.prose time{font-variant-numeric:lining-nums tabular-nums}
+/* forms */
+.field > span.cap,.field > span{font-size:var(--t-2xs)}
+.inp{font-size:.875rem;font-weight:400;letter-spacing:-.01em;line-height:1.6;font-stretch:92%}
+.inp::placeholder{letter-spacing:0}
+textarea.inp{line-height:1.65}
+/* footer / privacy */
+footer{font-size:var(--t-xs)}
+@media (max-width:700px){.cap{letter-spacing:.17em}.t-404{letter-spacing:-.05em}.ph h1,.atile h1{letter-spacing:-.04em}.prose{hyphens:auto}}
+"""
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Martian+Mono:wdth,wght@75..112.5,300..700&display=swap" rel="stylesheet">'
 GRAIN = '<svg class="grain" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#gr)"/></svg>'
 
 
@@ -376,14 +465,14 @@ def home():
     body = ph("Equity · Economics · Ethnicity", f"{TAGLINE}<span>.</span>", "Student-led research on who builds local economies, who gets credit and who gets left out.",
               '<div style="margin-top:26px"><a class="mbtn" href="articles.html">Read the research</a></div>') + panel(f"""
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
-    <div><div class="cap">Grant mixer</div><div style="font-size:30px;letter-spacing:-.02em;margin-top:10px">Find funding in seconds</div></div>
-    <div style="text-align:right"><div class="cap">Matching</div><div class="mono" style="font-size:30px;letter-spacing:-.02em;margin-top:10px" id="tot">0</div></div>
+    <div><div class="cap">Grant mixer</div><div class="t-xl" style="margin-top:10px">Find funding in seconds</div></div>
+    <div style="text-align:right"><div class="cap">Matching</div><div class="mono t-read" style="margin-top:10px" id="tot">0</div></div>
   </div>
   <div class="board mini3" id="board">
     <div class="master vline">
       <div class="cap">Deadline window</div>
       <div class="knob" id="win" data-label="Deadline window" style="margin:22px auto 0"></div>
-      <div style="text-align:center;margin-top:8px"><div style="font-size:24px;letter-spacing:-.02em" id="wl">Any time</div></div>
+      <div style="text-align:center;margin-top:8px"><div class="t-l" id="wl">Any time</div></div>
       <a class="mbtn" href="grants.html" style="margin-top:26px;width:100%;justify-content:center">See the grants</a>
     </div>
   </div>""", "desk")
@@ -446,15 +535,15 @@ addEventListener('scroll', upd, { passive: true }); upd();
 
 def about():
     """Header, one statement, three people."""
-    team = panel('<div class="rows">' + "".join(f'<div class="mrow" style="display:block;border:0;border-top:1px solid var(--row-line);padding:22px 0"><div style="display:flex;gap:18px;align-items:baseline;flex-wrap:wrap"><span class="cap">0{i+1}</span><b style="font:20px var(--sans);letter-spacing:-.01em">{n}</b><span class="cap" style="margin-left:auto">{r}</span></div><p class="dim" style="font-size:14px;line-height:1.6;margin:8px 0 0 40px;max-width:70ch">{b}</p></div>' for i, (n, r, b) in enumerate(ABOUT["team"])) + "</div>", "", attrs='style="margin-top:20px"')
-    body = ph("About", "About e3 Initiative", ABOUT["what"]) + panel(f'<p style="font-weight:300;font-size:26px;line-height:1.35;letter-spacing:-.02em;max-width:48ch">{ABOUT["who"]}</p>', "pad") + team + '<p class="cap" style="margin-top:22px;line-height:1.8;max-width:80ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p>'
+    team = panel('<div class="rows">' + "".join(f'<div class="mrow" style="display:block;border:0;border-top:1px solid var(--row-line);padding:22px 0"><div style="display:flex;gap:18px;align-items:baseline;flex-wrap:wrap"><span class="cap">0{i+1}</span><b class="t-name">{n}</b><span class="cap" style="margin-left:auto">{r}</span></div><p class="dim" style="margin:8px 0 0 40px;max-width:64ch">{b}</p></div>' for i, (n, r, b) in enumerate(ABOUT["team"])) + "</div>", "", attrs='style="margin-top:20px"')
+    body = ph("About", "About e3 Initiative", ABOUT["what"]) + panel(f'<p class="t-lede" style="max-width:48ch">{ABOUT["who"]}</p>', "pad") + team + '<p class="cap" style="margin-top:22px;line-height:1.8;max-width:80ch">We believe in community voices, cross-sector collaboration, and turning findings into stories of economic resilience.</p>'
     return shell("about", body)
 
 def journals():
     t, logo = JOURNAL
     body = ph("Publications", "Journals", "Browse our academic journals and long-form publications.") + panel(f"""
   <div style="display:flex;gap:34px;align-items:center;flex-wrap:wrap"><div style="border-radius:20px;background:var(--well);box-shadow:var(--well-shadow);padding:22px"><img src="{IMG}{logo}" alt="{esc(t)}" width="150" height="150" style="border-radius:12px"></div>
-  <div><div class="cap">Journal</div><div style="font-weight:300;font-size:34px;letter-spacing:-.03em;line-height:1.1;margin-top:12px;max-width:20ch">{t}</div><div class="cap" style="margin-top:14px">Entries coming soon</div></div></div>""", "pad")
+  <div><div class="cap">Journal</div><div class="t-xl2" style="margin-top:12px;max-width:20ch">{t}</div><div class="cap" style="margin-top:14px">Entries coming soon</div></div></div>""", "pad")
     return shell("journals", body)
 
 def grants():
@@ -507,9 +596,9 @@ def category(slug):
 def grant_help():
     """Header, one checklist. Mistakes and the directory are folded away."""
     tips = "".join(f'<button class="chk" data-i="{i}"><span class="no">0{i+1}</span><div><b>{a}</b><p>{b}</p></div><span class="tog"></span></button>' for i, (a, b) in enumerate(HELP["tips"]))
-    mistakes = '<details style="padding:18px 0 0;border-top:1px solid var(--row-line)"><summary class="cap" style="cursor:pointer">+ Common mistakes to avoid</summary>' + "".join(f'<div class="mrow" style="justify-content:flex-start;gap:14px;align-items:flex-start;border:0;padding:8px 0"><span class="led over" style="margin-top:6px"></span><span style="font-size:14px;line-height:1.5;color:var(--body)">{m}</span></div>' for m in HELP["mistakes"]) + "</details>"
-    orgs = "".join(f'<a class="rrow" href="{u}" target="_blank" rel="noopener" style="grid-template-columns:14px 1fr 170px"><span class="led on"></span><div><div class="n">{n}</div><div class="f" style="font-family:var(--sans);font-size:13px;line-height:1.5">{d}</div></div><span class="cap" style="text-align:right">{l} →</span></a>' for n, d, l, u in HELP["orgs"])
-    directory = f'<details style="padding:18px 0 0;border-top:1px solid var(--row-line);margin-top:14px"><summary class="cap" style="cursor:pointer">+ Where to get free help</summary><div style="margin-top:8px">{orgs}</div><p class="dim mono" style="font-size:11px;line-height:1.7;margin-top:14px;max-width:90ch">{HELP["disclaimer"]}</p></details>'
+    mistakes = '<details style="padding:18px 0 0;border-top:1px solid var(--row-line)"><summary class="cap" style="cursor:pointer">+ Common mistakes to avoid</summary>' + "".join(f'<div class="mrow" style="justify-content:flex-start;gap:14px;align-items:flex-start;border:0;padding:8px 0"><span class="led over" style="margin-top:6px"></span><span class="t-s" style="color:var(--body)">{m}</span></div>' for m in HELP["mistakes"]) + "</details>"
+    orgs = "".join(f'<a class="rrow" href="{u}" target="_blank" rel="noopener" style="grid-template-columns:14px 1fr 170px"><span class="led on"></span><div><div class="n">{n}</div><div class="f" style="font-family:var(--sans)">{d}</div></div><span class="cap" style="text-align:right">{l} →</span></a>' for n, d, l, u in HELP["orgs"])
+    directory = f'<details style="padding:18px 0 0;border-top:1px solid var(--row-line);margin-top:14px"><summary class="cap" style="cursor:pointer">+ Where to get free help</summary><div style="margin-top:8px">{orgs}</div><p class="dim mono t-fine" style="margin-top:14px">{HELP["disclaimer"]}</p></details>'
     body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="mbtn" href="grants.html" style="margin-top:20px">Search grants →</a>') + panel('<div class="cap" style="margin-bottom:6px">How to write a strong application · <span id="hc">0/8</span> done</div>' + tips + mistakes + directory, "pad")
     js = """<script>
 const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
@@ -528,7 +617,7 @@ def indicators():
     key = [i for i in INDICATORS if i[0] in KEY_INDICATORS]
     more = [i for i in INDICATORS if i[0] not in KEY_INDICATORS]
     body = ph("Data", "Economic Indicators", "Everyday costs, job security and borrowing rates. Turn the knob to change the range; hover a screen to read any year.",
-              '<div style="display:flex;align-items:center;gap:24px;margin-top:18px"><div class="knob" id="rng" data-label="Time range"></div><div class="mono" style="font-size:22px" id="rngl">2000 →</div></div>') + f"""
+              '<div style="display:flex;align-items:center;gap:24px;margin-top:18px"><div class="knob" id="rng" data-label="Time range"></div><div class="mono t-read2" id="rngl">2000 →</div></div>') + f"""
 {panel('<span class="led near"></span><span>Preview: placeholder traces. Live FRED data loads from /api/economic-indicators on the deployed site.</span>', "notice", attrs='id="note" hidden')}
 <div class="grid">{''.join(scope(*i, '') for i in key)}{''.join(scope(*i, ' more') for i in more)}</div>
 <div style="text-align:center;margin-top:24px"><button class="mbtn ghost" onclick="document.querySelectorAll('.scope.more').forEach(e=>e.hidden=false);this.remove()">Show all 8 indicators</button></div>"""
@@ -552,7 +641,7 @@ loadIndicators().then(d => { D = d; $('#note').hidden = d.live; draw(); });
 
 def outreach():
     cards = "".join(panel(f"""<div class="cap">{t}</div>
-      <p style="font-weight:300;font-size:26px;line-height:1.3;letter-spacing:-.02em;margin:22px 0 16px">{p1}</p><p class="dim" style="font-size:14px;line-height:1.6">{p2}</p>
+      <p class="t-lede" style="margin:22px 0 16px">{p1}</p><p class="dim t-s">{p2}</p>
       <a class="mbtn" href="contact.html" style="margin-top:26px">{'Share your story' if k == 'interview' else 'Partner with us'} →</a>""", "pad c6", attrs=f'id="{k}"') for k, (t, s, p1, p2) in OUTREACH.items())
     return shell("outreach", ph("Outreach", "Outreach", "Interviews and partnerships: how community knowledge gets into our research.") + f'<div class="grid">{cards}</div>')
 
@@ -589,7 +678,7 @@ def privacy():
 
 def notfound():
     body = f"""<div style="margin-top:60px">{panel(f'''<div style="display:flex;justify-content:space-between"><span class="cap">Page not found</span><span class="led over"></span></div>
-  <div style="display:flex;gap:40px;align-items:center;margin:40px 0;flex-wrap:wrap"><div class="mono" style="font-size:150px;letter-spacing:-.04em;line-height:1">404</div>
+  <div style="display:flex;gap:40px;align-items:center;margin:40px 0;flex-wrap:wrap"><div class="mono t-404">404</div>
   <div style="display:flex;gap:6px">{"".join(f'<span class="meter v" data-n="14" data-lit="0"></span>' for _ in range(6))}</div><div class="cap" style="color:rgb(var(--led-over))">No signal</div></div>
   <p class="dim" style="max-width:46ch;margin-bottom:26px">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p>
   <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="mbtn" href="index.html">Homepage</a><a class="mbtn ghost" href="articles.html">Articles</a><a class="mbtn ghost" href="research.html">Research</a><a class="mbtn ghost" href="contact.html">Contact</a></div>''', "desk")}</div>"""
@@ -597,13 +686,13 @@ def notfound():
 
 
 def build():
-    write(f"{D}/theme.css", CSS + NOB + MODE_CSS)
+    write(f"{D}/theme.css", CSS + NOB + MODE_CSS + TYPE)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
              "articles": pub_list("articles", "Publications", "Articles and research papers from our team and partners, from grassroots history to systemic policy analysis.", PUBS),
              "research": pub_list("research", "Research", "Research papers, reports, and briefs, each with clear summaries and next steps for community leaders and decision-makers.", RESEARCH,
-                 '<section class="grid">' + panel('<div class="cap">Journals</div><p style="font-weight:300;font-size:24px;letter-spacing:-.02em;margin-top:12px">Critical Debates in Humanities, Science and Global Justice →</p>', "pad c6", "a", 'href="journals.html"') + panel('<div class="cap">Data</div><p style="font-weight:300;font-size:24px;letter-spacing:-.02em;margin-top:12px">Economic indicators since 2000 →</p>', "pad c6", "a", 'href="economic-indicators.html"') + '</section>')}
+                 '<section class="grid">' + panel('<div class="cap">Journals</div><p class="t-l" style="margin-top:12px">Critical Debates in Humanities, Science and Global Justice →</p>', "pad c6", "a", 'href="journals.html"') + panel('<div class="cap">Data</div><p class="t-l" style="margin-top:12px">Economic indicators since 2000 →</p>', "pad c6", "a", 'href="economic-indicators.html"') + '</section>')}
     for p in PUBS:
         pages[p["slug"]] = article(p)
     for s in CATEGORY_PAGES:

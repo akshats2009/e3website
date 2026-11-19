@@ -4,7 +4,9 @@ from common import replace_func
 
 s = open("theme_a.py").read()
 s = s.replace('D = "site-a"', 'D = "site-d"')
-s = s.replace("wght@300;400&family=Geist+Mono", "wght@300;400;600;700&family=Geist+Mono")
+# type system: Archivo (width axis) + Newsreader + IBM Plex Mono
+FONT_URL = "https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+s = re.sub(r'https://fonts\.googleapis\.com/css2\?[^"\']*', FONT_URL, s)
 
 # palette: day = concrete + transit green, night = navy asphalt + lit windows
 a = s.index(":root{\n  --bg:")

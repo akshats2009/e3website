@@ -8,7 +8,7 @@
   --metal-shadow:0 10px 18px rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.5),inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.25);
   --liner:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 40%,rgba(255,255,255,.02) 70%,rgba(255,255,255,.08));
   --well:#0b0b0d; --well-shadow:inset 0 1px 2px rgba(0,0,0,.9),inset 0 0 0 1px rgba(255,255,255,.04),0 1px 0 rgba(255,255,255,.06);
-  --sans:"Geist",sans-serif; --mono:"Geist Mono",monospace; --r:32px;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif; --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,monospace; --r:32px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{background:var(--page)}
@@ -278,3 +278,91 @@ html.light .knob .tr{stroke:rgba(0,0,0,.1)}html.light .knob .pg{stroke:#141416}
 html.light .fader .fill{background:linear-gradient(0deg,rgba(0,0,0,.1),rgba(0,0,0,.5))}
 html.light .prow:hover h3{color:#000}
 html.light .nav ul.open{background:#f4f4f6}html.light .key{color:rgba(244,244,246,.6)}html.light .key.on{color:#f4f4f6}html.light .key::before{background:rgba(255,255,255,.18)}html.light .inp::placeholder{color:rgba(20,20,22,.4)}
+
+/* ===== TYPE SYSTEM =====
+ Display/text: Archivo (variable wght+wdth). Mono: Martian Mono (variable). Fluid modular scale, ratio ~1.25.
+ Hardware logic: labels are engraved caps in wide mono; everything numeric is tabular+slashed-zero; headlines are semi-expanded
+ Archivo at medium weight so they read like a front-panel legend rather than a web-default light sans. */
+:root{
+  --t-2xs:.625rem; --t-xs:.6875rem; --t-s:clamp(.8125rem,.79rem + .1vw,.875rem); --t-m:clamp(.9375rem,.91rem + .12vw,1rem);
+  --t-read:clamp(1.0625rem,1rem + .28vw,1.1875rem); --t-l:clamp(1.25rem,1.15rem + .45vw,1.5rem); --t-xl:clamp(1.5rem,1.3rem + .9vw,1.875rem);
+  --t-2xl:clamp(1.875rem,1.5rem + 1.7vw,2.875rem); --t-3xl:clamp(2.25rem,1.6rem + 2.9vw,3.75rem); --t-4xl:clamp(2.625rem,1.8rem + 3.9vw,4.5rem);
+}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;text-rendering:optimizeLegibility}
+body{font-family:var(--sans);font-size:var(--t-m);line-height:1.55;font-weight:400;font-optical-sizing:auto;
+  font-kerning:normal;font-variant-ligatures:common-ligatures contextual;font-feature-settings:"kern","liga","calt","ss01";font-variant-numeric:tabular-nums lining-nums;
+  -moz-osx-font-smoothing:grayscale;hanging-punctuation:first last}
+h1,h2,h3,.t-xl,.t-xl2,.t-lede,.t-l,.t-name{text-wrap:balance}
+p,li,.prose p{text-wrap:pretty}
+.mono,.cap,.det,.fticks span,.mbtn,.key,.nav ul a,.inp,.tag,.strip .val,.rrow .a,.rrow .d,.rrow .f,.chk .no,.capt,.empty,.notice,.mrow b,.shead a,.scope .readout,.t-read,.t-read2,.t-404{
+  font-family:var(--mono);font-feature-settings:"zero","tnum","calt";font-variant-numeric:slashed-zero tabular-nums;font-optical-sizing:auto}
+/* engraved caps: small, wide-tracked, medium weight so they hold on dark metal */
+.cap,.nav ul a,.shead a,.mbtn,.key,.det{text-transform:uppercase;font-weight:500;font-stretch:90%}
+.cap{font-size:var(--t-2xs);letter-spacing:.2em;line-height:1.6}
+.nav ul a{font-size:var(--t-2xs);letter-spacing:.18em}
+.shead a{font-size:var(--t-2xs);letter-spacing:.2em}
+.mbtn{font-size:var(--t-2xs);letter-spacing:.18em;font-weight:600}.mbtn.sm{font-size:.5625rem;letter-spacing:.16em}
+.key{font-size:.5625rem;letter-spacing:.16em}
+.det{font-size:.5625rem;letter-spacing:.1em;font-weight:500}
+.fticks span{font-size:.5rem;letter-spacing:.04em;font-weight:400}
+.tag{font-size:.5625rem;letter-spacing:.06em;font-weight:500}
+.brand{font-size:1.0625rem;font-weight:620;font-stretch:112%;letter-spacing:-.01em}
+/* headlines: semi-expanded Archivo, medium weight, tight tracking that relaxes as size drops */
+.ph h1,.atile h1,.shead h2,.feat h3,.prose h2,.t-xl,.t-xl2,.t-lede,.t-l,.t-name,.prow h3,.chk b,.rrow .n{font-family:var(--sans);font-stretch:112%}
+.ph h1{font-size:var(--t-4xl);font-weight:520;line-height:1;letter-spacing:-.045em;margin-top:22px}
+.ph h1 span{font-weight:360}
+.ph p{font-size:var(--t-m);line-height:1.6;max-width:46ch;letter-spacing:.002em}
+.shead h2{font-size:var(--t-2xl);font-weight:560;letter-spacing:-.04em;line-height:1.02}
+.feat h3{font-size:var(--t-2xl);font-weight:540;line-height:1.04;letter-spacing:-.04em}
+.feat p{font-size:var(--t-m);line-height:1.6;max-width:46ch}
+.atile h1{font-size:var(--t-3xl);font-weight:560;line-height:1.02;letter-spacing:-.045em;max-width:18ch;margin:20px 0 20px}
+.t-xl{font-size:var(--t-xl);font-weight:520;line-height:1.1;letter-spacing:-.03em}
+.t-xl2{font-size:var(--t-xl);font-weight:540;line-height:1.1;letter-spacing:-.035em}
+.t-l{font-size:var(--t-l);font-weight:500;line-height:1.2;letter-spacing:-.025em}
+.t-lede{font-size:var(--t-xl);font-weight:420;line-height:1.28;letter-spacing:-.022em}
+.t-name{font-size:var(--t-l);font-weight:560;letter-spacing:-.025em;line-height:1.15}
+.t-s{font-size:var(--t-s);line-height:1.6;max-width:64ch}
+.t-fine{font-size:var(--t-xs);line-height:1.75;letter-spacing:.01em;max-width:80ch;font-weight:400}
+.t-read{font-size:var(--t-xl);font-weight:400;letter-spacing:-.03em;line-height:1}
+.t-read2{font-size:var(--t-l);font-weight:400;letter-spacing:-.03em}
+.t-404{font-size:clamp(5.5rem,3rem + 12vw,11rem);font-weight:300;letter-spacing:-.07em;line-height:.9;font-stretch:80%}
+/* rows / ledger */
+.prow h3{font-size:var(--t-l);font-weight:520;line-height:1.2;letter-spacing:-.025em}
+.prow p{font-size:var(--t-s);line-height:1.5;margin-top:5px;max-width:60ch}
+.rrow .n{font-size:var(--t-m);font-weight:540;font-stretch:104%;letter-spacing:-.012em;line-height:1.25}
+.rrow .f{font-size:var(--t-xs);font-weight:400;letter-spacing:.01em;line-height:1.5;margin-top:4px}
+.rrow .a,.rrow .d{font-size:.8125rem;font-weight:400;letter-spacing:-.01em}
+.rrow .x{font-size:var(--t-s);line-height:1.65;max-width:62ch}
+.empty{font-size:.75rem;line-height:1.6}
+.mrow b{font-size:.9375rem;font-weight:400;letter-spacing:-.02em}
+.chk .no{font-size:var(--t-xs);letter-spacing:.06em;font-weight:500}
+.chk b{font-size:var(--t-l);font-weight:520;letter-spacing:-.025em;line-height:1.2}
+.chk p{font-size:var(--t-s);line-height:1.6;max-width:60ch}
+.strip .val{font-size:1.125rem;font-weight:400;letter-spacing:-.04em;line-height:1.2;white-space:nowrap}
+.strip .top{font-size:.625rem;letter-spacing:.02em}
+.strip .sub{font-size:.625rem}
+.scope .readout{font-size:var(--t-xl);font-weight:400;letter-spacing:-.045em;line-height:1.1}
+.scope .readout small{font-size:var(--t-xs);letter-spacing:.04em;font-weight:500}
+.scope p{font-size:var(--t-s);line-height:1.6}
+.notice{font-size:.75rem;line-height:1.6}
+.capt{font-size:var(--t-xs);line-height:1.5;letter-spacing:.02em}
+.secs a{font-size:var(--t-s);line-height:1.4;font-stretch:104%}
+/* long-form article body */
+.prose{font-size:var(--t-read);line-height:1.72;max-width:64ch;letter-spacing:.003em;font-weight:400;font-variant-numeric:oldstyle-nums proportional-nums;font-feature-settings:"kern","liga","onum","pnum","ss01";hyphens:auto;hyphenate-limit-chars:6 3 3}
+.prose p{margin:0 0 1.25em}
+.prose h2{font-size:var(--t-xl);font-weight:560;line-height:1.1;letter-spacing:-.035em;margin:2em 0 .6em}
+.prose h3{font-family:var(--mono);font-size:var(--t-2xs);font-weight:500;letter-spacing:.2em;line-height:1.6;margin:2.4em 0 .8em;font-stretch:90%}
+.prose ul{margin:0 0 1.25em 1.15em}.prose li{margin:0 0 .55em;padding-left:.2em}.prose li::marker{color:var(--label)}
+.prose strong,.prose b{font-weight:640}
+.prose em{font-style:italic;font-variation-settings:"slnt" 0}
+.prose blockquote{font-size:var(--t-l);font-weight:420;font-stretch:108%;line-height:1.3;letter-spacing:-.02em;margin:1.6em 0;text-wrap:balance}
+.prose a{text-decoration-thickness:1px;text-underline-offset:.22em}
+.prose .num,.prose time{font-variant-numeric:lining-nums tabular-nums}
+/* forms */
+.field > span.cap,.field > span{font-size:var(--t-2xs)}
+.inp{font-size:.875rem;font-weight:400;letter-spacing:-.01em;line-height:1.6;font-stretch:92%}
+.inp::placeholder{letter-spacing:0}
+textarea.inp{line-height:1.65}
+/* footer / privacy */
+footer{font-size:var(--t-xs)}
+@media (max-width:700px){.cap{letter-spacing:.17em}.t-404{letter-spacing:-.05em}.ph h1,.atile h1{letter-spacing:-.04em}.prose{hyphens:auto}}

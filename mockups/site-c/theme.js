@@ -18,20 +18,22 @@ function letters(el, base) {
     [...part].forEach(ch => { const s = document.createElement('span'); s.className = 'lt'; s.textContent = ch; w.appendChild(s); ls.push({ el: s, w: base, v: 0, y: 0, vy: 0, t: base, ty: 0, k: 190 - Math.min(ls.length, 10) * 12, c: 20 - Math.min(ls.length, 10) * .5 }); });
     el.appendChild(w); });
   const L = { ls, base, step(dt) { ls.forEach(l => { if (reduce) { l.w = l.t; l.y = l.ty; } else { l.v += ((l.t - l.w) * l.k - l.v * l.c) * dt; l.w += l.v * dt; l.vy += ((l.ty - l.y) * 260 - l.vy * 22) * dt; l.y += l.vy * dt; }
-      l.el.style.fontVariationSettings = `'wght' ${Math.max(100, Math.min(900, l.w)).toFixed(0)}`; l.el.style.transform = `translateY(${l.y.toFixed(2)}px)`; }); } };
+      const w = Math.max(100, Math.min(900, l.w)); l.el.style.fontVariationSettings = `'wght' ${w.toFixed(0)}, 'SOFT' ${((w - 100) / 8).toFixed(0)}, 'WONK' 1`; l.el.style.transform = `translateY(${l.y.toFixed(2)}px)`; }); } };
   springs.add(L); return L;
 }
 /* Lens: letters under the pointer go to 900 and lift; neighbours fall off on a bell curve */
 function lens(el, base = +(el.dataset.lens || 200), lo = 160) {
-  const L = letters(el, base), fs = () => parseFloat(getComputedStyle(el).fontSize);
+  const L = letters(el, base), fs = () => parseFloat(getComputedStyle(el).fontSize), rd = el.closest('.ph')?.querySelector('.rd');
+  const say = w => { if (!rd) return; const f = fs(); rd.textContent = `Fraunces ${Math.round(f)}px / ${Math.round(f * .75)}pt · opsz ${Math.min(144, Math.max(9, Math.round(f)))} · wght ${Math.round(w)} · SOFT ${Math.round((w - 100) / 8)}`; };
+  say(base); addEventListener('resize', () => say(L.base));
   el.addEventListener('pointermove', e => { if (e.pointerType === 'touch') return; const f = fs();
     L.ls.forEach(l => { const r = l.el.getBoundingClientRect(), dx = (r.left + r.width / 2 - e.clientX) / (f * .55), dy = (r.top + r.height / 2 - e.clientY) / (f * .9), k = Math.exp(-(dx * dx + dy * dy) * 1.4);
-      l.t = lo + (900 - lo) * k; l.ty = -f * .045 * k; }); });
-  el.addEventListener('pointerleave', () => L.ls.forEach(l => { l.t = L.base; l.ty = 0; }));
+      l.t = lo + (900 - lo) * k; l.ty = -f * .045 * k; }); say(Math.max(...L.ls.map(l => l.t))); });
+  el.addEventListener('pointerleave', () => { L.ls.forEach(l => { l.t = L.base; l.ty = 0; }); say(L.base); });
   L.setBase = w => { L.base = w; L.ls.forEach(l => { l.t = w; }); };
   return L;
 }
-document.fonts.load('400 40px Geist').then(() => $$('[data-lens]').forEach(el => { const L = lens(el); el._lens = L;
+Promise.all([document.fonts.load('400 40px Fraunces'), document.fonts.load('400 20px Newsreader'), document.fonts.load('400 12px "Geist Mono"')]).then(() => $$('[data-lens]').forEach(el => { const L = lens(el); el._lens = L;
   if (!reduce) { L.ls.forEach(l => { l.w = 100; }); } }));
 
 /* Weight slider: makeSlider(root, value, onChange) */

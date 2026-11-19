@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home · e3 Initiative</title><script>try{if(localStorage.getItem('e3-mode-c')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="theme.css"></head>
+<title>Home · e3 Initiative</title><script>try{if(localStorage.getItem('e3-mode-c')==='dark')document.documentElement.classList.add('dark')}catch(e){}</script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="theme.css"></head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 <div class="wrap">
@@ -19,7 +19,7 @@
 </div>
 
   </main>
-  <footer><span class="lab">© 2026 e3 Initiative · set in Geist</span><nav aria-label="Footer"><a href="articles.html">Publications</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="economic-indicators.html">Indicators</a><a href="outreach.html">Outreach</a><a href="privacy.html">Privacy</a></nav></footer>
+  <footer><span class="lab">© 2026 e3 Initiative · Fraunces · Newsreader · Geist Mono · scale ×1.25</span><nav aria-label="Footer"><a href="articles.html">Publications</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="economic-indicators.html">Indicators</a><a href="outreach.html">Outreach</a><a href="privacy.html">Privacy</a></nav></footer>
 </div>
 <script src="theme.js"></script>
 <script>(function(){var r=document.documentElement;document.querySelectorAll('[data-mode]').forEach(function(b){b.setAttribute('aria-pressed',r.classList.contains('dark'));b.onclick=function(){var on=r.classList.toggle('dark');try{localStorage.setItem('e3-mode-c',on?'dark':'light')}catch(e){}document.querySelectorAll('[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',on)})}})})();</script>
@@ -29,13 +29,13 @@ function setWord(w) { word.textContent = w; if (L) springs.delete(L); L = letter
 function fit() { const max = Math.min(232, band.clientHeight * .82); word.style.fontSize = max + 'px';
   L.ls.forEach(l => l.el.style.fontVariationSettings = "'wght' 900"); const sw = L.ls.reduce((s, l) => s + l.el.getBoundingClientRect().width, 0), room = band.clientWidth * .96;
   if (sw > room) word.style.fontSize = max * room / sw + 'px';
-  const fs = parseFloat(word.style.fontSize), c = document.createElement('canvas').getContext('2d'); c.font = `400 ${fs}px Geist`; const m = c.measureText('H');
+  const fs = parseFloat(word.style.fontSize), c = document.createElement('canvas').getContext('2d'); c.font = `400 ${fs}px Fraunces`; const m = c.measureText('H');
   const top = L.ls[0].el.getBoundingClientRect().top - band.getBoundingClientRect().top - L.ls[0].y, base = top + (fs - (m.fontBoundingBoxAscent + m.fontBoundingBoxDescent)) / 2 + m.fontBoundingBoxAscent;
   G = { base, cap: base - m.actualBoundingBoxAscent, x: base - c.measureText('x').actualBoundingBoxAscent }; }
 let go = 0;
 function frame() { const br = band.getBoundingClientRect(), fs = parseFloat(word.style.fontSize);
   L.ls.forEach(l => { if (lensX !== null) { const r = l.el.getBoundingClientRect(), d = (r.left + r.width / 2 - br.left - lensX) / (fs * .55), k = Math.exp(-d * d * 1.4); l.t = 160 + 740 * k; l.ty = -10 * k; } else { l.t = weight; l.ty = 0; } });
-  $('#axis').textContent = lensX !== null ? 'wght lens' : 'wght ' + Math.round(L.ls[0].w);
+  { const w = Math.round(L.ls[0].w); $('#axis').textContent = (lensX !== null ? 'wght lens' : 'wght ' + w) + ' · opsz ' + Math.min(144, Math.round(parseFloat(word.style.fontSize))) + ' · SOFT ' + Math.round((w - 100) / 8) + ' · ' + Math.round(parseFloat(word.style.fontSize)) + 'px / ' + Math.round(parseFloat(word.style.fontSize) * .75) + 'pt'; }
   go += ((lensX !== null ? 1 : 0) - go) * .15; const W = band.clientWidth, x0 = W * .1, x1 = W * .86;
   const line = (y, t) => `<line x1="${x0}" x2="${x1}" y1="${y}" y2="${y}" stroke-dasharray="3 5" opacity="${.6 * go}"/><text x="${x1 + 6}" y="${y + 4}" opacity="${.8 * go}">${t}</text>`;
   guides.innerHTML = line(G.cap, 'Cap') + line(G.x, 'x') + line(G.base, 'Base') + (lensX !== null ? `<line x1="${lensX}" x2="${lensX}" y1="20" y2="${band.clientHeight - 10}" stroke-width="1.5" opacity="${.8 * go}"/>` : '');
@@ -44,7 +44,7 @@ band.addEventListener('pointermove', e => { if (e.pointerType !== 'touch') { len
 band.addEventListener('pointerleave', () => lensX = null);
 const S = makeSlider($('#sl'), 100, w => weight = w);
 $$('.tabs button').forEach(b => b.onclick = () => { $$('.tabs button').forEach(x => x.classList.toggle('on', x === b)); setWord(b.dataset.w); });
-document.fonts.load('400 100px Geist').then(() => { setWord('Equity'); requestAnimationFrame(frame);
+document.fonts.load('400 100px Fraunces').then(() => { setWord('Equity'); requestAnimationFrame(frame);
   if (reduce) { S.set(400); return; }
   const t0 = performance.now(), path = [[0, 100], [600, 100], [2200, 900], [3400, 900], [4600, 400]];
   (function step(now) { if ($('#sl').dataset.touched) return; const t = now - t0;
