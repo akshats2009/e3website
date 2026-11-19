@@ -251,14 +251,14 @@ html.night .focus .sw b{transform:translateX(26px)}
 .search svg{position:absolute;left:16px;top:17px;color:var(--muted)}
 .fl{margin-top:18px}.fl > .label{margin-bottom:10px}
 .gres{padding:6px 26px}
-.grow{display:grid;grid-template-columns:64px 1fr 110px 88px;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--line);cursor:pointer}
+.grow{display:grid;grid-template-columns:64px 1fr 140px 88px;gap:18px;align-items:center;padding:16px 0;border-top:1px solid var(--line);cursor:pointer}
 .grow:first-child{border-top:0}
 .grow .dd{text-align:center}
 .grow .dd b{display:block;font-weight:300;font-size:32px;letter-spacing:-.022em;line-height:1;font-variant-numeric:lining-nums tabular-nums}
 .grow .dd span{font:500 10.5px/1 var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
 .grow .n{font-size:16.5px;font-weight:500;letter-spacing:-.011em;line-height:1.3}
 .grow .f{font-size:13.5px;color:var(--muted);margin-top:3px}
-.grow .amt{font:500 13px/1.2 var(--mono);text-align:right}
+.grow .amt{white-space:nowrap;font:500 13px/1.2 var(--mono);text-align:right}
 .grow .st{text-align:right}
 .grow.closed{opacity:.55}
 .gdetail{grid-column:1/-1;display:none;padding:4px 0 6px 80px;color:var(--muted);font-size:14.5px;line-height:1.6;max-width:62ch}

@@ -730,5 +730,7 @@ html.dark .ph .lede p,html.dark .pub p{font-variation-settings:'wght' 430}
   .gt .d{font-size:var(--s1)}
   .prose{font-size:calc(var(--b)*1.05)}
   .statement{margin-top:34px}
+  #axis{display:none}
+  .bigsearch{font-size:var(--s3)}
 }
 """
