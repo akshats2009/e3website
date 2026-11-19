@@ -32,6 +32,17 @@ $$('.lvl').forEach((l, i) => setTimeout(() => { const b = $('.bar b', l); b.styl
 $$('[data-count]').forEach(e => setTimeout(() => countUp(e, +e.dataset.count, 1200), 400));
 
 (function () {
+  const box = document.getElementById('cities'); if (!box) return;
+  const imgs = [...box.querySelectorAll('img.c')], tabs = [...box.querySelectorAll('.ct')], cname = document.getElementById('cname'), ctime = document.getElementById('ctime');
+  let cur = 0, timer;
+  const clock = () => { const t = tabs[cur]; ctime.textContent = new Date().toLocaleTimeString('en-US', { timeZone: t.dataset.tz, hour: 'numeric', minute: '2-digit' }); };
+  function go(i) { cur = i; imgs.forEach(m => m.classList.toggle('on', +m.dataset.i === i)); tabs.forEach(t => t.classList.toggle('on', +t.dataset.i === i)); cname.textContent = tabs[i].textContent; clock(); }
+  tabs.forEach(t => t.addEventListener('click', () => { go(+t.dataset.i); clearInterval(timer); }));
+  clock(); setInterval(clock, 15000);
+  if (!matchMedia('(prefers-reduced-motion:reduce)').matches) timer = setInterval(() => go((cur + 1) % tabs.length), 7000);
+})();
+
+(function () {
   const img = document.querySelectorAll('.spic img'); if (!img.length || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   let y = 0, ticking = false;
   const upd = () => { img.forEach(i => i.style.transform = `translateY(${y * -.06}px) scale(1.1)`); ticking = false; };
