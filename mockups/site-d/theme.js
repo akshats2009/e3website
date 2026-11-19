@@ -32,6 +32,13 @@ $$('.lvl').forEach((l, i) => setTimeout(() => { const b = $('.bar b', l); b.styl
 $$('[data-count]').forEach(e => setTimeout(() => countUp(e, +e.dataset.count, 1200), 400));
 
 (function () {
+  const img = document.querySelectorAll('.spic img'); if (!img.length || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  let y = 0, ticking = false;
+  const upd = () => { img.forEach(i => i.style.transform = `translateY(${y * -.06}px) scale(1.1)`); ticking = false; };
+  addEventListener('scroll', () => { y = scrollY; if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true }); upd();
+})();
+
+(function () {
   const ws = document.querySelectorAll('#sky .w');
   if (!ws.length) return;
   ws.forEach(w => { if (Math.random() < .55) w.classList.add('on'); });
