@@ -569,6 +569,6 @@ html.night .spic img.c.n.on{opacity:1}
 .cts{position:absolute;left:20px;top:20px;display:flex;gap:4px;padding:4px;border-radius:99px;background:rgba(14,18,24,.42);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:3}
 .ct{padding:8px 15px;border-radius:99px;font:600 .74rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.78);transition:background .25s,color .25s}
 .ct:hover{color:#fff}.ct.on{background:#fff;color:#101318}
-.loc{z-index:3;gap:8px}.loc i{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.6}
+.loc{z-index:3;gap:8px;top:auto;bottom:22px;right:20px}.dep{max-width:60%}.loc i{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.6}
 .dep{z-index:3}
 @media(max-width:900px){.loc{display:flex;top:auto;bottom:22px;right:20px;left:auto}.dep{max-width:calc(100% - 190px)}.ct{padding:7px 11px}}

@@ -12,8 +12,12 @@ Downloaded from Wikimedia Commons. Check each licence before using on the live s
 
 ## City photos (Wikimedia Commons)
 - `cities/ny-day.jpg`: Brooklyn Bridge and the Lower Manhattan skyline from Pebble Beach, New York.jpg, Christian David, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Brooklyn_Bridge_and_the_Lower_Manhattan_skyline_from_Pebble_Beach,_New_York.jpg
-- `cities/tokyo-day.jpg`: Shibuya crossing (12214).jpg, Syced, CC0. https://commons.wikimedia.org/wiki/File:Shibuya_crossing_(12214).jpg
-- `cities/london-day.jpg`: Tower Bridge golden hour.jpg, The Cosmonaut, CC BY-SA 2.5 ca. https://commons.wikimedia.org/wiki/File:Tower_Bridge_golden_hour.jpg
-- `cities/london-night.jpg`: Tower bridge London Twilight - November 2006.jpg, Diliff, CC BY-SA 3.0. https://commons.wikimedia.org/wiki/File:Tower_bridge_London_Twilight_-_November_2006.jpg
 - `cities/ny-night.jpg`: File:Times Square, NYC at night - August 2025.jpg, Nielsoncaetanosalmeron, CC BY 4.0. https://commons.wikimedia.org/wiki/File:Times_Square,_NYC_at_night_-_August_2025.jpg
-- `cities/tokyo-night.jpg`: File:Shibuya crossing at night, Tokyo, Japan.jpg, Joli Rumi, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Shibuya_crossing_at_night,_Tokyo,_Japan.jpg
+
+## US city photos (Wikimedia Commons)
+- `cities/chi-day.jpg`: Chicago-skyline-lake-burnham.jpg, [https://www.mariemillerphotography.com Marie Mill, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Chicago-skyline-lake-burnham.jpg
+- `cities/chi-night.jpg`: Chicago Skyline on the Chicago River at night.jpg, Spatms, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Chicago_Skyline_on_the_Chicago_River_at_night.jpg
+- `cities/sf-day.jpg`: View of San Francisco from Ina Coolbrith Park-01445.jpg, Frank Schulenburg, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:View_of_San_Francisco_from_Ina_Coolbrith_Park-01445.jpg
+- `cities/sf-night.jpg`: San Francisco Skyline at night.jpg, Cgbriggs19, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:San_Francisco_Skyline_at_night.jpg
+- `cities/la-day.jpg`: Skyline of Los Angeles, Downtown Los Angeles, California 13.jpg, Levi Clancy, CC BY-SA 4.0. https://commons.wikimedia.org/wiki/File:Skyline_of_Los_Angeles,_Downtown_Los_Angeles,_California_13.jpg
+- `cities/la-night.jpg`: Los Angeles at night.jpg, Stephen Friday, CC BY 2.0. https://commons.wikimedia.org/wiki/File:Los_Angeles_at_night.jpg

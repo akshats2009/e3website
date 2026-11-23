@@ -486,7 +486,7 @@ def dep():
     return f"""<a class="dep" href="grants.html"><span class="dep-k">Next departure</span><span class="dep-t">{esc(g['name'])}</span><span class="dep-m"><b>{d}</b> days<i></i>{money(g.get('amountMax') or 0) if g.get('amountMax') else ''}</span></a>"""
 
 
-CITIES = [('New York', 'America/New_York', 'ny', 'Times Square, Manhattan', 'Brooklyn Bridge and Lower Manhattan'), ('Tokyo', 'Asia/Tokyo', 'tokyo', 'Shibuya Crossing', 'Shibuya Crossing from above'), ('London', 'Europe/London', 'london', 'Tower Bridge', 'Tower Bridge')]
+CITIES = [('New York', 'America/New_York', 'ny', 'Times Square, Manhattan', 'Brooklyn Bridge and Lower Manhattan'), ('Chicago', 'America/Chicago', 'chi', 'The Chicago River and Marina City', 'The Chicago skyline from the lakefront harbor'), ('San Francisco', 'America/Los_Angeles', 'sf', 'The San Francisco skyline across the bay', 'Downtown San Francisco and the Transamerica Pyramid'), ('Los Angeles', 'America/Los_Angeles', 'la', 'Downtown Los Angeles towers', 'Downtown Los Angeles towers')]
 
 
 def citybox():
@@ -1011,7 +1011,7 @@ html.night .spic img.c.n.on{opacity:1}
 .cts{position:absolute;left:20px;top:20px;display:flex;gap:4px;padding:4px;border-radius:99px;background:rgba(14,18,24,.42);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:3}
 .ct{padding:8px 15px;border-radius:99px;font:600 .74rem var(--sans);letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.78);transition:background .25s,color .25s}
 .ct:hover{color:#fff}.ct.on{background:#fff;color:#101318}
-.loc{z-index:3;gap:8px}.loc i{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.6}
+.loc{z-index:3;gap:8px;top:auto;bottom:22px;right:20px}.dep{max-width:60%}.loc i{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.6}
 .dep{z-index:3}
 @media(max-width:900px){.loc{display:flex;top:auto;bottom:22px;right:20px;left:auto}.dep{max-width:calc(100% - 190px)}.ct{padding:7px 11px}}
 """
