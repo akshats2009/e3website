@@ -277,6 +277,7 @@ html.night .mini-sw::before{background:var(--accent)}
 html.night .chip.a{background:#3d47ff}
 .label{font-size:13px;letter-spacing:.08em}
 .ph p,.hero p{color:var(--muted)}
+.ph p a,.hero p a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .crow .t{font-size:13px}
 .crow .n{font-size:16px}.crow .d{font-size:16px}
 .grow .n{font-size:16px}.grow .f{font-size:16px}.grow .amt{font-size:16px}

@@ -112,7 +112,7 @@ summary{list-style:none}summary::-webkit-details-marker{display:none}
 .knob.drag{transform:scale(1.12);cursor:grabbing}
 .tip{position:absolute;top:-62px;height:36px;padding:0 12px;border-radius:10px;background:var(--ink);color:var(--paper-light);display:flex;align-items:center;gap:8px;font:14px var(--mono);white-space:nowrap;transform:translateX(-50%);pointer-events:none}
 .tip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;margin-left:-4px;background:var(--ink);transform:rotate(45deg);border-radius:2px}
-.tip span:last-child{opacity:.55}
+.tip span:last-child{opacity:.75}
 .mini.slider{width:100%;margin:56px 0 10px;height:52px}
 .mini .tkl,.mini .sl{display:none}
 
@@ -367,7 +367,7 @@ def home():
 </section>
 <div class="spec">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><div class="tabs" role="group" aria-label="Specimen word"><button class="on" aria-pressed="true" data-w="Equity">Equity</button><button aria-pressed="false" data-w="Economics">Economics</button><button aria-pressed="false" data-w="Ethnicity">Ethnicity</button></div><div class="lab" id="axis">wght 100</div></div>
-  <div class="band" id="band"><svg class="guides" id="guides" aria-hidden="true"></svg><div class="word" id="word"></div></div>
+  <div class="band" id="band"><svg class="guides" id="guides" aria-hidden="true"></svg><div class="word" id="word" role="img"></div></div>
   <div class="slider" id="sl" data-label="Weight" data-ro="hover the word for a lens"></div>
   <div class="lede2">
     <h2>Some contributions get set in <span class="w1">thin</span>. We research to give them their <span class="w8">full weight.</span></h2>

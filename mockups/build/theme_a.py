@@ -600,7 +600,7 @@ def privacy():
 
 def notfound():
     body = f"""<div class="tile rise" style="padding:26px 34px 36px;max-width:760px;margin-top:20px">{label('Page not found')}
-    <div class="thin" style="font-family:var(--serif);font-variation-settings:var(--disp);font-size:clamp(8rem,28vw,13rem);font-weight:250;letter-spacing:-.04em;margin:30px 0 10px;color:var(--accent)">404</div>
+    <div class="thin" style="font-family:var(--serif);font-variation-settings:var(--disp);font-size:clamp(8rem,28vw,13rem);font-weight:250;letter-spacing:-.04em;margin:30px 0 10px;color:var(--ai)">404</div>
     <p class="muted" style="max-width:40ch;margin-bottom:24px">Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p>
     <div class="cta"><a class="btn" href="index.html">Go home</a><a class="btn ghost" href="articles.html">Publications</a></div></div>"""
     return shell("404", body)
@@ -667,6 +667,7 @@ html.night .mini-sw::before{background:var(--accent)}
 html.night .chip.a{background:#3d47ff}
 .label{font-size:13px;letter-spacing:.08em}
 .ph p,.hero p{color:var(--muted)}
+.ph p a,.hero p a{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
 .crow .t{font-size:13px}
 .crow .n{font-size:16px}.crow .d{font-size:16px}
 .grow .n{font-size:16px}.grow .f{font-size:16px}.grow .amt{font-size:16px}

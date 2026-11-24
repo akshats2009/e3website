@@ -104,7 +104,7 @@ summary{list-style:none}summary::-webkit-details-marker{display:none}
 .knob.drag{transform:scale(1.12);cursor:grabbing}
 .tip{position:absolute;top:-62px;height:36px;padding:0 12px;border-radius:10px;background:var(--ink);color:var(--paper-light);display:flex;align-items:center;gap:8px;font:14px var(--mono);white-space:nowrap;transform:translateX(-50%);pointer-events:none}
 .tip::after{content:"";position:absolute;left:50%;bottom:-4px;width:8px;height:8px;margin-left:-4px;background:var(--ink);transform:rotate(45deg);border-radius:2px}
-.tip span:last-child{opacity:.55}
+.tip span:last-child{opacity:.75}
 .mini.slider{width:100%;margin:56px 0 10px;height:52px}
 .mini .tkl,.mini .sl{display:none}
 
