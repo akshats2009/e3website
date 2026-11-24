@@ -363,6 +363,9 @@
                 state.index = buildIndex(state.grants);
                 buildFilters();
                 renderGrid();
+                // Allow links such as grants.html?q=arts to prefill the search
+                var pq = new URLSearchParams(window.location.search).get('q');
+                if (pq) { document.getElementById('finderInput').value = pq; }
                 runSearch();
             })
             .catch(function () {
