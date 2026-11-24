@@ -20,47 +20,55 @@
   </header>
   <main id="main">
 <div class="ph"><div><div class="label "><i></i>Grants</div><h1>Grant Finder</h1><p>Funding for small businesses and nonprofits. Ready-made lists: <a href="minority-owned-business-grants.html" style="color:var(--ink)">Minority-owned</a> · <a href="women-owned-business-grants.html" style="color:var(--ink)">Women-owned</a> · <a href="veteran-owned-business-grants.html" style="color:var(--ink)">Veteran-owned</a>.</p></div><div><a class="btn ghost" href="grant-help.html">Help & tips →</a></div></div>
-<div class="tile pad rise" style="margin-bottom:20px">
-  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-    <div class="search" style="flex:1;min-width:240px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
-    <div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div>
-    <span class="thin" style="font-size:var(--s3)" id="gcount">0</span>
+<form class="tile pad rise gform" style="margin-bottom:24px" onsubmit="return false" role="search" aria-label="Grant filters">
+  <div class="gtop">
+    <div class="gctl"><label class="label" for="q"><i></i>Search</label><div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><input class="inp" id="q" type="search" placeholder="Women-owned bakery" autocomplete="off"></div></div>
+    <fieldset class="gctl"><legend class="label"><i></i>Status</legend><div class="seg" data-f="status"><button type="button" class="on" aria-pressed="true" data-v="live">Open + rolling</button><button type="button" aria-pressed="false" data-v="">All</button></div></fieldset>
+    <fieldset class="gctl"><legend class="label"><i></i>Sort by</legend><div class="seg" data-f="sort"><button type="button" class="on" aria-pressed="true" data-v="soon">Soonest deadline</button><button type="button" aria-pressed="false" data-v="amt">Largest award</button></div></fieldset>
   </div>
-  <details style="margin-top:16px"><summary class="label" style="cursor:pointer">More filters</summary>
-    <div class="fl"><div class="label "><i></i>Who qualifies</div><div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-    <div class="fl"><div class="label "><i></i>Award up to at least</div><div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-    <div class="fl"><div class="label "><i></i>Category</div><div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button><button data-v="minority_owned">Minority-owned</button><button data-v="women_owned">Women-owned</button><button data-v="veteran_owned">Veteran-owned</button><button data-v="arts_culture">Arts & culture</button><button data-v="research">Research</button><button data-v="technology">Technology</button><button data-v="community_development">Community</button><button data-v="food_agriculture">Food & farming</button><button data-v="health">Health</button><button data-v="environment">Environment</button><button data-v="general">General</button></div></div></details>
-</div>
-<div class="tile gres rise" id="gres" aria-live="polite"></div>
+  <details><summary class="label"><i></i>More filters</summary>
+    <fieldset class="gctl fl"><legend class="label">Who qualifies</legend><div class="seg" data-f="elig"><button type="button" class="on" aria-pressed="true" data-v="">Anyone</button><button type="button" aria-pressed="false" data-v="small_business">Business</button><button type="button" aria-pressed="false" data-v="nonprofit">Nonprofit</button></div></fieldset>
+    <fieldset class="gctl fl"><legend class="label">Award up to at least</legend><div class="seg" data-f="amt"><button type="button" class="on" aria-pressed="true" data-v="0">Any</button><button type="button" aria-pressed="false" data-v="10000">$10k</button><button type="button" aria-pressed="false" data-v="50000">$50k</button><button type="button" aria-pressed="false" data-v="250000">$250k</button></div></fieldset>
+    <fieldset class="gctl fl"><legend class="label">Category</legend><div class="seg" data-f="cat" data-multi><button type="button" class="on" aria-pressed="true" data-v="">All</button><button type="button" aria-pressed="false" data-v="minority_owned">Minority-owned</button><button type="button" aria-pressed="false" data-v="women_owned">Women-owned</button><button type="button" aria-pressed="false" data-v="veteran_owned">Veteran-owned</button><button type="button" aria-pressed="false" data-v="arts_culture">Arts & culture</button><button type="button" aria-pressed="false" data-v="research">Research</button><button type="button" aria-pressed="false" data-v="technology">Technology</button><button type="button" aria-pressed="false" data-v="community_development">Community</button><button type="button" aria-pressed="false" data-v="food_agriculture">Food & farming</button><button type="button" aria-pressed="false" data-v="health">Health</button><button type="button" aria-pressed="false" data-v="environment">Environment</button><button type="button" aria-pressed="false" data-v="general">General</button></div></fieldset></details>
+</form>
+<div class="gcount"><h2 id="gcount" aria-live="polite">33 grants</h2><p id="gsort">Soonest deadline first</p></div>
+<div class="tile gres rise" id="gres"><div class="gload" role="status">Loading grants</div></div>
   </main>
   <footer>
-    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
+    <span class="mono" style="font-size:13px;color:var(--muted)">© 2026 e3 Initiative</span>
     <nav class="links" aria-label="Footer"><a href="articles.html">Publications</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="economic-indicators.html">Indicators</a><a href="outreach.html">Outreach</a><a href="privacy.html">Privacy</a></nav>
   </footer>
 </div>
 <script src="theme.js"></script>
 <script src="../shared/grants-data.js"></script><script>
-const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
+const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set(), sort: 'soon' };
+const press = (b, on) => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); };
 $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const f = seg.dataset.f;
-  if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => x.classList.toggle('on', !x.dataset.v)); }
-    else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', seg).classList.toggle('on', !F.cat.size); } }
-  else { $$('button', seg).forEach(x => x.classList.toggle('on', x === b)); F[f] = f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
+  if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => press(x, !x.dataset.v)); }
+    else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); press(b, F.cat.has(b.dataset.v)); press($('button[data-v=""]', seg), !F.cat.size); } }
+  else { $$('button', seg).forEach(x => press(x, x === b)); F[f] = f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
 $('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
+function reset() { Object.assign(F, { q: '', elig: '', status: 'live', amt: 0, sort: 'soon' }); F.cat.clear(); $('#q').value = '';
+  $$('.seg[data-f]').forEach(seg => $$('button', seg).forEach((x, i) => press(x, i === 0))); render(); }
+const RANK = { open: 0, rolling: 1, closed: 2 };
 function render() {
   const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q))
     && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || g.status !== 'closed')
     && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
-    .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
-  $('#gcount').textContent = rs.length;
+    .sort((a, b) => (a.status === 'closed') - (b.status === 'closed') || (F.sort === 'amt' ? b.max - a.max : (a.days ?? 9999) - (b.days ?? 9999) || RANK[a.status] - RANK[b.status]));
+  $('#gcount').textContent = rs.length + (rs.length === 1 ? ' grant' : ' grants');
+  $('#gsort').textContent = F.sort === 'amt' ? 'Largest award first' : 'Soonest deadline first';
   $('#gres').innerHTML = rs.length ? rs.map(g => { const dt = g.days != null ? g.dl.split(' ') : null;
-    return `<div class="grow ${g.status}" tabindex="0"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:24px">∞</b><span>${g.dl}</span>`}</div>
+    return `<div class="grow ${g.status}" tabindex="0" role="button" aria-expanded="false"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:24px">∞</b><span>${g.dl}</span>`}</div>
       <div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
-      <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + 'd' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
-      <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
-    : '<div style="padding:40px 0;text-align:center" class="muted">No grants match these filters. Try widening them.</div>';
+      <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + ' days' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
+      <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page (opens in new tab) →</a></div></div>`; }).join('')
+    : '<div class="gempty"><b>No grants match these filters</b><span class="muted">Try a shorter search or clear the filters.</span><button type="button" class="btn" id="clr">Clear filters</button></div>';
+  $('#clr')?.addEventListener('click', reset);
 }
-$('#gres').addEventListener('click', e => { const r = e.target.closest('.grow'); if (r && !e.target.closest('a')) r.classList.toggle('x'); });
-$('#gres').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('grow')) e.target.classList.toggle('x'); });
+const tog = r => r.setAttribute('aria-expanded', r.classList.toggle('x'));
+$('#gres').addEventListener('click', e => { const r = e.target.closest('.grow'); if (r && !e.target.closest('a')) tog(r); });
+$('#gres').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('grow')) { e.preventDefault(); tog(e.target); } });
 render();
 </script>
 </body>

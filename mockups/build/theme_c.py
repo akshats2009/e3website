@@ -49,7 +49,7 @@ img{display:block;max-width:100%}
 .ph .lede{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:34px;align-items:end}
 .ph .lede p{font-size:16px;line-height:1.6;color:var(--soft);max-width:48ch}
 .ph .baseguide{position:absolute;left:0;right:0;border-top:1px dashed var(--guide);opacity:0;transition:opacity .3s;pointer-events:none}
-.ph .baseguide span{position:absolute;right:0;top:-18px;font:11px var(--mono);color:var(--guide)}
+.ph .baseguide span{position:absolute;right:0;top:-18px;font:12px var(--mono);color:var(--guide)}
 .ph:hover .baseguide{opacity:.7}
 
 .pill{height:46px;padding:0 20px;display:inline-flex;align-items:center;gap:10px;border-radius:10px;background:var(--ink);color:var(--paper-light);font:14px var(--mono);transition:transform .15s;white-space:nowrap}
@@ -91,7 +91,7 @@ summary{list-style:none}summary::-webkit-details-marker{display:none}
 .gt .a{font:14px var(--mono);white-space:nowrap}
 .gt .c{font:12px var(--mono);color:var(--label-ink)}
 .gt .d{font-size:28px;letter-spacing:-.03em;text-align:right;white-space:nowrap;padding-right:0}
-.gt .d small{display:block;font:11.5px var(--mono);color:var(--label-ink);letter-spacing:0;margin-top:3px}
+.gt .d small{display:block;font:12px var(--mono);color:var(--label-ink);letter-spacing:0;margin-top:3px}
 .gt tr.hot .d{color:var(--guide)}
 .gt tr.closed .n,.gt tr.closed .d{color:var(--label-ink)}
 .gt tbody tr{transition:background .2s;cursor:pointer}
@@ -137,7 +137,7 @@ summary{list-style:none}summary::-webkit-details-marker{display:none}
 .glyph{position:relative;height:210px;margin:6px 0 18px}
 .glyph .e{position:absolute;left:0;bottom:22px;font-size:220px;line-height:.72;letter-spacing:-.04em}
 .glyph .gl{position:absolute;left:-6px;right:0;border-top:1px dashed var(--guide);opacity:.6}
-.glyph .gl span{position:absolute;right:0;top:-16px;font:11px var(--mono);color:var(--guide)}
+.glyph .gl span{position:absolute;right:0;top:-16px;font:12px var(--mono);color:var(--guide)}
 .ln h3{font-size:30px;letter-spacing:-.03em;font-weight:normal}
 .ln p{color:var(--soft);font-size:14px;line-height:1.55;margin-top:6px;max-width:32ch}
 
@@ -192,7 +192,7 @@ textarea.inp{font-size:20px;line-height:1.5;min-height:160px;resize:vertical}
 .ind .val{font-size:80px;line-height:.9;letter-spacing:-.05em;transition:font-variation-settings .4s}
 .ind .val small{font:13px var(--mono);letter-spacing:0;color:var(--label-ink);margin-left:8px}
 .ind svg{display:block;width:100%;height:110px;margin-top:20px;overflow:visible}
-.ind svg text{font:11px var(--mono);fill:var(--guide)}
+.ind svg text{font:12px var(--mono);fill:var(--guide)}
 .ind p{font-size:14px;color:var(--soft);line-height:1.55;margin-top:12px;max-width:52ch}
 .notice{font:12.5px/1.6 var(--mono);color:var(--guide);padding:14px 0;border-bottom:1px dashed var(--guide);margin-bottom:10px}
 
@@ -282,7 +282,7 @@ function makeSlider(root, w, onChange) {
 function sliderHTML(label, ro = '') { return `<div class="sl">${label}</div>${ro ? `<div class="lab ro">${ro}</div>` : ''}<div class="trk"><div class="fill"></div></div><div class="knob" tabindex="0" role="slider" aria-label="${label}" aria-valuemin="100" aria-valuemax="900"></div><div class="tip"><span data-n>Thin</span><span data-v>100</span></div>`; }
 $$('.slider[data-label]').forEach(s => s.innerHTML = sliderHTML(s.dataset.label, s.dataset.ro || ''));
 /* urgency → weight: 0 days 900, 60+ days 150 */
-const urg = d => d == null ? 300 : Math.round(900 - 750 * Math.min(1, Math.max(0, d) / 60));
+const urg = d => d == null ? 400 : Math.round(800 - 400 * Math.min(1, Math.max(0, d) / 60));
 """
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">'
@@ -319,7 +319,7 @@ def shell(page, body, scripts=""):
   <main id="main">
 {body}
   </main>
-  <footer><span class="lab">© 2026 e3 Initiative · Fraunces · Newsreader · Geist Mono · scale ×1.25</span><nav aria-label="Footer">{foot}</nav></footer>
+  <footer><span class="lab">© 2026 e3 Initiative</span><nav aria-label="Footer">{foot}</nav></footer>
 </div>
 <script src="theme.js"></script>
 {MODE_JS}
@@ -328,24 +328,24 @@ def shell(page, body, scripts=""):
 """
 
 
-def ph(kicker, title, lede="", right="", readout="Fraunces · wght 200 · hover for a lens"):
+def ph(kicker, title, lede="", right="", compact=False):
     long = " long" if len(title) > 26 else ""
-    return f"""<div class="ph"><div class="top"><span class="lab">{kicker}</span><span class="lab rd">{readout}</span></div>
-  <h1 data-lens="200" class="{long.strip()}">{esc(title)}</h1>
+    return f"""<div class="ph{" compact" if compact else ""}"><div class="top"><span class="lab">{kicker}</span></div>
+  <h1 data-lens="300" class="{long.strip()}">{esc(title)}</h1>
   {f'<div class="lede"><p>{lede}</p><div>{right}</div></div>' if lede or right else ''}</div>"""
 
 
 def urg(d):
-    return 300 if d is None else round(900 - 750 * min(1, max(0, d) / 60))
+    return 400 if d is None else round(800 - 400 * min(1, max(0, d) / 60))
 
 
 def grant_tr(g):
     d, s = days_left(g), status(g)
-    w = urg(d) if s != "closed" else 100
+    w = urg(d) if s != "closed" else 400
     when = deadline_label(g)
-    sub = "closed" if s == "closed" else (f"in {d} days · wght {w}" if d is not None else s)
+    sub = "Closed" if s == "closed" else (f"in {d} days" if d is not None else s)
     return (f'<tr class="{"hot" if d is not None and 0 <= d <= 14 and s != "closed" else ""}{" closed" if s == "closed" else ""}" onclick="window.open(\'{g["link"]}\',\'_blank\')">'
-            f'<td><div class="n">{esc(g["name"])}</div><div class="f">{esc(g["funder"])}</div></td><td class="a">{esc(money(g.get("amountMax")))}</td>'
+            f'<td><div class="n">{esc(g["name"])}{'<span class="chip">Closed</span>' if s == "closed" else ""}</div><div class="f">{esc(g["funder"])}</div></td><td class="a">{esc(money(g.get("amountMax")))}</td>'
             f'<td class="d" style="font-variation-settings:\'wght\' {w}">{when}<small>{sub}</small></td></tr>')
 
 
@@ -360,13 +360,18 @@ LEGEND = '<div class="legend lab">The closer the deadline, the heavier it is set
 def home():
     soon = sorted(OPEN, key=lambda g: days_left(g) if days_left(g) is not None else 999)[:4]
     body = f"""
+<section class="hero" style="margin-top:0">
+  <h1>Find grants for your small business or nonprofit.</h1>
+  <p>The Grant Finder lists current funding opportunities, soonest deadline first. The e3 Initiative is a student-led research nonprofit studying who builds local economies and who gets left out.</p>
+  <div class="btns"><a class="pill pri" href="grants.html">Open Grant Finder</a><a class="pill o" href="research.html">Read the research</a></div>
+</section>
 <div class="spec">
-  <div style="display:flex;justify-content:space-between;align-items:center"><div class="tabs" role="tablist"><button class="on" data-w="Equity">Equity</button><button data-w="Economics">Economics</button><button data-w="Ethnicity">Ethnicity</button></div><div class="lab" id="axis">wght 100</div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap"><div class="tabs" role="group" aria-label="Specimen word"><button class="on" aria-pressed="true" data-w="Equity">Equity</button><button aria-pressed="false" data-w="Economics">Economics</button><button aria-pressed="false" data-w="Ethnicity">Ethnicity</button></div><div class="lab" id="axis">wght 100</div></div>
   <div class="band" id="band"><svg class="guides" id="guides" aria-hidden="true"></svg><div class="word" id="word"></div></div>
   <div class="slider" id="sl" data-label="Weight" data-ro="hover the word for a lens"></div>
   <div class="lede2">
-    <h1>Some contributions get set in <span class="w1">thin</span>. We research to give them their <span class="w8">full weight.</span></h1>
-    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="btns"><a class="pill" href="articles.html">Read the research</a></div></div>
+    <h2>Some contributions get set in <span class="w1">thin</span>. We research to give them their <span class="w8">full weight.</span></h2>
+    <p>Our research looks at the people and communities that economic histories tend to set in thin type, and gives them their full weight.</p>
   </div>
 </div>
 """
@@ -390,7 +395,7 @@ function frame() { const br = band.getBoundingClientRect(), fs = parseFloat(word
 band.addEventListener('pointermove', e => { if (e.pointerType !== 'touch') { lensX = e.clientX - band.getBoundingClientRect().left; $('#sl').dataset.touched = 1; } });
 band.addEventListener('pointerleave', () => lensX = null);
 const S = makeSlider($('#sl'), 100, w => weight = w);
-$$('.tabs button').forEach(b => b.onclick = () => { $$('.tabs button').forEach(x => x.classList.toggle('on', x === b)); setWord(b.dataset.w); });
+$$('.tabs button').forEach(b => b.onclick = () => { $$('.tabs button').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); }); setWord(b.dataset.w); });
 document.fonts.load('400 100px Fraunces').then(() => { setWord('Equity'); requestAnimationFrame(frame);
   if (reduce) { S.set(400); return; }
   const t0 = performance.now(), path = [[0, 100], [600, 100], [2200, 900], [3400, 900], [4600, 400]];
@@ -420,17 +425,17 @@ def article(p):
             body.append(f"<{t}>{typo(txt)}</{t}>")
     cite = {"article-railroad": "articles/chinese-labor-transcontinental-railroad-citations.html", "article-chinatown": "articles/chinatown-citations.html", "research-chinatown": "research/chinatown-solidarity-paper-citations.html"}[p["slug"]]
     body_html = f"""
-<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span><span class="lab" id="rw">Fraunces · wght 100</span></div>
-  <h1 class="long" id="title" style="font-variation-settings:'wght' 100, 'WONK' 1;max-width:24ch">{typo(esc(p['title']))}</h1>
-  <div class="lab" style="margin-top:22px">{esc(a['byline'] or 'By ' + p['author'])} · {p['min']} min · <a href="../../{cite}" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px">citations</a></div></div>
+<div class="ph" style="border-bottom:0;padding-bottom:10px"><div class="top"><span class="lab">{p['kind']} · {p['date']}</span></div>
+  <h1 class="long" id="title" style="font-variation-settings:'wght' 300, 'WONK' 1;max-width:24ch">{typo(esc(p['title']))}</h1>
+  <div class="lab" style="margin-top:22px">{esc(a['byline'] or 'By ' + p['author'])} · {p['min']} min · <a class="lk" href="../../{cite}">citations</a></div></div>
 <div class="banner"><img src="{IMG}{p['img'].replace('-640', '')}" alt="{esc(p['alt'])}"></div><div class="capt">{esc(a['caption'] or p['alt'])}</div>
 <div class="read" style="grid-template-columns:1fr;max-width:none"><article class="prose" id="prose">{''.join(body)}</article></div>"""
     js = """<script>
 const pr = $('#prose'), title = $('#title');
-function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)), w = Math.round(100 + k * 600);
-  title.style.fontVariationSettings = `'wght' ${w}, 'SOFT' ${Math.round((w - 100) / 6)}, 'WONK' 1`; $('#rw').textContent = 'Fraunces · wght ' + w + ' · reading ' + Math.round(k * 100) + '%';
+function upd() { const r = pr.getBoundingClientRect(), k = Math.max(0, Math.min(1, (innerHeight * .4 - r.top) / r.height)), w = Math.round(300 + k * 400);
+  title.style.fontVariationSettings = `'wght' ${w}, 'SOFT' ${Math.round((w - 100) / 6)}, 'WONK' 1`;
  }
-addEventListener('scroll', upd, { passive: true }); upd();
+if (!reduce) { addEventListener('scroll', upd, { passive: true }); upd(); } else title.style.fontVariationSettings = "'wght' 500, 'WONK' 1";
 </script>"""
     return shell(p["slug"], body_html, js)
 
@@ -452,38 +457,45 @@ def journals():
 
 
 def grants():
-    """Header, the big search, two filter rows (more folded), count + table."""
-    cats = "".join(f'<button data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
-    lists = " · ".join(f'<a href="{s}.html" style="text-decoration:underline dashed var(--guide);text-underline-offset:4px;color:var(--ink)">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
-    body = ph("Grants", "Grant Finder", f"Set by urgency: the closer a deadline, the heavier it is. Closed grants drop to Thin. Ready-made lists: {lists}.", '<a class="pill o" href="grant-help.html">Help & tips →</a>') + f"""
-<div style="margin-top:40px"><label class="lab" for="q">Search</label><input class="bigsearch" id="q" type="search" placeholder="women-owned bakery…" autocomplete="off"></div>
-<div style="margin-top:20px">
-  <div class="fgroup"><span class="lab">Status</span><div class="ftabs" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">Everything</button></div></div>
-  <details class="fgroup" style="display:block"><summary class="lab" style="cursor:pointer">+ More filters</summary>
-    <div class="fgroup" style="margin-top:12px"><span class="lab">Who qualifies</span><div class="ftabs" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Small business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-    <div class="fgroup" style="margin-top:12px"><span class="lab">Award up to</span><div class="ftabs" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k+</button><button data-v="50000">$50k+</button><button data-v="250000">$250k+</button></div></div>
-    <div class="fgroup"><span class="lab">Category</span><div class="ftabs" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
+    """Header, labelled search, labelled filters, count, table."""
+    cats = "".join(f'<button type="button" aria-pressed="false" data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
+    lists = " · ".join(f'<a href="{s}.html" class="lk">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
+    body = ph("Grants", "Grant Finder", f"Current grants for small businesses and nonprofits, soonest deadline first. Closed grants stay listed and are marked Closed. Ready-made lists: {lists}.", '<a class="pill o" href="grant-help.html">Help & tips →</a>', compact=True) + f"""
+<div class="finder">
+  <div class="searchbox"><label class="flabel" for="q">Search grants</label><input class="search" id="q" type="search" placeholder="e.g. bakery, arts, veteran-owned" autocomplete="off" spellcheck="false"></div>
+  <div class="filters">
+    <div class="fgroup" role="group" aria-labelledby="l-status"><span class="flabel" id="l-status">Status</span><div class="seg" data-f="status"><button type="button" aria-pressed="true" data-v="live">Open and rolling</button><button type="button" aria-pressed="false" data-v="">Include closed</button></div></div>
+    <details class="more-f"><summary>More filters</summary>
+      <div class="fgroup" role="group" aria-labelledby="l-elig"><span class="flabel" id="l-elig">Who qualifies</span><div class="seg" data-f="elig"><button type="button" aria-pressed="true" data-v="">Anyone</button><button type="button" aria-pressed="false" data-v="small_business">Small business</button><button type="button" aria-pressed="false" data-v="nonprofit">Nonprofit</button></div></div>
+      <div class="fgroup" role="group" aria-labelledby="l-amt"><span class="flabel" id="l-amt">Award up to</span><div class="seg" data-f="amt"><button type="button" aria-pressed="true" data-v="0">Any</button><button type="button" aria-pressed="false" data-v="10000">$10k+</button><button type="button" aria-pressed="false" data-v="50000">$50k+</button><button type="button" aria-pressed="false" data-v="250000">$250k+</button></div></div>
+      <div class="fgroup" role="group" aria-labelledby="l-cat"><span class="flabel" id="l-cat">Category (choose any)</span><div class="seg" data-f="cat" data-multi><button type="button" aria-pressed="true" data-v="">All</button>{cats}</div></div>
+    </details>
+  </div>
+  <div class="resbar"><p class="count" aria-live="polite"><strong id="cnt">0</strong> <span id="cntl">grants</span><span class="of" id="cnt-of"></span></p><p class="sortnote">Sorted by soonest deadline</p></div>
 </div>
-<div style="display:flex;align-items:baseline;margin-top:40px;gap:14px"><span class="big-num" id="cnt" style="font-variation-settings:'wght' 200">0</span><span class="lab">of {len(GRANTS)} grants</span></div>
-<table class="gt"><thead><tr><th>Grant</th><th>Max award</th><th style="text-align:right">Deadline</th></tr></thead><tbody id="gt" aria-live="polite"></tbody></table>"""
+<table class="gt"><thead><tr><th scope="col">Grant</th><th scope="col">Max award</th><th scope="col" style="text-align:right">Deadline</th></tr></thead><tbody id="gt"><tr><td colspan="3" class="state">Loading grants…</td></tr></tbody></table>"""
     js = """<script src="../shared/grants-data.js"></script><script>
-const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
-$$('.ftabs[data-f]').forEach(t => t.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
-  if (t.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', t).forEach(x => x.classList.toggle('on', !x.dataset.v)); } else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', t).classList.toggle('on', !F.cat.size); } }
-  else { $$('button', t).forEach(x => x.classList.toggle('on', x === b)); F[t.dataset.f] = t.dataset.f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
-$('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); $('#q').style.fontVariationSettings = `'wght' ${200 + Math.min(500, e.target.value.length * 30)}`; render(); });
+const F0 = () => ({ q: '', elig: '', status: 'live', amt: 0, cat: new Set() });
+let F = F0();
+$$('.seg[data-f]').forEach(t => t.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return;
+  const on = (x, v) => x.setAttribute('aria-pressed', v);
+  if (t.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', t).forEach(x => on(x, !x.dataset.v)); } else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); on(b, F.cat.has(b.dataset.v)); on($('button[data-v=""]', t), !F.cat.size); } }
+  else { $$('button', t).forEach(x => on(x, x === b)); F[t.dataset.f] = t.dataset.f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
+$('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase().trim(); render(); });
+function reset() { F = F0(); $('#q').value = ''; $$('.seg').forEach(t => $$('button', t).forEach((x, i) => x.setAttribute('aria-pressed', i === 0))); render(); }
 function render() {
+  if (typeof GRANTS === 'undefined') { $('#cnt').textContent = '0'; $('#gt').innerHTML = '<tr><td colspan="3" class="state">The grant list did not load. Check your connection and reload the page.</td></tr>'; return; }
   const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q)) && (!F.elig || g.elig === F.elig || g.elig === 'both')
     && (F.status === '' || g.status !== 'closed') && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
     .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
-  $('#cnt').textContent = rs.length; $('#cnt').style.fontVariationSettings = `'wght' ${Math.round(100 + rs.length / GRANTS.length * 800)}`;
-  $('#gt').innerHTML = rs.length ? rs.map((g, i) => { const w = g.status === 'closed' ? 100 : urg(g.days), hot = g.days != null && g.days <= 14 && g.status !== 'closed';
-    return `<tr class="${hot ? 'hot' : ''} ${g.status === 'closed' ? 'closed' : ''}" data-i="${i}" tabindex="0"><td><div class="n">${g.name}</div><div class="f">${g.funder}</div></td>
-      <td class="a">${g.max ? '$' + g.max.toLocaleString() : 'Varies'}</td><td class="d" style="font-variation-settings:'wght' ${w}">${g.dl}<small>${g.status === 'closed' ? 'closed' : g.days != null ? 'in ' + g.days + ' days' : g.status}</small></td></tr>
-      <tr class="xr" hidden><td colspan="3">${g.desc} <a class="pill sm o" href="${g.link}" target="_blank" rel="noopener" style="margin-left:8px">Funder's page →</a></td></tr>`; }).join('')
-    : '<tr><td colspan="3" class="lab" style="padding:40px 0">No grants match these filters. Try widening them.</td></tr>'; }
-$('#gt').addEventListener('click', e => { const r = e.target.closest('tr[data-i]'); if (r && !e.target.closest('a')) r.nextElementSibling.hidden = !r.nextElementSibling.hidden; });
-$('#gt').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('tr[data-i]')) e.target.nextElementSibling.hidden = !e.target.nextElementSibling.hidden; });
+  $('#cnt').textContent = rs.length; $('#cntl').textContent = (rs.length === 1 ? 'grant' : 'grants'); $('#cnt-of').textContent = rs.length === GRANTS.length ? '' : ' (of ' + GRANTS.length + ' total)';
+  $('#gt').innerHTML = rs.length ? rs.map((g, i) => { const closed = g.status === 'closed', w = closed ? 400 : urg(g.days), hot = g.days != null && g.days <= 14 && !closed;
+    return `<tr class="${hot ? 'hot' : ''} ${closed ? 'closed' : ''}"><td><button type="button" class="rowbtn" aria-expanded="false"><span class="n">${g.name}${closed ? '<span class="chip">Closed</span>' : ''}</span><span class="f">${g.funder}</span></button></td>
+      <td class="a">${g.max ? '$' + g.max.toLocaleString() : 'Varies'}</td><td class="d" style="font-variation-settings:'wght' ${w}">${g.dl}<small>${closed ? 'Closed' : g.days != null ? 'in ' + g.days + ' days' : g.status}</small></td></tr>
+      <tr class="xr" hidden><td colspan="3">${g.desc} <a class="pill sm o" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></td></tr>`; }).join('')
+    : '<tr><td colspan="3" class="state">No grants match these filters.<br><button type="button" class="pill o" id="rs">Reset filters</button></td></tr>'; }
+$('#gt').addEventListener('click', e => { if (e.target.closest('#rs')) return reset(); const b = e.target.closest('.rowbtn'); if (!b) return;
+  const x = b.closest('tr').nextElementSibling, open = x.hidden; x.hidden = !open; b.setAttribute('aria-expanded', open); });
 render();
 </script>"""
     return shell("grants", body, js)
@@ -494,7 +506,7 @@ def category(slug):
     intro, gs = category_intro(cat, what)
     gs = sorted(gs, key=lambda g: ({"open": 0, "rolling": 1, "closed": 2}[status(g)], days_left(g) if days_left(g) is not None else 999))
     c = {s: sum(1 for g in gs if status(g) == s) for s in ("open", "rolling", "closed")}
-    nums = "".join(f'<div class="c4"><div class="big-num" style="font-variation-settings:{chr(39)}wght{chr(39)} {w};font-size:110px">{n}</div><div class="lab" style="margin-top:12px">{lab}</div></div>' for n, lab, w in [(c["open"], "open now", 800), (c["rolling"], "rolling", 450), (c["closed"], "closed for now", 100)])
+    nums = "".join(f'<div class="c4"><div class="big-num" style="font-variation-settings:{chr(39)}wght{chr(39)} {w};font-size:110px">{n}</div><div class="lab" style="margin-top:12px">{lab}</div></div>' for n, lab, w in [(c["open"], "open now", 700), (c["rolling"], "rolling", 500), (c["closed"], "closed for now", 400)])
     others = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[v[0]]}</a>' for s, v in CATEGORY_PAGES.items() if s != slug)
     body = ph("Grant list", title, intro) + f"""
 <table class="gt" style="margin-top:40px"><thead><tr><th>Grant</th><th>Award</th><th style="text-align:right">Deadline</th></tr></thead><tbody>{''.join(grant_tr(g) for g in gs)}</tbody></table>
@@ -506,14 +518,14 @@ def grant_help():
     tips = "".join(f'<button class="tip-row" data-i="{i}"><span class="no">0{i+1}</span><div><b>{a}</b><p>{b}</p></div><span class="bx">✓</span></button>' for i, (a, b) in enumerate(HELP["tips"]))
     orgs = "".join(f'<a class="pub" href="{u}" target="_blank" rel="noopener" style="padding:24px 0"><div class="no" style="font-size:44px">{chr(65+i)}</div><div><h3 style="font-size:24px">{n}</h3><p>{d}</p></div><div class="meta"><b>{l} →</b></div></a>' for i, (n, d, l, u) in enumerate(HELP["orgs"]))
     body = ph("Grants", "Grant Help & Tips", HELP["intro"], '<a class="pill" href="grants.html">Search grants →</a>') + f"""
-<section style="margin-top:60px"><div class="sh"><h2>How to write a strong application</h2><span class="lab">Ready: <span id="rd" style="font-size:22px;color:var(--ink);font-family:var(--sans);font-variation-settings:'wght' 100">0 of 8</span></span></div>
+<section style="margin-top:60px"><div class="sh"><h2>How to write a strong application</h2><span class="lab">Ready: <span id="rd" style="font-size:22px;color:var(--ink);font-family:var(--sans);font-variation-settings:'wght' 400">0 of 8</span></span></div>
 <p class="lab" style="margin:14px 0 0">Tick a step when it's done: it gains weight.</p>{tips}
 <details style="padding:20px 0;border-bottom:1px solid var(--rule)"><summary class="lab" style="cursor:pointer">+ Common mistakes to avoid</summary>{''.join(f'<p style="padding:10px 0;font-size:16px;line-height:1.5"><span class="g lab" style="margin-right:12px">✕</span>{m}</p>' for m in HELP['mistakes'])}</details></section>
 <section><details><summary class="sh" style="cursor:pointer"><h2>Where to get free help</h2><span class="lab">+ show</span></summary>{orgs}<p class="lab" style="margin-top:20px;line-height:1.7;max-width:90ch">{HELP['disclaimer']}</p></details></section>"""
     js = """<script>
 const done = new Set(JSON.parse(localStorage.getItem('e3-help') || '[]'));
 function upd() { $$('.tip-row[data-i]').forEach(c => c.classList.toggle('on', done.has(+c.dataset.i))); $('#rd').textContent = done.size + ' of 8';
-  $('#rd').style.fontVariationSettings = `'wght' ${100 + done.size * 100}`; localStorage.setItem('e3-help', JSON.stringify([...done])); }
+  $('#rd').style.fontVariationSettings = `'wght' ${400 + done.size * 50}`; localStorage.setItem('e3-help', JSON.stringify([...done])); }
 $$('.tip-row[data-i]').forEach(c => c.addEventListener('click', () => { const i = +c.dataset.i; done.has(i) ? done.delete(i) : done.add(i); upd(); })); upd();
 </script>"""
     return shell("grant-help", body, js)
@@ -522,7 +534,7 @@ def indicators():
     """Header, four key charts, the rest behind one button."""
     def row(k, grp, name, u, d, extra):
         return f"""<div class="ind c6{extra}" data-key="{k}" data-unit="{u}"><div class="row1"><span class="lab">{grp} · {name}</span><span class="lab" data-yr></span></div>
-      <div class="val" style="margin-top:16px;font-variation-settings:'wght' 200"><span data-v>—</span><small>{u}</small></div>
+      <div class="val" style="margin-top:16px;font-variation-settings:'wght' 300"><span data-v>—</span><small>{u}</small></div>
       <svg viewBox="0 0 500 110" preserveAspectRatio="none" aria-hidden="true"></svg><p>{d}</p></div>"""
     key = [i for i in INDICATORS if i[0] in KEY_INDICATORS]
     more = [i for i in INDICATORS if i[0] not in KEY_INDICATORS]
@@ -537,7 +549,7 @@ loadIndicators().then(D => { $('#note').hidden = D.live;
     const d = s.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
     svg.innerHTML = `<line x1="0" x2="500" y1="${y(hi)}" y2="${y(hi)}" stroke="var(--guide)" stroke-dasharray="3 5" opacity=".6" vector-effect="non-scaling-stroke"/><line x1="0" x2="500" y1="${y(lo)}" y2="${y(lo)}" stroke="var(--guide)" stroke-dasharray="3 5" opacity=".6" vector-effect="non-scaling-stroke"/>
       <path d="${d}" fill="none" stroke="var(--ink)" stroke-width="1.6" vector-effect="non-scaling-stroke" ${D.live ? '' : 'stroke-dasharray="2 4"'}/><line class="cur" y1="0" y2="110" stroke="var(--guide)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`;
-    const show = i => { const k = (s[i] - lo) / (hi - lo || 1), w = Math.round(100 + k * 800); $('.val', t).style.fontVariationSettings = `'wght' ${w}`;
+    const show = i => { const k = (s[i] - lo) / (hi - lo || 1), w = Math.round(300 + k * 600); $('.val', t).style.fontVariationSettings = `'wght' ${w}`;
       $('[data-v]', t).textContent = D.live ? fmtIndicator(s[i], u).replace(/[%M]/g, '') : '—'; $('[data-yr]', t).textContent = D.years[i]; $('.cur', svg).setAttribute('x1', x(i)); $('.cur', svg).setAttribute('x2', x(i)); };
     show(n - 1); svg.onpointermove = e => { const r = svg.getBoundingClientRect(); show(Math.round((e.clientX - r.left) / r.width * (n - 1))); }; svg.onpointerleave = () => show(n - 1); }); });
 </script>"""
@@ -578,14 +590,14 @@ def privacy():
 
 
 def notfound():
-    body = f"""<div class="ph" style="border:0"><div class="top"><span class="lab">Page not found</span><span class="lab">hover the numerals</span></div>
-  <h1 data-lens="100" style="font-size:clamp(110px,32vw,300px);letter-spacing:-.06em;line-height:.85">404</h1>
+    body = f"""<div class="ph" style="border:0"><div class="top"><span class="lab">Page not found</span></div>
+  <h1 data-lens="300" style="font-size:clamp(110px,32vw,300px);letter-spacing:-.06em;line-height:.85">404</h1>
   <div class="lede"><p>Sorry, we couldn't find that page. It may have moved, or the link may be mistyped.</p><div class="btns"><a class="pill" href="index.html">Homepage</a><a class="pill o" href="articles.html">Articles</a><a class="pill o" href="research.html">Research</a><a class="pill o" href="contact.html">Contact</a></div></div></div>"""
     return shell("404", body)
 
 
 def build():
-    write(f"{D}/theme.css", CSS + NOB + MODE_CSS + TYPE)
+    write(f"{D}/theme.css", CSS + NOB + MODE_CSS + TYPE + FIX)
     write(f"{D}/theme.js", JS)
     pages = {"index": home(), "about": about(), "journals": journals(), "grants": grants(), "grant-help": grant_help(),
              "economic-indicators": indicators(), "outreach": outreach(), "contact": contact(), "privacy": privacy(), "404": notfound(),
@@ -661,8 +673,8 @@ p,li{text-wrap:pretty}
 .lab,.pub .meta,.gt th,.gt .a,.gt .c,.gt .d small,.margin,.field .fl,.ftabs button,.tabs button,.pill,.sh a,footer a,.menu-btn,.notice,.capt,.prose h3,.tip,.tkl{font-family:var(--mono);font-variant-numeric:tabular-nums slashed-zero}
 .lab{font-size:12px;letter-spacing:.015em;line-height:1.5}
 .lab.rd{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
-.gt th{letter-spacing:.06em;text-transform:uppercase;font-size:11px}
-.field .fl{text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.gt th{letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.field .fl{text-transform:uppercase;letter-spacing:.06em;font-size:12px}
 
 /* nav */
 .nav ul a{font-size:var(--b);font-variation-settings:'wght' 400;letter-spacing:0}
@@ -675,7 +687,7 @@ p,li{text-wrap:pretty}
 .gt .f{font-size:var(--s-1);font-style:italic;color:var(--soft);margin-top:4px}
 .gt .a{font-size:14px;letter-spacing:0}
 .gt .d{font-size:var(--s3);letter-spacing:-.01em;font-variant-numeric:tabular-nums lining-nums;line-height:1.05}
-.gt .d small{font-size:11.5px;letter-spacing:.01em}
+.gt .d small{font-size:12px;letter-spacing:.01em}
 .gt tr.xr td{font-size:var(--b);line-height:1.55;max-width:60ch}
 .big-num{letter-spacing:-.04em;font-variant-numeric:lining-nums}
 .ind .val{letter-spacing:-.035em;font-variant-numeric:lining-nums tabular-nums}
@@ -706,16 +718,16 @@ textarea.inp:focus{font-variation-settings:'wght' 460}
 .prose>p:first-of-type::first-line{font-variant-caps:all-small-caps;letter-spacing:.06em}
 .prose>p:first-of-type::first-letter{float:left;font-size:5.6em;line-height:.78;margin:.07em .09em 0 0;font-variation-settings:'wght' 800,'SOFT' 100,'WONK' 1;letter-spacing:0;font-variant-caps:normal;color:var(--ink)}
 .prose h2{font-size:var(--s3);line-height:1.1;letter-spacing:-.015em;font-variation-settings:'wght' 300,'WONK' 1;margin:2em 0 .55em;max-width:24ch}
-.prose h2::before{font-size:11.5px;letter-spacing:.02em}
+.prose h2::before{font-size:12px;letter-spacing:.02em}
 .prose h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin:2.2em 0 .6em}
 .prose ul{margin:0 0 1em 1.2em}.prose li{margin:0 0 .45em}
 .prose strong,.prose b{font-variation-settings:'wght' 700}
 .prose em,.prose i{font-style:italic}
 .prose a{text-decoration-thickness:1px;text-underline-offset:.22em}
 .banner + .capt{margin-top:10px}
-.capt{font-size:11.5px;letter-spacing:.01em;max-width:var(--measure)}
+.capt{font-size:12px;letter-spacing:.01em;max-width:var(--measure)}
 .margin{font-size:12px}
-footer .lab{font-size:11.5px}
+footer .lab{font-size:12px}
 footer a{font-size:12px}
 
 html.dark .prose{--bw:430!important}
@@ -733,4 +745,110 @@ html.dark .ph .lede p,html.dark .pub p{font-variation-settings:'wght' 430}
   #axis{display:none}
   .bigsearch{font-size:var(--s3)}
 }
+"""
+
+# FIX: accessibility and usability layer (loaded last): contrast, tap targets, focus, controls, states
+FIX = r"""
+/* contrast: muted text 4.5:1+, orange only as a fill or as a darker ink for text */
+:root{--label-ink:rgba(20,19,18,.7);--soft:rgba(20,19,18,.8);--guide-ink:#a52a04;--ctl:color-mix(in srgb,var(--ink) 8%,transparent);--ctl-h:color-mix(in srgb,var(--ink) 15%,transparent);--edge:color-mix(in srgb,var(--ink) 45%,transparent)}
+html.dark{--label-ink:rgba(242,239,232,.7);--soft:rgba(242,239,232,.8);--guide-ink:#ff8a63}
+.g,.notice,.field:focus-within .fl,.margin a.on,.prose h2::before,.gt tr.hot .d{color:var(--guide-ink)}
+.tkl{color:var(--label-ink)}html.dark .tkl{color:var(--label-ink)}
+.notice{border:0}
+:root .inp::placeholder,:root .search::placeholder{color:var(--label-ink);opacity:1;font-style:normal}
+html.dark .inp::placeholder,html.dark .search::placeholder{color:var(--label-ink)}
+/* focus: one solid, visible ring everywhere */
+:focus-visible{outline:3px solid var(--guide-ink);outline-offset:3px;border-radius:4px}
+.inp:focus,.search:focus,textarea.inp:focus{outline:3px solid var(--guide-ink);outline-offset:2px}
+.knob:focus-visible{outline:3px solid var(--guide-ink);outline-offset:4px;border-radius:50%}
+/* links: solid underlines only */
+.lk,.prose a{text-decoration:underline solid;text-decoration-color:currentColor;text-underline-offset:.22em;text-decoration-thickness:1px}
+.lk{color:var(--ink)}
+.nav ul a.on{text-decoration:underline solid;text-decoration-color:var(--ink);text-decoration-thickness:2px;text-underline-offset:8px;font-variation-settings:'wght' 700}
+/* tap targets 44px */
+.brand{display:inline-flex;align-items:center;min-height:44px}
+.nav ul a{display:inline-flex;align-items:center;min-height:44px}
+.menu-btn{min-height:44px;padding:0 16px;font-size:14px}
+.mode{width:44px;height:44px}
+.pill{font-size:15px;min-height:44px}.pill.sm{height:44px;font-size:14px;margin-left:8px}
+.pill.pri{height:52px;padding:0 28px;font-size:16px}
+.pill.pri:hover{background:color-mix(in srgb,var(--ink) 85%,var(--guide))}
+.pill.o:hover{background:var(--ctl-h)}
+.pill:disabled,.pill[aria-disabled=true]{opacity:.5;cursor:not-allowed}
+footer a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+footer .lab{font-size:13px}
+.sh a{display:inline-flex;align-items:center;min-height:44px}
+.tabs{flex-wrap:wrap;gap:8px}
+.tabs button{min-height:44px;padding:0 16px;font-size:15px;color:var(--ink);background:var(--ctl)}
+.tabs button:hover{background:var(--ctl-h)}
+.tabs button.on{background:var(--ink);color:var(--paper-light)}
+.knob{width:44px;height:44px;margin-left:-22px;top:-20px}
+.tip{top:-76px}
+.tkl{font-size:12px}
+.slider .sl{color:var(--soft)}
+/* text sizes: nothing under 12px, body 16px+ */
+.gt .a{font-size:16px}.gt .d small,.gt .c,.pub .meta,.capt,.margin{font-size:13px}.gt .f{font-size:15px}
+.pub .meta{line-height:1.7}
+/* display: keep weights legible */
+.ph h1,.ph h1.long{font-variation-settings:'wght' 300,'WONK' 1}
+.pub .no,.tip-row .no{font-variation-settings:'wght' 200}
+.lede2 h2{font-family:var(--display);font-size:var(--d1);letter-spacing:-.02em;line-height:1.04;font-weight:normal;font-variation-settings:'wght' 300,'WONK' 1;text-wrap:balance}
+.lede2 h2 .w1{font-variation-settings:'wght' 200,'WONK' 1}
+.lede2 h2 .w8{font-style:italic;font-variation-settings:'wght' 800,'SOFT' 100,'WONK' 1}
+.lede2 p{margin-bottom:0}
+/* home hero */
+.hero{padding:56px 0 24px}
+.hero h1{font-family:var(--display);font-size:var(--d1);line-height:1.05;letter-spacing:-.02em;font-weight:normal;font-variation-settings:'wght' 550,'WONK' 1;max-width:18ch;text-wrap:balance}
+.hero p{font-size:var(--s1);line-height:1.5;color:var(--soft);max-width:48ch;margin:24px 0 32px}
+.spec{padding-top:32px}
+.lede2{margin-top:40px;padding-top:56px}
+/* grant finder */
+.ph.compact{padding:32px 0 8px}.ph.compact .top{margin-bottom:12px}.ph.compact h1{font-size:var(--d1)}.ph.compact .lede{margin-top:16px;gap:32px;align-items:center}.ph.compact .lede p{font-size:var(--b)}
+.ph.compact + .finder{margin-top:24px}
+.finder{margin-top:40px}
+.flabel{display:block;font:14px/1.4 var(--mono);color:var(--ink);margin-bottom:8px}
+.fgroup .flabel{margin:0;padding-top:12px}
+.search{display:block;width:100%;min-height:56px;padding:12px 16px;border:0;border-radius:10px;background:var(--ctl);box-shadow:inset 0 0 0 1px var(--edge);font-family:var(--text);font-size:var(--s1);line-height:1.3;color:var(--ink);font-variation-settings:'wght' 450;-webkit-appearance:none;appearance:none}
+.search:hover{background:var(--ctl-h)}
+.search::-webkit-search-cancel-button{height:20px;width:20px}
+.filters{margin-top:24px}
+.fgroup{padding:8px 0;align-items:start;grid-template-columns:170px 1fr}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{min-height:44px;padding:0 16px;border-radius:999px;font:15px var(--mono);background:var(--ctl);color:var(--ink);transition:background .15s}
+.seg button:hover{background:var(--ctl-h)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper-light)}
+.seg button[aria-pressed=true]::before{content:"✓";margin-right:8px}
+.more-f summary{display:flex;align-items:center;min-height:44px;font:14px var(--mono);color:var(--ink);cursor:pointer;text-decoration:underline;text-underline-offset:4px;width:max-content}
+.more-f summary::before{content:"▸";margin-right:8px;text-decoration:none;display:inline-block}
+.more-f[open] summary::before{content:"▾"}
+.resbar{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:32px}
+.count{font-family:var(--display);font-size:var(--s2);line-height:1.2;color:var(--ink);font-variation-settings:'wght' 600,'WONK' 1}
+.count strong{font-weight:inherit}.count .of{font:14px var(--mono);color:var(--label-ink);margin-left:6px;font-variation-settings:normal}
+.sortnote{font:14px var(--mono);color:var(--label-ink)}
+.gt{margin-top:8px}
+.gt td.state{padding:40px 0;color:var(--soft);font-size:var(--b);line-height:1.8}
+.gt td.state .pill{margin-top:12px}
+.rowbtn{display:block;width:100%;text-align:left;min-height:44px;padding:0;color:inherit}
+.rowbtn .n,.rowbtn .f{display:block}
+.rowbtn .n::before{content:"▸";display:inline-block;width:1.1em;font-size:.8em;color:var(--label-ink)}
+.rowbtn[aria-expanded=true] .n::before{content:"▾"}
+.rowbtn:hover .n{text-decoration:underline;text-underline-offset:3px}
+.gt .f{padding-left:0}
+.gt tbody tr{cursor:default}
+.gt tr.xr td{padding-bottom:24px}
+.chip{display:inline-block;margin-left:10px;padding:2px 8px;border-radius:6px;background:var(--ctl-h);color:var(--ink);font:12px/1.5 var(--mono);letter-spacing:.02em;vertical-align:middle;font-variation-settings:normal}
+/* closed grants: normal weight, muted but readable, clearly labelled */
+.gt tr.closed .n,.gt tr.closed .d,.gt tr.closed .a,.gt tr.closed .f{color:var(--label-ink)}
+.gt tr.closed .d,.gt tr.closed .n{font-variation-settings:'wght' 400!important}
+.gt .d small{font-size:13px}
+.big-num{font-variation-settings:'wght' 500}
+@media (max-width:760px){
+  .fgroup{grid-template-columns:1fr;gap:4px}
+  .hero{padding-top:32px}
+  .gt .d{font-size:var(--s1)}
+  .gt .a{font-size:15px}
+  .pill.sm{margin-left:0;margin-top:8px}
+  .gt .f{display:block!important;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 """

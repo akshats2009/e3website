@@ -56,4 +56,4 @@ function makeSlider(root, w, onChange) {
 function sliderHTML(label, ro = '') { return `<div class="sl">${label}</div>${ro ? `<div class="lab ro">${ro}</div>` : ''}<div class="trk"><div class="fill"></div></div><div class="knob" tabindex="0" role="slider" aria-label="${label}" aria-valuemin="100" aria-valuemax="900"></div><div class="tip"><span data-n>Thin</span><span data-v>100</span></div>`; }
 $$('.slider[data-label]').forEach(s => s.innerHTML = sliderHTML(s.dataset.label, s.dataset.ro || ''));
 /* urgency → weight: 0 days 900, 60+ days 150 */
-const urg = d => d == null ? 300 : Math.round(900 - 750 * Math.min(1, Math.max(0, d) / 60));
+const urg = d => d == null ? 400 : Math.round(800 - 400 * Math.min(1, Math.max(0, d) / 60));

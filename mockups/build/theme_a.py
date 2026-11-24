@@ -1,23 +1,23 @@
 """Variation A: Paper widgets. Warm paper, white tiles, thin Geist numerals, mono captions, one ultramarine accent.
 Every page is built from the paper-widgets components: tiles with dot labels, calendar rows, tick dials, level bars,
-the now-playing player and the focus switch (here: reading mode, saved across pages)."""
+the focus switch (here: reading mode, saved across pages)."""
 from common import *
 
 D = "site-a"
 
 CSS = r"""
 :root{
-  --bg:#e7e5e0; --tile:#f8f7f4; --ink:#141416; --ink-rgb:20 20 22; --muted:#8b887f; --accent:#2b36ff; --peach:#ffb48a;
+  --bg:#e7e5e0; --tile:#f8f7f4; --ink:#141416; --ink-rgb:20 20 22; --muted:#5b5850; --ai:#2b36ff; --accent:#2b36ff; --peach:#ffb48a;
   --line:rgba(20,20,22,.08); --wash:rgba(20,20,22,.05); --track:rgba(20,20,22,.07); --hair:rgba(20,20,22,.12);
   --marker:rgba(20,20,22,.14); --dotted:rgba(20,20,22,.16); --sun-glow:rgba(43,54,255,.14);
   --serif:"Fraunces","Iowan Old Style",Georgia,serif; --sans:"Instrument Sans",system-ui,sans-serif; --mono:"Geist Mono",ui-monospace,monospace; --label-font:500 13px/1.2 "Instrument Sans",system-ui,sans-serif;
-  --s-1:clamp(.75rem,.73rem + .1vw,.8125rem); --s0:clamp(.9375rem,.91rem + .12vw,1rem); --s1:clamp(1.0625rem,1rem + .3vw,1.25rem); --s2:clamp(1.3rem,1.15rem + .7vw,1.65rem); --s3:clamp(1.7rem,1.4rem + 1.4vw,2.5rem); --s4:clamp(2.2rem,1.6rem + 2.8vw,3.6rem); --s5:clamp(2.9rem,1.8rem + 5vw,5.4rem);
+  --s-1:.8125rem; --s0:1rem; --s1:1.25rem; --s2:1.75rem; --s3:clamp(2rem,1.6rem + 1.6vw,2.5rem); --s4:clamp(2.25rem,1.6rem + 2.8vw,3.5rem); --s5:clamp(2.75rem,1.8rem + 4vw,5rem);
   --disp:"opsz" 72,"SOFT" 50,"WONK" 0;
   --r:38px; --cell:292px; --gap:20px;
   --shadow:0 0 0 1px rgba(20,20,22,.05), inset 0 1px 0 #fff, 0 28px 46px -30px rgba(40,34,20,.35), 0 2px 4px rgba(40,34,20,.04);
   --focus-dark:radial-gradient(260px 220px at 75% 15%, rgba(43,54,255,.55), transparent 70%), #121215;
 }
-html.night{--bg:#0d0d10;--tile:#17171b;--ink:#f4f3f0;--ink-rgb:244 243 240;--muted:#8a8780;--line:rgba(255,255,255,.07);--wash:rgba(255,255,255,.06);--track:rgba(255,255,255,.08);--hair:rgba(255,255,255,.14);--marker:rgba(255,255,255,.16);--dotted:rgba(255,255,255,.2);
+html.night{--ai:#9aa1ff;--bg:#0d0d10;--tile:#17171b;--ink:#f4f3f0;--ink-rgb:244 243 240;--muted:#a9a69e;--line:rgba(255,255,255,.07);--wash:rgba(255,255,255,.06);--track:rgba(255,255,255,.08);--hair:rgba(255,255,255,.14);--marker:rgba(255,255,255,.16);--dotted:rgba(255,255,255,.2);
   --shadow:0 0 0 1px rgba(255,255,255,.05), inset 0 1px 0 rgba(255,255,255,.06), 0 28px 46px -30px rgba(0,0,0,.8)}
 h1,h2,h3{word-spacing:.04em;text-wrap:balance;font-optical-sizing:auto}p,li{text-wrap:pretty}
 .serif-l,.hero h1,.ph h1,.shead h2,.thin,.big,.cnt,.digits,.state,.share .h,.ttl,.mission p,.atile h1,.prose h2,.pubcard h3,.count-num,.ind .val,.cal .day,.dd b{font-family:var(--serif);font-variation-settings:var(--disp);font-feature-settings:"kern","liga","lnum","tnum"}
@@ -131,15 +131,24 @@ footer .links{display:flex;gap:18px;flex-wrap:wrap;font:500 13px var(--sans);col
 footer .links a:hover{color:var(--ink)}
 
 /* ——— home widgets ——— */
-.home{display:grid;grid-template-columns:repeat(4,var(--cell));grid-auto-rows:var(--cell);gap:var(--gap)}
-.home .rows .crow{padding:13px 0}.home .rows .crow .m{height:28px}
-.home .tile{height:100%}
-.w2{grid-column:span 2}
-.hero{grid-column:span 2;display:flex;flex-direction:column;justify-content:space-between;padding:4px 8px 4px 0}
-.hero h1{font-weight:300;font-size:clamp(3rem,2rem + 4vw,4.1rem);line-height:.96;letter-spacing:-.022em}
-.hero h1 span{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
-.hero h1 span{color:var(--accent)}
-.hero p{font-size:16px;line-height:1.5;color:var(--muted);max-width:46ch;margin-bottom:16px}
+.home{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:start;margin-top:16px}
+.hero{display:flex;flex-direction:column;gap:24px;padding:8px 0}
+.hero h1{font-weight:300;font-size:clamp(2.75rem,1.8rem + 4vw,4.5rem);line-height:.98;letter-spacing:-.022em}
+.hero h1 span{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;color:var(--ai)}
+.hero p{font-size:var(--s1);line-height:1.5;color:var(--muted);max-width:40ch}
+.soon{padding:24px 24px 8px}
+.soon-h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:8px}
+.soon-h h2{font-weight:300;font-size:var(--s2);letter-spacing:-.018em;line-height:1.1}
+.soon-h a{font-size:16px;color:var(--ai);text-decoration:underline;text-underline-offset:4px;display:inline-flex;align-items:center;min-height:44px}
+.srow{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 8px;margin:0 -8px;border-radius:16px;transition:background .2s}
+.srow:hover{background:var(--wash)}
+.srow .dd{text-align:center}
+.srow .dd b{display:block;font-weight:300;font-size:32px;line-height:1;letter-spacing:-.022em}
+.srow .dd span{font:500 13px/1.3 var(--mono);letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.srow .n{font-size:16px;font-weight:500;line-height:1.3;letter-spacing:-.011em}
+.srow .f{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.35}
+.srow .r{display:grid;gap:8px;justify-items:end}
+.srow .amt{font:500 13px/1.2 var(--mono);white-space:nowrap}
 .cta{display:flex;gap:8px;flex-wrap:wrap}
 /* publication cards */
 .pubcard{display:grid;grid-template-columns:200px 1fr;gap:26px;padding:24px;align-items:center}
@@ -210,7 +219,7 @@ footer .links a:hover{color:var(--ink)}
 [hidden]{display:none!important}
 summary{list-style:none}summary::-webkit-details-marker{display:none}summary.label::after{content:"+";margin-left:6px}
 @media (max-width:1300px){
-  .home{grid-template-columns:repeat(2,var(--cell));justify-content:center}
+  .home{grid-template-columns:1fr;gap:32px}
   .wrap{max-width:calc(var(--cell)*2 + var(--gap) + 64px)}
   .mission{grid-template-columns:1fr}
   .pill-nav{display:none}.menu-btn{display:grid}
@@ -221,8 +230,8 @@ summary{list-style:none}summary::-webkit-details-marker{display:none}summary.lab
 @media (max-width:700px){
   :root{--cell:calc(100vw - 48px);--r:30px}
   .wrap{padding:0 24px;max-width:none}
-  .home{grid-template-columns:var(--cell);grid-auto-rows:292px}
-  .w2,.hero{grid-column:auto}.hero{grid-row:span 2}.hero h1{font-size:50px}
+  .hero h1{font-size:clamp(2.5rem,13vw,3.25rem)}
+  .soon{padding:20px 16px 8px}.srow{grid-template-columns:48px minmax(0,1fr) auto;gap:12px}
   .ph{grid-template-columns:1fr}.ph h1{font-size:clamp(2.6rem,12vw,3.4rem)}
   .pubcard{grid-template-columns:1fr}.pubcard .cover{max-width:160px}
   .atile{padding:24px 22px 36px}.atile h1{font-size:clamp(2.1rem,9vw,2.6rem)}
@@ -365,50 +374,30 @@ def status_chip(s, d=None):
 
 # ——— Pages ———
 def home():
-    """Nav, hero, one player tile, footer."""
-    pieces = [{"t": p["title"].split(":")[0], "by": f'{p["author"]} · {p["kind"]}', "len": p["min"], "href": p["slug"] + ".html"} for p in PUBS]
-    import json as _j
+    """Nav, hero with one primary action, and the next four dated deadlines."""
+    rows = ""
+    for g in DATED_SOON[:4]:
+        mon, day = deadline_label(g).split(" ")
+        d = days_left(g)
+        chip = f'<span class="chip a">{"Today" if d == 0 else f"in {d} days" if d != 1 else "in 1 day"}</span>'
+        rows += (f'<a class="srow" href="grants.html"><div class="dd"><b>{int(day)}</b><span>{mon}</span></div>'
+                 f'<div><div class="n">{esc(g["name"])}</div><div class="f">{esc(g["funder"])}</div></div>'
+                 f'<div class="r"><span class="amt">{"up to " + money(g.get("amountMax")) if g.get("amountMax") else "Varies"}</span>{chip}</div></a>')
     body = f"""
 <div class="home">
   <div class="hero">
     {label('Equity · Economics · Ethnicity')}
     <h1>{TAGLINE}<span>.</span></h1>
-    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
+    <p>Student-led research on who builds local economies, who gets credit and who gets left out.</p>
+    <div class="cta"><a class="btn pri" href="grants.html">Open Grant Finder</a><a class="btn ghost" href="articles.html">Read the research</a></div>
   </div>
-  <div class="tile w2 player rise">
-    <div class="pcov">
-      <div class="art cover cv-a"><span class="mk">E3—01</span></div>
-      <div class="art cover cv-b" style="transform:translateX(110%)"><span class="mk">E3—02</span></div>
-      <div class="art cover cv-c" style="transform:translateX(110%)"><span class="mk">E3—03</span></div>
-    </div>
-    {label('Now reading', 'abs')}
-    <div class="eq" aria-hidden="true">{''.join(f'<b style="left:{i*6}px"></b>' for i in range(5))}</div>
-    <a class="ttl" id="ttl" href="#"></a><div class="by" id="by"></div>
-    <div class="prog"><div class="f" id="pf"></div></div><div class="knob" id="pk"></div>
-    <div class="times" id="el" style="left:300px">0:00</div><div class="times" id="len" style="left:540px"></div>
-    <button class="ctl" style="left:348px" id="prev" aria-label="Previous piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2v12H7zM20 6v12l-9-6z"/></svg></button>
-    <button class="play" id="play" aria-label="Pause"><svg id="pi" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
-    <button class="ctl" style="left:504px" id="next" aria-label="Next piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg></button>
-  </div>
+  <section class="tile soon rise" aria-labelledby="soon-h" style="margin-top:0">
+    <div class="soon-h"><h2 id="soon-h">Closing soon</h2><a href="grants.html">All grants</a></div>
+    {rows}
+  </section>
 </div>
 """
-    js = f"""<script>
-const PIECES = {_j.dumps(pieces)};
-let cur = 0, pos = 0.4, playing = !reduce; const arts = $$('.art');
-function setText() {{ $('#ttl').textContent = PIECES[cur].t; $('#ttl').href = PIECES[cur].href; $('#by').textContent = PIECES[cur].by; $('#len').textContent = PIECES[cur].len + ' min'; }}
-function show(i, dir) {{ const old = arts[cur]; cur = (i + 3) % 3; const nu = arts[cur];
-  nu.style.transition = 'none'; nu.style.transform = `translateX(${{dir * 110}}%)`; nu.style.opacity = 1; nu.style.zIndex = 2; old.style.zIndex = 1;
-  requestAnimationFrame(() => requestAnimationFrame(() => {{ nu.style.transition = ''; nu.style.transform = 'none'; old.style.transform = `translateX(${{-dir * 40}}px) scale(.94)`; old.style.opacity = .1; }}));
-  ['#ttl', '#by'].forEach(s => $(s).style.opacity = 0); setTimeout(() => {{ setText(); ['#ttl', '#by'].forEach(s => $(s).style.opacity = 1); }}, 150); pos = 0; }}
-setText(); $('#next').onclick = () => show(cur + 1, 1); $('#prev').onclick = () => show(cur - 1, -1);
-$('#play').onclick = () => {{ playing = !playing; $('#play').setAttribute('aria-label', playing ? 'Pause' : 'Play'); $('#pi').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; }};
-const bars = $$('.eq b'); let last = performance.now();
-(function loop(now) {{ const dt = (now - last) / 1000; last = now; if (playing) pos += dt * 0.05;
-  const f = Math.min(1, pos / PIECES[cur].len), w = $('.prog').offsetWidth; $('#pf').style.width = w * f + 'px'; $('#pk').style.left = $('.prog').offsetLeft + w * f + 'px';
-  $('#el').textContent = Math.floor(pos) + ':' + String(Math.floor((pos % 1) * 60)).padStart(2, '0');
-  bars.forEach((b, i) => b.style.height = (playing ? 4 + 10 * Math.abs(Math.sin(now / 1000 * (5 + i * 1.7) + i)) : 3) + 'px'); requestAnimationFrame(loop); }})(last);
-</script>"""
-    return shell("index", body, js)
+    return shell("index", body)
 
 def pub_list(page, kicker, title, lede, items, extra=""):
     """Header and one list."""
@@ -466,40 +455,48 @@ def grants():
     cats = "".join(f'<button data-v="{k}">{v}</button>' for k, v in CAT_LABEL.items())
     lists = " · ".join(f'<a href="{s}.html" style="color:var(--ink)">{CAT_LABEL[c]}</a>' for s, (c, _, _) in CATEGORY_PAGES.items())
     body = ph("Grants", "Grant Finder", f"Funding for small businesses and nonprofits. Ready-made lists: {lists}.", '<a class="btn ghost" href="grant-help.html">Help & tips →</a>') + f"""
-<div class="tile pad rise" style="margin-bottom:20px">
-  <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
-    <div class="search" style="flex:1;min-width:240px">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery…" aria-label="Search grants"></div>
-    <div class="seg" data-f="status"><button class="on" data-v="live">Open + rolling</button><button data-v="">All</button></div>
-    <span class="thin" style="font-size:var(--s3)" id="gcount">0</span>
+<form class="tile pad rise gform" style="margin-bottom:24px" onsubmit="return false" role="search" aria-label="Grant filters">
+  <div class="gtop">
+    <div class="gctl"><label class="label" for="q"><i></i>Search</label><div class="search">{icon('search')}<input class="inp" id="q" type="search" placeholder="Women-owned bakery" autocomplete="off"></div></div>
+    <fieldset class="gctl"><legend class="label"><i></i>Status</legend><div class="seg" data-f="status"><button type="button" class="on" aria-pressed="true" data-v="live">Open + rolling</button><button type="button" aria-pressed="false" data-v="">All</button></div></fieldset>
+    <fieldset class="gctl"><legend class="label"><i></i>Sort by</legend><div class="seg" data-f="sort"><button type="button" class="on" aria-pressed="true" data-v="soon">Soonest deadline</button><button type="button" aria-pressed="false" data-v="amt">Largest award</button></div></fieldset>
   </div>
-  <details style="margin-top:16px"><summary class="label" style="cursor:pointer">More filters</summary>
-    <div class="fl">{label('Who qualifies')}<div class="seg" data-f="elig"><button class="on" data-v="">Anyone</button><button data-v="small_business">Business</button><button data-v="nonprofit">Nonprofit</button></div></div>
-    <div class="fl">{label('Award up to at least')}<div class="seg" data-f="amt"><button class="on" data-v="0">Any</button><button data-v="10000">$10k</button><button data-v="50000">$50k</button><button data-v="250000">$250k</button></div></div>
-    <div class="fl">{label('Category')}<div class="seg" data-f="cat" data-multi><button class="on" data-v="">All</button>{cats}</div></div></details>
-</div>
-<div class="tile gres rise" id="gres" aria-live="polite"></div>"""
+  <details><summary class="label"><i></i>More filters</summary>
+    <fieldset class="gctl fl"><legend class="label">Who qualifies</legend><div class="seg" data-f="elig"><button type="button" class="on" aria-pressed="true" data-v="">Anyone</button><button type="button" aria-pressed="false" data-v="small_business">Business</button><button type="button" aria-pressed="false" data-v="nonprofit">Nonprofit</button></div></fieldset>
+    <fieldset class="gctl fl"><legend class="label">Award up to at least</legend><div class="seg" data-f="amt"><button type="button" class="on" aria-pressed="true" data-v="0">Any</button><button type="button" aria-pressed="false" data-v="10000">$10k</button><button type="button" aria-pressed="false" data-v="50000">$50k</button><button type="button" aria-pressed="false" data-v="250000">$250k</button></div></fieldset>
+    <fieldset class="gctl fl"><legend class="label">Category</legend><div class="seg" data-f="cat" data-multi><button type="button" class="on" aria-pressed="true" data-v="">All</button>{cats.replace('<button ', '<button type="button" aria-pressed="false" ')}</div></fieldset></details>
+</form>
+<div class="gcount"><h2 id="gcount" aria-live="polite">33 grants</h2><p id="gsort">Soonest deadline first</p></div>
+<div class="tile gres rise" id="gres"><div class="gload" role="status">Loading grants</div></div>"""
     js = """<script src="../shared/grants-data.js"></script><script>
-const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set() };
+const F = { q: '', elig: '', status: 'live', amt: 0, cat: new Set(), sort: 'soon' };
+const press = (b, on) => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); };
 $$('.seg[data-f]').forEach(seg => seg.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const f = seg.dataset.f;
-  if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => x.classList.toggle('on', !x.dataset.v)); }
-    else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); b.classList.toggle('on'); $('button[data-v=""]', seg).classList.toggle('on', !F.cat.size); } }
-  else { $$('button', seg).forEach(x => x.classList.toggle('on', x === b)); F[f] = f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
+  if (seg.hasAttribute('data-multi')) { if (!b.dataset.v) { F.cat.clear(); $$('button', seg).forEach(x => press(x, !x.dataset.v)); }
+    else { F.cat.has(b.dataset.v) ? F.cat.delete(b.dataset.v) : F.cat.add(b.dataset.v); press(b, F.cat.has(b.dataset.v)); press($('button[data-v=""]', seg), !F.cat.size); } }
+  else { $$('button', seg).forEach(x => press(x, x === b)); F[f] = f === 'amt' ? +b.dataset.v : b.dataset.v; } render(); }));
 $('#q').addEventListener('input', e => { F.q = e.target.value.toLowerCase(); render(); });
+function reset() { Object.assign(F, { q: '', elig: '', status: 'live', amt: 0, sort: 'soon' }); F.cat.clear(); $('#q').value = '';
+  $$('.seg[data-f]').forEach(seg => $$('button', seg).forEach((x, i) => press(x, i === 0))); render(); }
+const RANK = { open: 0, rolling: 1, closed: 2 };
 function render() {
   const rs = GRANTS.filter(g => (!F.q || (g.name + g.funder + g.desc + CAT_LABEL[g.cat]).toLowerCase().includes(F.q))
     && (!F.elig || g.elig === F.elig || g.elig === 'both') && (F.status === '' || g.status !== 'closed')
     && (!F.amt || g.max >= F.amt) && (!F.cat.size || F.cat.has(g.cat)))
-    .sort((a, b) => ({ open: 0, rolling: 1, closed: 2 }[a.status] - { open: 0, rolling: 1, closed: 2 }[b.status]) || (a.days ?? 999) - (b.days ?? 999));
-  $('#gcount').textContent = rs.length;
+    .sort((a, b) => (a.status === 'closed') - (b.status === 'closed') || (F.sort === 'amt' ? b.max - a.max : (a.days ?? 9999) - (b.days ?? 9999) || RANK[a.status] - RANK[b.status]));
+  $('#gcount').textContent = rs.length + (rs.length === 1 ? ' grant' : ' grants');
+  $('#gsort').textContent = F.sort === 'amt' ? 'Largest award first' : 'Soonest deadline first';
   $('#gres').innerHTML = rs.length ? rs.map(g => { const dt = g.days != null ? g.dl.split(' ') : null;
-    return `<div class="grow ${g.status}" tabindex="0"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:24px">∞</b><span>${g.dl}</span>`}</div>
+    return `<div class="grow ${g.status}" tabindex="0" role="button" aria-expanded="false"><div class="dd">${dt ? `<b>${+dt[1]}</b><span>${dt[0]}</span>` : `<b style="font-size:24px">∞</b><span>${g.dl}</span>`}</div>
       <div><div class="n">${g.name}</div><div class="f">${g.funder}</div></div><div class="amt">${g.max ? 'up to $' + g.max.toLocaleString() : 'Varies'}</div>
-      <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + 'd' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
-      <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page →</a></div></div>`; }).join('')
-    : '<div style="padding:40px 0;text-align:center" class="muted">No grants match these filters. Try widening them.</div>';
+      <div class="st">${g.status === 'open' ? `<span class="chip a">${g.days != null ? 'in ' + g.days + ' days' : 'Open'}</span>` : `<span class="chip">${g.status === 'rolling' ? 'Rolling' : 'Closed'}</span>`}</div>
+      <div class="gdetail">${g.desc}<br><a class="btn sm" href="${g.link}" target="_blank" rel="noopener">Funder's page (opens in new tab) →</a></div></div>`; }).join('')
+    : '<div class="gempty"><b>No grants match these filters</b><span class="muted">Try a shorter search or clear the filters.</span><button type="button" class="btn" id="clr">Clear filters</button></div>';
+  $('#clr')?.addEventListener('click', reset);
 }
-$('#gres').addEventListener('click', e => { const r = e.target.closest('.grow'); if (r && !e.target.closest('a')) r.classList.toggle('x'); });
-$('#gres').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.classList.contains('grow')) e.target.classList.toggle('x'); });
+const tog = r => r.setAttribute('aria-expanded', r.classList.toggle('x'));
+$('#gres').addEventListener('click', e => { const r = e.target.closest('.grow'); if (r && !e.target.closest('a')) tog(r); });
+$('#gres').addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('grow')) { e.preventDefault(); tog(e.target); } });
 render();
 </script>"""
     return shell("grants", body, js)
@@ -643,4 +640,84 @@ footer{border-top:0}
 .knob,.mini-sw b{box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .inp:focus{box-shadow:none;background:rgb(var(--ink-rgb)/.08)}
 .cover.photo,.banner{border-radius:16px}
+
+/* ——— accessibility and clarity pass ——— */
+body{font-size:16px}
+:focus-visible{outline:3px solid var(--ai);outline-offset:3px;border-radius:6px}
+.btn:focus-visible,.seg button:focus-visible,.pill-nav a:focus-visible,.mini-sw:focus-visible,.menu-btn:focus-visible{border-radius:99px}
+.inp:focus-visible{outline:3px solid var(--ai);outline-offset:2px}
+.grow:focus-visible{outline-offset:-3px;border-radius:16px}
+.pill-nav a{min-height:44px;display:flex;align-items:center;font-size:16px;padding:0 16px}
+.pill-nav a.on{color:var(--tile)}
+.brand{min-height:44px;font-size:20px}
+.mini-sw{width:56px;height:44px;background:none!important}
+.mini-sw::before{content:"";position:absolute;left:5px;top:8px;width:46px;height:28px;border-radius:99px;background:var(--hair);transition:background .3s}
+html.night .mini-sw::before{background:var(--accent)}
+.mini-sw b{left:8px;top:11px}
+.menu-btn{width:48px;height:48px}
+.btn{height:48px;font-size:16px;padding:0 24px;transition:transform .15s,background .2s,box-shadow .2s}
+.btn.pri{background:var(--accent);color:#fff}
+.btn.pri:hover{background:#1f29d9}
+.btn:hover{box-shadow:0 0 0 3px rgb(var(--ink-rgb)/.12)}
+.btn.ghost:hover{background:rgb(var(--ink-rgb)/.1)}
+.btn.sm{height:44px;font:500 16px/1 var(--sans);letter-spacing:0;text-transform:none}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.chip{font:500 13px/1 var(--mono);padding:7px 11px;letter-spacing:.02em}
+.chip.a{background:#2b36ff;color:#fff}
+html.night .chip.a{background:#3d47ff}
+.label{font-size:13px;letter-spacing:.08em}
+.ph p,.hero p{color:var(--muted)}
+.crow .t{font-size:13px}
+.crow .n{font-size:16px}.crow .d{font-size:16px}
+.grow .n{font-size:16px}.grow .f{font-size:16px}.grow .amt{font-size:16px}
+.grow .dd span{font-size:13px}
+.grow{padding:16px 8px;margin:0 -8px;border-radius:16px;transition:background .2s}
+.grow:hover{background:var(--wash)}
+.grow.closed{opacity:1}.grow.closed .n,.grow.closed .dd b{color:var(--muted)}
+.grow .st .chip{min-width:72px;justify-content:center}
+.gdetail{font-size:16px;padding-left:80px}
+.seg{gap:8px}
+.seg button{min-height:44px;height:44px;padding:0 18px;font-size:16px;color:var(--ink);background:var(--wash);transition:background .2s,color .2s}
+.seg button:hover:not(.on){background:rgb(var(--ink-rgb)/.12)}
+.seg button.on{background:var(--ink);color:var(--tile)}
+.field span{font-size:13px}
+.inp{height:52px}
+summary.label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.check b,.check p{font-size:16px}
+footer .links{font-size:16px;gap:4px 8px}
+footer .links a{display:inline-flex;align-items:center;min-height:44px;padding:0 8px}
+.shead a{font-size:16px}
+.capt,.ind .desc,.note,.pubcard p,.prose + p{font-size:16px}
+.toc .crow .n{font-size:16px}
+.ind .yrs,.tr{font-size:13px}
+.ind .val small{font-size:20px}
+.prose a{text-decoration-thickness:2px}
+a.skip:focus{outline-color:var(--tile)}
+/* grant finder */
+.grow{grid-template-columns:64px minmax(0,1fr) 150px 112px}
+.grow .st{white-space:nowrap}
+.gform{display:grid;gap:24px}
+.gtop{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:24px;align-items:end}
+.gctl{display:grid;gap:8px;min-width:0}
+.gctl > .label{margin:0}
+fieldset.gctl{border:0;min-width:0}
+fieldset.gctl legend{padding:0;margin-bottom:8px}
+.gcount{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:8px 4px 16px}
+.gcount h2{font-family:var(--serif);font-variation-settings:var(--disp);font-weight:300;font-size:var(--s3);letter-spacing:-.02em;line-height:1.1}
+.gcount p{font-size:16px;color:var(--muted)}
+.gempty{padding:48px 0;text-align:center;display:grid;gap:16px;justify-items:center}
+.gempty b{font:500 20px var(--sans)}
+.gload{padding:48px 0;text-align:center;color:var(--muted)}
+.gres{padding:8px 24px}
+.fl{margin-top:24px}
+@media (max-width:900px){.gtop{grid-template-columns:1fr}}
+@media (max-width:700px){
+  .grow{grid-template-columns:48px minmax(0,1fr) auto;gap:12px}
+  .grow .st .chip{min-width:0}
+  .grow .amt{display:none}
+  .gres{padding:8px 16px}
+  .crow{grid-template-columns:3px 1fr}
+  .gcount h2{font-size:2rem}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rise{opacity:1;transform:none}}
 """

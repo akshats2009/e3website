@@ -24,47 +24,22 @@
   <div class="hero">
     <div class="label "><i></i>Equity · Economics · Ethnicity</div>
     <h1>Research for equitable communities<span>.</span></h1>
-    <div><p>Student-led research on who builds local economies, who gets credit and who gets left out.</p><div class="cta"><a class="btn" href="articles.html">Read the research</a></div></div>
+    <p>Student-led research on who builds local economies, who gets credit and who gets left out.</p>
+    <div class="cta"><a class="btn pri" href="grants.html">Open Grant Finder</a><a class="btn ghost" href="articles.html">Read the research</a></div>
   </div>
-  <div class="tile w2 player rise">
-    <div class="pcov">
-      <div class="art cover cv-a"><span class="mk">E3—01</span></div>
-      <div class="art cover cv-b" style="transform:translateX(110%)"><span class="mk">E3—02</span></div>
-      <div class="art cover cv-c" style="transform:translateX(110%)"><span class="mk">E3—03</span></div>
-    </div>
-    <div class="label abs"><i></i>Now reading</div>
-    <div class="eq" aria-hidden="true"><b style="left:0px"></b><b style="left:6px"></b><b style="left:12px"></b><b style="left:18px"></b><b style="left:24px"></b></div>
-    <a class="ttl" id="ttl" href="#"></a><div class="by" id="by"></div>
-    <div class="prog"><div class="f" id="pf"></div></div><div class="knob" id="pk"></div>
-    <div class="times" id="el" style="left:300px">0:00</div><div class="times" id="len" style="left:540px"></div>
-    <button class="ctl" style="left:348px" id="prev" aria-label="Previous piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2v12H7zM20 6v12l-9-6z"/></svg></button>
-    <button class="play" id="play" aria-label="Pause"><svg id="pi" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
-    <button class="ctl" style="left:504px" id="next" aria-label="Next piece"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg></button>
-  </div>
+  <section class="tile soon rise" aria-labelledby="soon-h" style="margin-top:0">
+    <div class="soon-h"><h2 id="soon-h">Closing soon</h2><a href="grants.html">All grants</a></div>
+    <a class="srow" href="grants.html"><div class="dd"><b>30</b><span>Nov</span></div><div><div class="n">Spark Good Local Grants</div><div class="f">Walmart</div></div><div class="r"><span class="amt">up to $5k</span><span class="chip a">in 13 days</span></div></a><a class="srow" href="grants.html"><div class="dd"><b>30</b><span>Nov</span></div><div><div class="n">Tribal Tourism Small Business Grant</div><div class="f">Montana Department of Commerce</div></div><div class="r"><span class="amt">up to $10k</span><span class="chip a">in 13 days</span></div></a><a class="srow" href="grants.html"><div class="dd"><b>3</b><span>Dec</span></div><div><div class="n">North Central Region SARE Farmer Rancher Grant</div><div class="f">North Central Region SARE (NCR-SARE)</div></div><div class="r"><span class="amt">up to $30k</span><span class="chip a">in 16 days</span></div></a><a class="srow" href="grants.html"><div class="dd"><b>14</b><span>Dec</span></div><div><div class="n">Dental Safety Net Grant Program</div><div class="f">Minnesota Department of Health</div></div><div class="r"><span class="amt">up to $34k</span><span class="chip a">in 27 days</span></div></a>
+  </section>
 </div>
 
   </main>
   <footer>
-    <span class="mono" style="font-size:11px;color:var(--muted)">© 2026 e3 Initiative</span>
+    <span class="mono" style="font-size:13px;color:var(--muted)">© 2026 e3 Initiative</span>
     <nav class="links" aria-label="Footer"><a href="articles.html">Publications</a><a href="grants.html">Grant Finder</a><a href="grant-help.html">Grant Help</a><a href="economic-indicators.html">Indicators</a><a href="outreach.html">Outreach</a><a href="privacy.html">Privacy</a></nav>
   </footer>
 </div>
 <script src="theme.js"></script>
-<script>
-const PIECES = [{"t": "Chinese Labor and the Transcontinental Railroad", "by": "Minghao Gu \u00b7 Article", "len": 3, "href": "article-railroad.html"}, {"t": "Beyond Restaurants and Boba Cafes", "by": "Minghao Gu \u00b7 Research paper", "len": 8, "href": "research-chinatown.html"}, {"t": "Beyond Restaurants, Boba Cafes, and Souvenir Shops", "by": "Minghao Gu \u00b7 Article", "len": 4, "href": "article-chinatown.html"}];
-let cur = 0, pos = 0.4, playing = !reduce; const arts = $$('.art');
-function setText() { $('#ttl').textContent = PIECES[cur].t; $('#ttl').href = PIECES[cur].href; $('#by').textContent = PIECES[cur].by; $('#len').textContent = PIECES[cur].len + ' min'; }
-function show(i, dir) { const old = arts[cur]; cur = (i + 3) % 3; const nu = arts[cur];
-  nu.style.transition = 'none'; nu.style.transform = `translateX(${dir * 110}%)`; nu.style.opacity = 1; nu.style.zIndex = 2; old.style.zIndex = 1;
-  requestAnimationFrame(() => requestAnimationFrame(() => { nu.style.transition = ''; nu.style.transform = 'none'; old.style.transform = `translateX(${-dir * 40}px) scale(.94)`; old.style.opacity = .1; }));
-  ['#ttl', '#by'].forEach(s => $(s).style.opacity = 0); setTimeout(() => { setText(); ['#ttl', '#by'].forEach(s => $(s).style.opacity = 1); }, 150); pos = 0; }
-setText(); $('#next').onclick = () => show(cur + 1, 1); $('#prev').onclick = () => show(cur - 1, -1);
-$('#play').onclick = () => { playing = !playing; $('#play').setAttribute('aria-label', playing ? 'Pause' : 'Play'); $('#pi').innerHTML = playing ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>'; };
-const bars = $$('.eq b'); let last = performance.now();
-(function loop(now) { const dt = (now - last) / 1000; last = now; if (playing) pos += dt * 0.05;
-  const f = Math.min(1, pos / PIECES[cur].len), w = $('.prog').offsetWidth; $('#pf').style.width = w * f + 'px'; $('#pk').style.left = $('.prog').offsetLeft + w * f + 'px';
-  $('#el').textContent = Math.floor(pos) + ':' + String(Math.floor((pos % 1) * 60)).padStart(2, '0');
-  bars.forEach((b, i) => b.style.height = (playing ? 4 + 10 * Math.abs(Math.sin(now / 1000 * (5 + i * 1.7) + i)) : 3) + 'px'); requestAnimationFrame(loop); })(last);
-</script>
+
 </body>
 </html>
