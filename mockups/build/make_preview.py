@@ -45,7 +45,7 @@ CSS = """
 @font-face{font-family:'IBM Plex Mono';src:url(fonts/plexmono.woff2) format('woff2');font-weight:500;font-display:swap}
 :root{--bg:#eef0f2;--surface:#fff;--ink:#101318;--muted:#4a5360;--accent:#00704b;--wash:rgba(16,19,24,.07);--on-accent:#fff;--shadow:0 30px 60px -40px rgba(20,30,40,.35);
  --sans:Archivo,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
-html.night{--bg:#090c11;--surface:#121820;--ink:#f1f3f5;--muted:#a9b2be;--accent:#37d9a0;--wash:rgba(255,255,255,.08);--on-accent:#06130d;--shadow:0 30px 70px -40px rgba(0,0,0,.9)}
+html.night{--bg:#090c11;--surface:#121820;--ink:#f1f3f5;--muted:#b4bcc7;--accent:#37d9a0;--wash:rgba(255,255,255,.08);--on-accent:#06130d;--shadow:0 30px 70px -40px rgba(0,0,0,.9)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font:400 1rem/1.55 var(--sans);-webkit-font-smoothing:antialiased}
@@ -60,7 +60,7 @@ header{position:sticky;top:0;z-index:20;background:var(--bg)}
 .right{display:flex;align-items:center;gap:10px}
 nav ul{display:flex;list-style:none;position:relative;gap:0}
 nav ul::before{content:"";position:absolute;left:28px;right:28px;top:10px;height:3px;border-radius:2px;background:var(--accent)}
-nav a{position:relative;display:block;padding:26px 11px 6px;font:600 .8rem var(--sans);font-stretch:85%;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:var(--muted);min-height:44px}
+nav a{position:relative;display:block;padding:26px 11px 8px;font:600 .875rem var(--sans);font-stretch:85%;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:var(--muted);min-height:44px}
 nav a::before{content:"";position:absolute;left:50%;top:3px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 3px var(--accent)}
 nav a:hover{color:var(--ink)}nav a[aria-current=page]{color:var(--ink)}nav a[aria-current=page]::before{background:var(--ink)}
 .icon-btn{width:44px;height:44px;border-radius:50%;background:var(--wash);display:grid;place-items:center;border:0;color:var(--ink);cursor:pointer}
@@ -68,7 +68,7 @@ nav a:hover{color:var(--ink)}nav a[aria-current=page]{color:var(--ink)}nav a[ari
 .sun{display:none}html.night .sun{display:block}html.night .moon{display:none}
 .hero{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:center;padding:28px 0 20px}
 .eyebrow{font:500 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
-h1{font-weight:760;font-stretch:72%;text-transform:uppercase;letter-spacing:-.015em;line-height:.95;font-size:clamp(2.9rem,6vw,5.4rem);text-wrap:balance}
+h1{font-weight:760;font-stretch:72%;text-transform:uppercase;letter-spacing:-.015em;line-height:.95;font-size:clamp(2.6rem,4.8vw,4.5rem);text-wrap:balance}
 h1 span{color:var(--accent)}
 .lede{margin:22px 0 28px;font-size:1.125rem;max-width:36ch;color:var(--muted)}
 .btns{display:flex;flex-wrap:wrap;gap:10px}
@@ -80,7 +80,7 @@ figure{margin:0}
 .tabs{position:absolute;left:16px;top:16px;display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:99px;background:rgba(10,14,20,.82)}
 .tabs button{min-height:36px;padding:0 14px;border-radius:99px;border:0;background:none;color:#fff;font:700 .72rem var(--sans);letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
 .tabs button[aria-pressed=true]{background:#fff;color:#101318}
-figcaption{margin-top:12px;font:500 .72rem/1.5 var(--mono);color:var(--muted)}
+figcaption{margin-top:12px;font:500 .8125rem/1.55 var(--mono);color:var(--muted)}
 figcaption a{color:var(--ink)}
 .closes{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:18px 32px;margin:26px 0 0;padding:26px 30px;border-radius:24px;background:var(--surface);box-shadow:var(--shadow)}
 .closes h2{font:500 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
@@ -92,13 +92,13 @@ section.latest h2{font-weight:760;font-stretch:72%;text-transform:uppercase;font
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;list-style:none}
 .card a{display:block;text-decoration:none}.card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:18px;background:var(--wash)}
 .card h3{font-weight:700;font-size:1.1rem;line-height:1.25;margin:14px 0 6px}.card a:hover h3{text-decoration:underline}
-.card span{font:500 .8rem var(--mono);color:var(--muted)}
+.card span{font:500 .875rem var(--mono);color:var(--muted)}
 footer{padding:56px 0 40px;margin-top:40px}
 footer ul{display:flex;flex-wrap:wrap;gap:6px 24px;list-style:none;margin-bottom:18px}
 footer a{display:inline-block;padding:8px 0;color:var(--muted);text-decoration:none;font-weight:500}footer a:hover{color:var(--ink);text-decoration:underline}
 footer p{font:500 .75rem var(--mono);color:var(--muted)}
 .prose{max-width:760px;padding:40px 0}.prose h1{font-size:clamp(2.4rem,5vw,3.6rem);margin-bottom:18px}.prose p{margin:0 0 14px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;margin:22px 0;font-size:.95rem}th,td{text-align:left;padding:12px 14px 12px 0;vertical-align:top}th{font:500 .72rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:22px 0;font-size:.95rem}th,td{text-align:left;padding:12px 14px 12px 0;vertical-align:top}th{font:500 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 tbody tr:nth-child(odd){background:var(--wash)}td,th{padding-left:12px}
 @media(max-width:900px){.hero{grid-template-columns:1fr;gap:28px}.lede{max-width:none}.cards{grid-template-columns:1fr}.photo{aspect-ratio:4/3}
  .menu{display:grid}nav{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);padding:6px 28px 16px}nav.open{display:block}nav ul{flex-direction:column}nav ul::before,nav a::before{display:none}nav a{padding:12px 0;min-height:44px}}
@@ -168,9 +168,8 @@ body = f"""
   <figure>
     <div class="photo" id="photo">
       <img id="hero" width="1200" height="1000" alt="" fetchpriority="high" decoding="async">
-      <script>(function(){{var n=document.documentElement.classList.contains('night'),i=document.getElementById('hero');i.src='/d-preview/img/ny-'+(n?'night':'day')+'-1200.webp';i.srcset='/d-preview/img/ny-'+(n?'night':'day')+'-640.webp 640w, /d-preview/img/ny-'+(n?'night':'day')+'-1200.webp 1200w';i.sizes='(max-width:900px) 100vw, 58vw'}})()</script>
+      <script>(function(){{var n=document.documentElement.classList.contains('night'),i=document.getElementById('hero');var c=null;try{{c=sessionStorage.getItem('e3-city')}}catch(e){{}}var L=['ny','chi','sf','la'];if(L.indexOf(c)<0){{c=L[Math.floor(Math.random()*4)];try{{sessionStorage.setItem('e3-city',c)}}catch(e){{}}}}var b='/d-preview/img/'+c+'-'+(n?'night':'day');i.src=b+'-1200.webp';i.srcset=b+'-640.webp 640w, '+b+'-1200.webp 1200w';i.sizes='(max-width:900px) 100vw, 58vw'}})()</script>
       <noscript><img src="/d-preview/img/ny-day-1200.webp" width="1200" height="1000" alt="Brooklyn Bridge and Lower Manhattan, in daylight"></noscript>
-      <div class="tabs" role="group" aria-label="Choose a city photo">{tabs}</div>
     </div>
     <figcaption id="cap"></figcaption>
   </figure>
@@ -184,13 +183,12 @@ body = f"""
 SCRIPT = f"""<script>
 (function(){{
 var P={PH},C={json.dumps([c for c,_,_,_ in CITIES])},NM={json.dumps({c: n for c, n, _, _ in CITIES})};
-var city='ny',img=document.getElementById('hero'),cap=document.getElementById('cap'),tabs=document.querySelectorAll('.tabs button');
+var tabs=[];var city=null;try{{city=sessionStorage.getItem('e3-city')}}catch(e){{}}if(!city||C.indexOf(city)<0){{city=C[Math.floor(Math.random()*C.length)];try{{sessionStorage.setItem('e3-city',city)}}catch(e){{}}}}var img=document.getElementById('hero'),cap=document.getElementById('cap'),tabs=document.querySelectorAll('.tabs button');
 function mode(){{return document.documentElement.classList.contains('night')?'night':'day'}}
 function show(){{var k=city+'-'+mode(),p=P[k],b='/d-preview/img/'+k;
   img.alt=p.a;img.srcset=b+'-640.webp 640w, '+b+'-1200.webp 1200w';img.src=b+'-1200.webp';
   cap.innerHTML=NM[city]+': '+p.c.replace(/&/g,'&amp;')+'. Photo: '+p.w.replace(/</g,'&lt;')+', <a href="'+p.u+'">'+p.l+'</a> (<a href="'+p.p+'">source</a>). Resized and compressed. <a href="/d-preview/credits.html">All credits</a>.';
-  tabs.forEach(function(t){{t.setAttribute('aria-pressed',t.dataset.c===city)}})}}
-tabs.forEach(function(t){{t.addEventListener('click',function(){{city=t.dataset.c;show()}})}});
+  }}
 window.e3Photo=show;show();
 fetch('/data/grants.json').then(function(r){{return r.json()}}).then(function(g){{
   var today=new Date();today.setHours(0,0,0,0);
